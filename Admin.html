@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<!-- Plantilla correctora digital — © 2025 Juan José de Haro
+     Código con licencia AGPL v3: ver LICENSE.txt
+     Repositorio: https://github.com/jjdeharo/examen-digital-gas -->
 <html>
   <head>
     <meta charset="UTF-8">
@@ -79,6 +82,11 @@
       .panel-banner { background: #e3f2fd; border: 1px solid #c5ccda; border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; display: flex; gap: 0.5rem; align-items: baseline; }
       .panel-banner strong { color: #0d47a1; }
       /* .unsaved-dot removed */
+      .app-footer { text-align: center; color: #607d8b; font-size: 0.9rem; margin: 2rem 0 1.5rem; }
+      .app-footer a { color: #376082; text-decoration: none; }
+      .app-footer a:hover { text-decoration: underline; }
+      .app-footer .lic-line { margin-top: 0.35rem; }
+      .app-footer img.cc { vertical-align: middle; height: 20px; margin-left: 6px; opacity: 0.9; }
     </style>
   </head>
   <body>
@@ -1711,5 +1719,13 @@
         return value + ':00' + sign + offsetHours + ':' + offsetMins;
       }
     </script>
+    <footer class="app-footer">
+      <div><a href="https://bilateria.es" target="_blank" rel="noopener">© Juan José de Haro</a></div>
+      <div class="lic-line">
+        Licencia del código: <a href="https://github.com/jjdeharo/examen-digital-gas/blob/main/LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a>
+        · Contenido: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>
+        <img class="cc" alt="CC BY-SA 4.0" src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" />
+      </div>
+    </footer>
   </body>
 </html>
