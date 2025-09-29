@@ -316,6 +316,7 @@
             <div id="password-status" class="note hidden password-status"></div>
             <div class="actions">
               <button id="change-password" type="submit" data-i18n="update_code">Actualitza el codi</button>
+              <button id="normalize-admin-token" type="button" class="secondary" data-i18n="normalize_token">Regravar codi com a text</button>
             </div>
           </form>
         </div>
@@ -416,7 +417,38 @@
           reset_all_help: "El botó següent esborra tots els exàmens, claus, lliuraments i notes. Usa'l només si vols començar de zero.",
           reset_all_btn: 'Esborra tot',
           sub_col_date: 'Data',
-          sub_col_student: 'Codi alumne'
+          sub_col_student: 'Codi alumne',
+          config_unsaved_hint: 'Hi ha canvis sense desar. Prem «Desa la configuració» per aplicar-los.',
+          save_config_tooltip: 'Tens canvis sense desar',
+          grading_unsaved_hint: 'Hi ha canvis de qualificació sense desar. Prem «Desa criteris de nota».',
+          penalty_unsaved_hint: 'Hi ha canvis de penalització sense desar. Prem «Desa penalització».',
+          login_code_required: "Introdueix el codi d'administració.",
+          code_verified: 'Codi verificat. Configura un examen.',
+          exam_created: 'Examen nou creat. Completa la configuració.',
+          config_saved: 'Configuració desada correctament.',
+          need_exam_before_key: 'Selecciona un examen abans de desar la clau.',
+          key_saved: 'Clau desada correctament.',
+          need_exam_before_report: "Selecciona un examen abans de generar la correcció i l'anàlisi.",
+          need_exam_before_grading: 'Selecciona un examen abans de desar els criteris.',
+          grading_saved: 'Criteris de qualificació desats.',
+          need_exam_before_penalty: 'Selecciona un examen abans de desar la penalització.',
+          penalty_saved: 'Penalització desada.',
+          need_exam_for_manual: 'Selecciona un examen per canviar el mode.',
+          updating_state: "Actualitzant l'estat de l'examen...",
+          mode_updated: 'Mode actualitzat.',
+          need_exam_before_clear: "Selecciona un examen abans d'esborrar els enviaments.",
+          submissions_cleared: 'Enviaments esborrats.',
+          need_exam_before_delete: "Selecciona un examen abans d'esborrar-lo.",
+          data_deleted: 'Dades esborrades.',
+          identify_before_change_code: "Identifica't abans de canviar el codi.",
+          enter_and_confirm_code: 'Introdueix i confirma el nou codi.',
+          codes_mismatch: 'Els codis no coincideixen.',
+          code_updated: "Codi actualitzat correctament.",
+          sheet_reset: 'Fulla reiniciada.',
+          need_exam_to_view_subs: 'Selecciona un examen per veure els lliuraments.',
+          generic_error: "S'ha produït un error inesperat.",
+          normalize_token: "Regravar codi com a text",
+          normalize_token_done: "Codi regravat com a text."
         },
         es: {
           admin_title: 'Panel del profesorado',
@@ -490,7 +522,38 @@
           reset_all_help: 'El siguiente botón borra todos los exámenes, claves, envíos y notas. Úsalo solo si quieres empezar de cero.',
           reset_all_btn: 'Borrar todo',
           sub_col_date: 'Fecha',
-          sub_col_student: 'Código alumno'
+          sub_col_student: 'Código alumno',
+          config_unsaved_hint: 'Hay cambios sin guardar. Pulsa «Guardar configuración» para aplicarlos.',
+          save_config_tooltip: 'Tienes cambios sin guardar',
+          grading_unsaved_hint: 'Hay cambios de calificación sin guardar. Pulsa «Guardar criterios».',
+          penalty_unsaved_hint: 'Hay cambios de penalización sin guardar. Pulsa «Guardar penalización».',
+          login_code_required: 'Introduce el código de administración.',
+          code_verified: 'Código verificado. Configura un examen.',
+          exam_created: 'Examen creado. Completa la configuración.',
+          config_saved: 'Configuración guardada correctamente.',
+          need_exam_before_key: 'Selecciona un examen antes de guardar la clave.',
+          key_saved: 'Clave guardada correctamente.',
+          need_exam_before_report: 'Selecciona un examen antes de generar la corrección y el análisis.',
+          need_exam_before_grading: 'Selecciona un examen antes de guardar los criterios.',
+          grading_saved: 'Criterios de calificación guardados.',
+          need_exam_before_penalty: 'Selecciona un examen antes de guardar la penalización.',
+          penalty_saved: 'Penalización guardada.',
+          need_exam_for_manual: 'Selecciona un examen para cambiar el modo.',
+          updating_state: 'Actualizando el estado del examen...',
+          mode_updated: 'Modo actualizado.',
+          need_exam_before_clear: 'Selecciona un examen antes de borrar los envíos.',
+          submissions_cleared: 'Envíos borrados.',
+          need_exam_before_delete: 'Selecciona un examen antes de borrarlo.',
+          data_deleted: 'Datos borrados.',
+          identify_before_change_code: 'Identifícate antes de cambiar el código.',
+          enter_and_confirm_code: 'Introduce y confirma el nuevo código.',
+          codes_mismatch: 'Los códigos no coinciden.',
+          code_updated: 'Código actualizado correctamente.',
+          sheet_reset: 'Hoja reiniciada.',
+          need_exam_to_view_subs: 'Selecciona un examen para ver los envíos.',
+          generic_error: 'Se ha producido un error inesperado.',
+          normalize_token: 'Regrabar código como texto',
+          normalize_token_done: 'Código regrabado como texto.'
         }
       };
       function safeStorage() {
@@ -622,6 +685,8 @@
         document.getElementById('create-exam').addEventListener('click', handleCreateExam);
         document.getElementById('copy-link').addEventListener('click', copyExamLink);
         document.getElementById('reset-sheet').addEventListener('click', handleResetSheet);
+        const normBtn = document.getElementById('normalize-admin-token');
+        if (normBtn) normBtn.addEventListener('click', handleNormalizeAdminToken);
         document.getElementById('password-form').addEventListener('submit', handlePasswordChange);
         document.getElementById('view-submissions').addEventListener('click', () => handleViewSubmissions('view-submissions'));
         document.getElementById('view-submissions-config').addEventListener('click', () => handleViewSubmissions('view-submissions-config'));
@@ -638,7 +703,7 @@
         const codeInput = document.getElementById('admin-code');
         const code = codeInput.value.trim();
         if (!code) {
-          showLoginError("Introdueix el codi d'administració.");
+          showLoginError(tAdmin('login_code_required'));
           return;
         }
         setButtonBusy('login-btn', true);
@@ -648,7 +713,7 @@
             document.getElementById('login-card').classList.add('hidden');
             document.getElementById('admin-panel').classList.remove('hidden');
             clearLoginError();
-            showFlash('Codi verificat. Configura un examen.', false);
+            showFlash(tAdmin('code_verified'), false);
             showConfigLoading(true);
             showOverviewLoading(true);
             loadAdminState('');
@@ -668,7 +733,7 @@
         google.script.run
           .withSuccessHandler(state => {
             try {
-              showFlash('Examen nou creat. Completa la configuració.', false);
+              showFlash(tAdmin('exam_created'), false);
               applyState(state);
               // Recarrega amb idioma actual
               try { if (state && state.selectedExamId) { selectedExamId = state.selectedExamId; } } catch (e) {}
@@ -709,7 +774,7 @@
         google.script.run
           .withSuccessHandler(state => {
             try {
-              showFlash('Configuració desada correctament.', false);
+              showFlash(tAdmin('config_saved'), false);
               applyState(state);
               setConfigDirty(false);
             } finally {
@@ -739,13 +804,13 @@
         const saveBtn = document.getElementById('save-config');
         if (configDirty) {
           if (box) {
-            box.textContent = 'Hi ha canvis sense desar. Prem «Desa la configuració» per aplicar-los.';
+            box.textContent = tAdmin('config_unsaved_hint');
             box.className = 'note warn';
             box.classList.remove('hidden');
           }
           if (saveBtn) {
             saveBtn.classList.add('btn-pulse');
-            saveBtn.title = 'Tens canvis sense desar';
+            saveBtn.title = tAdmin('save_config_tooltip');
           }
         } else {
           if (box) {
@@ -763,14 +828,14 @@
         event.preventDefault();
         if (!adminCode) return;
         if (!selectedExamId) {
-          showFlash('Selecciona un examen abans de desar la clau.', true);
+          showFlash(tAdmin('need_exam_before_key'), true);
           return;
         }
         const keyValue = document.getElementById('key-input').value;
         setButtonBusy('save-key', true);
         google.script.run
           .withSuccessHandler(state => {
-            showFlash('Clau desada correctament.', false);
+            showFlash(tAdmin('key_saved'), false);
             // Recarrega estat perquè vingui localitzat
             loadAdminState(selectedExamId);
             setButtonBusy('save-key', false);
@@ -784,7 +849,7 @@
 
       function handleCorrection() {
         if (!adminCode || !selectedExamId) {
-          showFlash('Selecciona un examen abans de generar la correcció i l\'anàlisi.', true);
+          showFlash(tAdmin('need_exam_before_report'), true);
           return;
         }
         setButtonBusy('run-correction', true);
@@ -808,7 +873,7 @@
 
       function handleSaveGrading() {
         if (!adminCode || !selectedExamId) {
-          showFlash('Selecciona un examen abans de desar els criteris.', true);
+          showFlash(tAdmin('need_exam_before_grading'), true);
           return;
         }
         const gradeMax = Number(document.getElementById('grade-max').value || '10');
@@ -816,7 +881,7 @@
         setButtonBusy('save-grading', true);
         google.script.run
           .withSuccessHandler(state => {
-            showFlash('Criteris de qualificació desats.', false);
+            showFlash(tAdmin('grading_saved'), false);
             loadAdminState(selectedExamId);
             setButtonBusy('save-grading', false);
             setGradingDirty(false);
@@ -830,7 +895,7 @@
 
       function handleSavePenalty() {
         if (!adminCode || !selectedExamId) {
-          showFlash('Selecciona un examen abans de desar la penalització.', true);
+          showFlash(tAdmin('need_exam_before_penalty'), true);
           return;
         }
         const enabled = document.getElementById('penalize-wrong').checked;
@@ -838,7 +903,7 @@
         setButtonBusy('save-penalty', true);
         google.script.run
           .withSuccessHandler(state => {
-            showFlash('Penalització desada.', false);
+            showFlash(tAdmin('penalty_saved'), false);
             loadAdminState(selectedExamId);
             setButtonBusy('save-penalty', false);
             setPenaltyDirty(false);
@@ -855,7 +920,7 @@
         const btn = document.getElementById('save-grading');
         if (isDirty) {
           if (box) {
-            box.textContent = 'Hi ha canvis de qualificació sense desar. Prem «Desa criteris de nota». ';
+            box.textContent = tAdmin('grading_unsaved_hint');
             box.className = 'note warn';
             box.classList.remove('hidden');
           }
@@ -874,7 +939,7 @@
         const btn = document.getElementById('save-penalty');
         if (isDirty) {
           if (box) {
-            box.textContent = 'Hi ha canvis de penalització sense desar. Prem «Desa penalització».';
+            box.textContent = tAdmin('penalty_unsaved_hint');
             box.className = 'note warn';
             box.classList.remove('hidden');
           }
@@ -890,7 +955,7 @@
 
       function handleManualToggle() {
         if (!adminCode || !selectedExamId) {
-          showFlash('Selecciona un examen per canviar el mode.', true);
+          showFlash(tAdmin('need_exam_for_manual'), true);
           return;
         }
         const previousState = currentManualState;
@@ -898,7 +963,7 @@
         currentManualState = nextState;
         renderManualToggle();
         const buttonId = 'manual-toggle';
-        showFlashSticky('Actualitzant l\'estat de l\'examen...');
+        showFlashSticky(tAdmin('updating_state'));
         setManualWorking(true);
         setButtonBusy(buttonId, true);
         const expectedOpen = (nextState === 'open');
@@ -906,15 +971,11 @@
         manualExpectedOpen = expectedOpen;
         google.script.run
           .withSuccessHandler(state => {
-            const messages = {
-              open: 'Examen obert.',
-              closed: 'Examen tancat.',
-              auto: 'Control manual desactivat.'
-            };
+            const messages = { open: tAdmin('open'), closed: tAdmin('closed'), auto: tAdmin('mode_updated') };
             applyState(state);
             waitForEffectiveState(expectedOpen, ok => {
               hideFlash();
-              showFlash(messages[nextState] || 'Mode actualitzat.', !ok && true && false);
+              showFlash(messages[nextState] || tAdmin('mode_updated'), !ok && true && false);
               setButtonBusy(buttonId, false);
               setManualWorking(false);
               manualUpdatePending = false;
@@ -936,10 +997,10 @@
 
       function handleClearSubmissions() {
         if (!adminCode || !selectedExamId) {
-          showFlash('Selecciona un examen abans d\'esborrar els enviaments.', true);
+          showFlash(tAdmin('need_exam_before_clear'), true);
           return;
         }
-        if (!confirm('Vols esborrar tots els enviaments, correccions i anàlisis de l\'examen seleccionat?')) {
+        if (!confirm(currentLang === 'es' ? '¿Quieres borrar todos los envíos, correcciones y análisis del examen seleccionado?' : 'Vols esborrar tots els enviaments, correccions i anàlisis de l\'examen seleccionat?')) {
           return;
         }
         const buttonId = 'clear-submissions';
@@ -949,7 +1010,7 @@
             if (result && result.state) {
               applyState(result.state);
             }
-            showFlash((result && result.message) || 'Enviaments esborrats.', false);
+            showFlash((result && result.message) || tAdmin('submissions_cleared'), false);
             setButtonBusy(buttonId, false);
             // amaga el panell si estava obert
             toggleSubmissionsPanel(false);
@@ -963,11 +1024,11 @@
 
       function handleOverviewClearExam() {
         if (!adminCode || !selectedExamId) {
-          showFlash('Selecciona un examen abans d\'esborrar-lo.', true);
+          showFlash(tAdmin('need_exam_before_delete'), true);
           return;
         }
         const name = currentExamName || selectedExamId;
-        const ok = confirm(`Vols esborrar totes les dades de l'examen «${name}»?`);
+        const ok = confirm(currentLang === 'es' ? `¿Quieres borrar todos los datos del examen «${name}»?` : `Vols esborrar totes les dades de l'examen «${name}»?`);
         if (!ok) return;
         const btnId = 'overview-clear-exam';
         setButtonBusy(btnId, true);
@@ -975,7 +1036,7 @@
           .withSuccessHandler(result => {
             try {
               if (result && result.state) applyState(result.state);
-              showFlash((result && result.message) || 'Dades esborrades.', false);
+              showFlash((result && result.message) || tAdmin('data_deleted'), false);
               toggleSubmissionsPanel(false);
             } finally {
               setButtonBusy(btnId, false);
@@ -992,24 +1053,24 @@
         event.preventDefault();
         setPasswordStatus('', false);
         if (!adminCode) {
-          showFlash('Identifica\'t abans de canviar el codi.', true);
+          showFlash(tAdmin('identify_before_change_code'), true);
           return;
         }
         const newPass = document.getElementById('new-admin-pass').value.trim();
         const confirmPass = document.getElementById('confirm-admin-pass').value.trim();
         if (!newPass || !confirmPass) {
-          setPasswordStatus('Introdueix i confirma el nou codi.', true);
+          setPasswordStatus(tAdmin('enter_and_confirm_code'), true);
           return;
         }
         if (newPass !== confirmPass) {
-          setPasswordStatus('Els codis no coincideixen.', true);
+          setPasswordStatus(tAdmin('codes_mismatch'), true);
           return;
         }
         setButtonBusy('change-password', true);
         google.script.run
           .withSuccessHandler(result => {
-            showFlash(result.message || 'Codi actualitzat correctament.', false);
-            setPasswordStatus(result.message || 'Codi actualitzat correctament.', false);
+            showFlash(result.message || tAdmin('code_updated'), false);
+            setPasswordStatus(result.message || tAdmin('code_updated'), false);
             adminCode = newPass;
             document.getElementById('new-admin-pass').value = '';
             document.getElementById('confirm-admin-pass').value = '';
@@ -1021,6 +1082,22 @@
             setButtonBusy('change-password', false);
           })
           .updateAdminToken(adminCode, newPass);
+      }
+
+      function handleNormalizeAdminToken() {
+        if (!adminCode) return;
+        const btn = document.getElementById('normalize-admin-token');
+        setButtonBusy('normalize-admin-token', true);
+        google.script.run
+          .withSuccessHandler(res => {
+            showFlash(tAdmin('normalize_token_done'), false);
+            setButtonBusy('normalize-admin-token', false);
+          })
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            setButtonBusy('normalize-admin-token', false);
+          })
+          .normalizeAdminTokenStorageForAdmin(adminCode);
       }
 
       function nextManualState(state) {
@@ -1057,7 +1134,7 @@
         google.script.run
           .withSuccessHandler(result => {
             if (result.reset) {
-              showFlash(result.message || 'Fulla reiniciada.', false);
+              showFlash(result.message || tAdmin('sheet_reset'), false);
               selectedExamId = '';
               applyState({ exams: [], selectedExamId: '', configError: 'Cap examen disponible.' });
             }
@@ -1713,7 +1790,7 @@
         if (error && error.message) {
           return error.message;
         }
-        return 'S\'ha produït un error inesperat.';
+        return tAdmin('generic_error');
       }
 
       function isoToLocalInput(iso) {

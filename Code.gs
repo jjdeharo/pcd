@@ -2085,6 +2085,28 @@ function normalizeSpreadsheetIdInput_(value) {
   return text;
 }
 
+// Força que admin_token es guardi com a text a Settings
+function normalizeAdminTokenStorageForAdmin(code) {
+  checkAdminCode_(code);
+  const sheet = getSheet_(SHEET_NAMES.SETTINGS);
+  const values = sheet.getDataRange().getValues();
+  const key = String(SETTINGS_KEYS.ADMIN_TOKEN).toLowerCase();
+  for (let i = 1; i < values.length; i++) {
+    const rowKey = String(values[i][0] || '').toLowerCase();
+    if (rowKey === key) {
+      const rng = sheet.getRange(i + 1, 2);
+      try { rng.setNumberFormat('@'); } catch (e) {}
+      const current = values[i][1];
+      rng.setValue(String(current || ''));
+      return { ok: true, message: 'Codi d\'administració reescrit com a text.' };
+    }
+  }
+  // Si no existeix, crea'l com a text amb el valor per defecte
+  sheet.appendRow([key, String(DEFAULT_ADMIN_TOKEN)]);
+  try { sheet.getRange(sheet.getLastRow(), 2).setNumberFormat('@'); } catch (e) {}
+  return { ok: true, message: 'S\'ha creat admin_token com a text.' };
+}
+
 function updateAdminToken(code, newToken) {
   checkAdminCode_(code);
   const trimmed = String(newToken || '').trim();
