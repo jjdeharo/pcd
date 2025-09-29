@@ -1935,10 +1935,19 @@ function ensureSettingValue_(key, defaultValue) {
     if (stored) {
       return stored;
     }
-    sheet.getRange(i + 1, 2).setValue(defaultValue);
+    const rng = sheet.getRange(i + 1, 2);
+    // Si es el codi d'administració, força format de text
+    if (normalizedKey === String(SETTINGS_KEYS.ADMIN_TOKEN).toLowerCase()) {
+      try { rng.setNumberFormat('@'); } catch (e) {}
+    }
+    rng.setValue(String(defaultValue));
     return String(defaultValue);
   }
-  sheet.appendRow([normalizedKey, defaultValue]);
+  // Afegeix la fila i, si és admin_token, assegura format de text per conservar zeros a l'esquerra
+  sheet.appendRow([normalizedKey, String(defaultValue)]);
+  if (normalizedKey === String(SETTINGS_KEYS.ADMIN_TOKEN).toLowerCase()) {
+    try { sheet.getRange(sheet.getLastRow(), 2).setNumberFormat('@'); } catch (e) {}
+  }
   return String(defaultValue);
 }
 
@@ -1949,11 +1958,18 @@ function setSettingValue_(key, value) {
   for (let i = 1; i < values.length; i++) {
     const rowKey = String(values[i][0] || '').toLowerCase();
     if (rowKey === normalizedKey) {
-      sheet.getRange(i + 1, 2).setValue(value);
+      const rng = sheet.getRange(i + 1, 2);
+      if (normalizedKey === String(SETTINGS_KEYS.ADMIN_TOKEN).toLowerCase()) {
+        try { rng.setNumberFormat('@'); } catch (e) {}
+      }
+      rng.setValue(String(value));
       return;
     }
   }
-  sheet.appendRow([normalizedKey, value]);
+  sheet.appendRow([normalizedKey, String(value)]);
+  if (normalizedKey === String(SETTINGS_KEYS.ADMIN_TOKEN).toLowerCase()) {
+    try { sheet.getRange(sheet.getLastRow(), 2).setNumberFormat('@'); } catch (e) {}
+  }
 }
 
 function getSpreadsheet_() {
