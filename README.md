@@ -1,72 +1,84 @@
-# examen-digital-gas
+# Exámenes digitales para profes (Google Sheets + Web)
 
-Proyecto de Google Apps Script para gestionar exámenes tipo test (opción múltiple) usando Google Sheets como backend. Incluye:
+Este proyecto permite pasar exámenes tipo test a tu alumnado desde una página web sencilla y guardar automáticamente las respuestas en tu Hoja de Cálculo de Google. Incluye:
 
-- Formulario de alumno (web app) para enviar respuestas.
-- Consola de profesor (panel admin) para configurar exámenes, cargar claves y lanzar correcciones.
-- Lógica centralizada en `Code.gs` para validar envíos, escribir en hojas y generar correcciones.
+- Enlace de alumnado para responder (web app).
+- Panel del profesorado para configurar el examen, cargar la clave y corregir.
+- Informes de corrección en la pestaña "Correcció" de la hoja.
 
-## Estructura
+No necesitas programar. Solo harás una copia de la hoja y publicarás la web desde el editor de Apps Script.
 
-- `Code.gs`: lógica del servidor (doGet, validaciones, arranque de hojas, constantes compartidas).
-- `Admin.html`: consola del profesor (configuración y corrección).
-- `Index.html`: formulario del alumno (renderizado con plantillas, p. ej. `examId`).
-- `appsscript.json`: manifiesto de Apps Script.
-- `.clasp.json`: configuración de `clasp` (ID del script, etc.).
+## Lo que necesitas
 
-Mantén nombres de hojas y cabeceras centralizados en `Code.gs` (p. ej. `SHEET_NAMES`, `SHEET_HEADERS`, `SETTINGS_KEYS`).
+- Cuenta de Google (acceso a Google Drive y Apps Script).
+- Una plantilla de Hoja de Cálculo de este proyecto (te la facilitarán o compártela desde el centro). Las pestañas usadas son: `Config`, `Keys`, `Settings`, `Submissions` y `Correcció`.
 
-## Requisitos
+## Pasos rápidos (10–15 minutos)
 
-- Cuenta Google con acceso a Apps Script y Google Drive.
-- Node.js y `clasp` instalados: `npm install -g @google/clasp`.
-- Autenticación en `clasp`: `clasp login`.
+1) Haz tu copia de la Hoja de Cálculo
+- Abre la plantilla y pulsa Archivo → Hacer una copia. Ponle un nombre (por ejemplo, "Examen 1ºB – Tema 2").
 
-## Configuración inicial
+2) Abre el editor de Apps Script
+- En la copia, ve a Extensiones → Apps Script. Se abrirá el editor con el proyecto asociado. No tienes que tocar el código.
 
-1. Clona el repositorio y entra en la carpeta del proyecto.
-2. Inicia sesión en `clasp`: `clasp login` (si no lo has hecho).
-3. Asegúrate de que `.clasp.json` apunta al script deseado. Si partes de cero, crea uno y vincula:
-   - Crear script vacío: `clasp create --type webapp --title "Examen Digital"`.
-   - O vincular a uno existente: `clasp clone <scriptId>` y mueve los archivos del proyecto.
-4. En la hoja de cálculo asociada, crea las pestañas que espera el proyecto según `SHEET_NAMES` y revisa `SHEET_HEADERS` en `Code.gs`.
-5. Sustituye cualquier token/valor por defecto sensible (por ejemplo, `DEFAULT_ADMIN_TOKEN`) y refleja el valor en la pestaña `Settings`.
+3) Publica la web (despliegue)
+- En el editor, pulsa Implementar → Administrar implementaciones → Nueva implementación.
+- Tipo: "Aplicación web".
+- Descripción: por ejemplo, "Examen Tema 2".
+- Quién tiene acceso: elige "Cualquiera con el enlace" (o solo tu dominio del centro si lo preferís).
+- Pulsa Implementar y acepta los permisos. Copia la URL que aparece; es el ENLACE DEL ALUMNADO.
 
-## Flujo de desarrollo
+4) Entra en el panel del profesorado y cambia el código
+- Abre la URL y añade `?view=admin` al final. Ejemplo: `https://.../exec?view=admin`.
+- La primera vez, el código de profesor es `CANVIA_AIXO` (cámbialo por uno propio y guárdalo). Guárdalo en lugar seguro; lo necesitarás para entrar al panel.
 
-- Descargar cambios del script (si editaste en el editor online): `clasp pull`.
-- Subir cambios locales a Apps Script: `clasp push`.
-- Modo vigilancia durante sesiones largas: `clasp push --watch`.
-- Previsualizar la web app: desde el editor de Apps Script, "Deploy" → "Test deployments" o usa `clasp open`.
+5) Crea y configura el examen
+- En el panel del profesorado pulsa "Crear examen" o elige uno existente.
+- Define: nombre, número de preguntas, cuántas opciones (A–D, A–E, etc.), horario (apertura/cierre) o apertura manual.
+- Guarda la configuración.
 
-## Despliegue (manteniendo la URL estable)
+6) Carga la clave de respuestas
+- En el panel, usa "Cargar clave" (pega la secuencia de letras, por ejemplo: `ABDCB...`) o el método que el panel indica. La clave se guarda en la pestaña `Keys`.
 
-1. Lista despliegues: `clasp deployments`.
-2. Actualiza el despliegue existente (recomendado) en lugar de crear uno nuevo:
-   `clasp deploy --deploymentId <id_actual> --description "<nota>"`.
-3. Abre el despliegue para compartir/pruebas: `clasp open --deploymentId <id_actual>`.
+7) Comparte el enlace con el alumnado
+- Comparte la URL sin parámetros (la misma que copiaste en el paso 3). Puedes ponerla en Classroom, Moodle o por QR.
+- Si programas horario, el examen se abre y cierra automáticamente. También puedes abrir/cerrar manualmente desde el panel.
 
-Consejo: reutilizar el mismo `deploymentId` evita cambios de URL en la web app.
+8) Corrige y revisa resultados
+- En el panel, lanza la corrección cuando quieras. Verás el resumen y el listado de envíos.
+- Los resultados detallados se escriben en la pestaña `Correcció` de tu hoja (aciertos, errores, en blanco y nota).
 
-## Pruebas manuales sugeridas
+## Consejos de uso
 
-- Ejecuta `submitResponse` desde el editor con cargas de ejemplo y confirma filas en `Submissions` y `Correcció`.
-- Prueba el panel admin en previsualización: apertura/cierre manual del examen, carga de claves, corrección.
-- Verifica que las columnas coinciden con `SHEET_HEADERS` para que los `append` queden alineados.
+- Mantén el mismo despliegue: si cambias algo en la configuración desde el panel, no hace falta volver a publicar la web; la URL no cambia.
+- Si el alumnado no puede acceder, revisa en el editor: Implementar → Administrar implementaciones → tu despliegue → "Quién tiene acceso".
+- Guarda tu código de profesor en lugar seguro. Si lo olvidas, alguien con acceso de edición a la Hoja puede poner uno nuevo desde el panel.
 
-## Buenas prácticas
+## Para el siguiente examen
 
-- Usa indentación de dos espacios y comas finales como en `Code.gs`.
-- Prefiere `const`; usa `let` solo si hay reasignación.
-- Identificadores en lowerCamelCase; constantes compartidas en MAYÚSCULAS_CON_GUIONES.
-- Agrupa cambios de Apps Script y HTML en el mismo commit.
+- Puedes crear un examen nuevo desde el panel (recomendado) y conservar la misma URL.
+- Si prefieres separar por grupos, duplica la Hoja de Cálculo (Archivo → Hacer una copia) y repite los pasos de publicación. Obtendrás una URL distinta para cada copia.
 
-## Seguridad y configuración
+## Referencia rápida de pestañas (en tu hoja)
 
-- No publiques tokens o IDs sensibles en commits públicos.
-- Si clonas el proyecto para otro grupo/clase, duplica la hoja, limpia `Settings` y despliega de nuevo para generar identificadores nuevos.
+- `Config`: datos del examen (nombre, número de preguntas, horario, barajado, etc.).
+- `Keys`: clave oficial de respuestas por examen.
+- `Submissions`: envíos brutos del alumnado.
+- `Correcció`: resultados calculados (aciertos/errores/nota).
+- `Settings`: ajustes internos (incluye el código del profesor).
+
+## Preguntas frecuentes
+
+— ¿La URL cambia si vuelvo a publicar?
+No: si editas la implementación existente (Administrar implementaciones → editar), la URL se mantiene. Crear una implementación nueva sí cambia la URL.
+
+— ¿Puedo restringir el acceso al dominio del centro?
+Sí: al publicar, elige "Usuarios de tu dominio" en "Quién tiene acceso". Todos deberán iniciar sesión con la cuenta del centro.
+
+— ¿Cómo cambio el código de profesor?
+Entra en `...?view=admin`, abre Ajustes del panel y establece uno nuevo. Se guarda en `Settings`.
 
 ---
 
-¿Dudas o mejoras? Abre un issue o comenta en el PR.
+Si necesitas ayuda, comparte la URL del panel (sin tu código) y una captura de la pestaña `Config` para que podamos orientarte.
 
