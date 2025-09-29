@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Panell del professorat</title>
+    <style>
+      body { font-family: Arial, sans-serif; background: #eef2f9; margin: 0; }
+      .wrap { max-width: 780px; margin: 0 auto; padding: 2rem; }
+      h1 { margin: 0 0 1rem; font-size: 1.8rem; }
+      form { background: #fff; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+      label { display: block; font-weight: bold; margin-top: 1rem; }
+      input[type="text"],
+      input[type="number"],
+      input[type="password"],
+      input[type="datetime-local"],
+      textarea,
+      select { width: 100%; padding: 0.65rem; border: 1px solid #c5ccda; border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
+      textarea { min-height: 4rem; resize: vertical; }
+      select { background: #fff; }
+      button { background: #1976d2; color: #fff; border: none; border-radius: 6px; padding: 0.75rem 1.2rem; font-size: 1rem; cursor: pointer; }
+      button.secondary { background: #455a64; }
+      button.danger { background: #d32f2f; }
+      button[disabled] { background: #9fbad7; cursor: not-allowed; }
+      .manual-toggle { background: #546e7a; }
+      .manual-toggle.state-auto { background: #546e7a; }
+      .manual-toggle.state-open { background: #2e7d32; }
+      .manual-toggle.state-closed { background: #c62828; }
+      .manual-toggle small { display: block; font-size: 0.75rem; margin-top: 0.15rem; color: rgba(255,255,255,0.85); }
+      .badge { display: inline-block; min-width: 5rem; padding: 0.15rem 0.6rem; border-radius: 999px; margin-left: 0.35rem; background: #90a4ae; color: #fff; font-weight: bold; text-align: center; }
+      .badge.open { background: #2e7d32; }
+      .badge.closed { background: #c62828; }
+      .badge.pending { background: #f9a825; }
+      .status-detail { margin: 0.35rem 0 0; color: #455a64; }
+      .hidden { display: none; }
+      .note { margin: 1rem 0; padding: 0.9rem 1rem; border-radius: 8px; background: #e3f2fd; color: #0d47a1; }
+      .note.warn { background: #fff3cd; color: #8a6d3b; }
+      .note.error { background: #fdecea; color: #b71c1c; }
+      .note.ok { background: #e8f5e9; color: #2e7d32; }
+      .actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
+      .summary-card { background: #fff; padding: 1.2rem 1.5rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+      .summary-card p { margin: 0.4rem 0; font-size: 1rem; }
+      #login-card { max-width: 440px; margin: 4rem auto; text-align: center; background: #fff; padding: 2.5rem; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+      #login-card p { margin: 0.5rem 0 1.2rem; color: #546e7a; }
+      .flex-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+      .flex-row > * { flex: 1 1 220px; }
+      .manual-controls { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.75rem; }
+      .manual-controls button { flex: 1 1 160px; }
+      .grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; align-items: flex-start; }
+      @media (max-width: 560px) {
+        .grid-two { grid-template-columns: 1fr; }
+      }
+      #exam-selector-card select { min-width: 0; width: auto; flex: 1 1 auto; }
+      #exam-selector-card option { white-space: nowrap; }
+      .copy-group { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem; }
+      .copy-group input { flex: 1; }
+      .copy-feedback { margin-top: 0.5rem; font-size: 0.9rem; color: #2e7d32; display: none; }
+      .copy-feedback.error { color: #b71c1c; }
+      .copy-feedback.visible { display: block; }
+      .centered-actions { display: flex; justify-content: center; margin-top: 1.2rem; }
+      .lang-switch { display: flex; justify-content: flex-end; gap: 6px; align-items: center; margin: 0.5rem 0 1rem; }
+      .lang-btn { background: #eceff4; color: #1a2733; border: 1px solid #c5ccda; padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.85rem; cursor: pointer; }
+      .lang-btn.active { background: #1976d2; color: #fff; border-color: #1976d2; }
+      .tab-bar { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1.5rem 0 1rem; }
+      .tab-button { background: #c5ccda; color: #1a2733; border: none; border-radius: 999px; padding: 0.5rem 1.2rem; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+      .tab-button.active { background: #1976d2; color: #fff; }
+      .tab-content { display: none; }
+      .tab-content.active { display: block; }
+      .config-subtitle { display: block; margin-top: 1rem; font-weight: bold; }
+      label.checkbox-row { display: flex; align-items: center; gap: 0.5rem; font-weight: normal; margin-top: 0.5rem; }
+      label.checkbox-row input { width: auto; }
+      .password-status { margin-top: 0.75rem; }
+      .security-frame { border: 2px solid #c5ccda; padding: 0.9rem 1rem; border-radius: 10px; background: #f8fbff; margin-top: 1rem; }
+      .security-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; color: #1a2733; margin: 0 0 0.5rem 0; }
+      .security-title .lock { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 999px; background: #1976d2; color: #fff; font-size: 13px; }
+      .btn-pulse { animation: pulse 1.2s ease-in-out infinite; }
+      @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(25,118,210,0.6);} 70% { box-shadow: 0 0 0 8px rgba(25,118,210,0);} 100% { box-shadow: 0 0 0 0 rgba(25,118,210,0);} }
+      .config-sticky { position: sticky; top: 0; z-index: 10; background: #e3f2fd; border: 1px solid #c5ccda; border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; display: flex; gap: 0.5rem; align-items: baseline; }
+      .config-sticky strong { color: #0d47a1; }
+      .panel-banner { background: #e3f2fd; border: 1px solid #c5ccda; border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; display: flex; gap: 0.5rem; align-items: baseline; }
+      .panel-banner strong { color: #0d47a1; }
+      /* .unsaved-dot removed */
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="lang-switch" id="admin-lang-switch" title="Idioma/Language">
+        <button type="button" class="lang-btn" data-lang="auto">AUTO</button>
+        <button type="button" class="lang-btn" data-lang="ca">CA</button>
+        <button type="button" class="lang-btn" data-lang="es">ES</button>
+      </div>
+      <section id="login-card">
+        <h1 data-i18n="admin_title">Panell del professorat</h1>
+        <p data-i18n="admin_login_intro">Introdueix el codi d'administració per accedir-hi.</p>
+        <form id="login-form">
+          <label for="admin-code" data-i18n="admin_code_label">Codi</label>
+          <input type="password" id="admin-code" autocomplete="off" required />
+          <div class="centered-actions">
+            <button id="login-btn" type="submit" data-i18n="login_btn">Entrar</button>
+          </div>
+        </form>
+        <div id="login-error" class="note error hidden"></div>
+      </section>
+
+      <section id="admin-panel" class="hidden">
+        <h1 data-i18n="admin_title">Panell del professorat</h1>
+        <p data-i18n="admin_help">Gestiona els exàmens des d'aquesta pàgina (no comparteixis l'URL amb l'alumnat).</p>
+        <div id="flash" class="note hidden"></div>
+
+        <nav class="tab-bar" id="admin-tabs">
+          <button type="button" class="tab-button active" data-tab="overview" data-i18n="tab_overview">Resum</button>
+          <button type="button" class="tab-button" data-tab="config" data-i18n="tab_config">Configuració</button>
+          <button type="button" class="tab-button" data-tab="responses" data-i18n="tab_responses">Respostes</button>
+          <button type="button" class="tab-button" data-tab="admin-settings" data-i18n="tab_settings">Ajustaments</button>
+        </nav>
+
+        <div class="tab-content active" data-tab="overview">
+        <div id="overview-loading" class="note hidden" data-i18n="loading_overview">Carregant exàmens i resum... Espera uns segons.</div>
+        <div class="summary-card" id="exam-selector-card">
+          <h2 data-i18n="exams_available">Exàmens disponibles</h2>
+          <div class="flex-row">
+            <select id="exam-selector"></select>
+            <button id="create-exam" type="button" data-i18n="create_exam">Crea examen nou</button>
+          </div>
+          <div id="selector-status" class="note warn hidden"></div>
+        </div>
+
+        <div class="summary-card" id="exam-summary-card">
+          <h2 data-i18n="exam_summary">Resum de l'examen</h2>
+          <p><strong data-i18n="label_identifier">Identificador:</strong> <span id="summary-id">--</span></p>
+          <p><strong data-i18n="label_name">Nom:</strong> <span id="summary-name">--</span></p>
+          <p><strong data-i18n="label_availability">Disponibilitat:</strong> <span id="summary-status" class="badge">--</span></p>
+          <p id="summary-status-text" class="status-detail hidden"></p>
+          <p><strong data-i18n="label_submissions">Enviaments registrats:</strong> <span id="summary-submissions">0</span></p>
+          <p><strong data-i18n="label_last">Darrer enviament:</strong> <span id="summary-last">---</span></p>
+          <div class="actions">
+            <button id="view-submissions" type="button" class="secondary" data-i18n="view_submissions">Veure lliuraments</button>
+          </div>
+          <div class="actions" style="justify-content:flex-end; margin-top:0.5rem;">
+            <button id="overview-clear-exam" type="button" class="danger" data-i18n="delete_exam">Esborrar aquest examen</button>
+          </div>
+        </div>
+
+        <div class="summary-card hidden" id="submissions-panel">
+          <h2 data-i18n="submissions">Lliuraments</h2>
+          <div id="submissions-info" class="note hidden"></div>
+          <div id="submissions-list" style="max-height: 280px; overflow: auto; border: 1px solid #c5ccda; border-radius: 6px; padding: 0.5rem;"></div>
+          <div class="actions" style="justify-content:flex-end">
+            <button id="close-submissions" type="button" data-i18n="close">Tanca</button>
+          </div>
+        </div>
+
+        </div>
+
+        <div class="tab-content" data-tab="config">
+        <form id="config-form">
+          <div id="config-sticky" class="config-sticky hidden">
+            <strong>Examen actual:</strong>
+            <span id="sticky-exam-name">--</span>
+            <small id="sticky-exam-id" style="color:#455a64">(--)</small>
+          </div>
+          <h2 data-i18n="exam_config">Configuració de l'examen</h2>
+          <p data-i18n="exam_config_help">Actualitza els paràmetres i prem «Desa» per desar-los a la fulla.</p>
+
+          <label for="exam-name" data-i18n="exam_name">Nom de l'examen</label>
+          <input type="text" id="exam-name" placeholder="Examen de mostra" autocomplete="off" required />
+
+          <div class="grid-two">
+            <div>
+              <label for="questions-count" data-i18n="n_questions">Nombre de preguntes</label>
+              <input type="number" id="questions-count" min="1" required />
+            </div>
+            <div>
+              <label for="options" data-i18n="options">Opcions disponibles (ex. ABCDE)</label>
+              <input type="text" id="options" autocomplete="off" placeholder="ABCDE" required />
+            </div>
+            <div>
+              <label for="start-datetime" data-i18n="start">Inici programat</label>
+              <input type="datetime-local" id="start-datetime" />
+            </div>
+            <div>
+              <label for="end-datetime" data-i18n="end">Fi programada</label>
+              <input type="datetime-local" id="end-datetime" />
+            </div>
+          </div>
+
+          <div class="security-frame">
+            <div class="security-title"><span class="lock">🔒</span> <span data-i18n="security">Mesures de seguretat</span></div>
+            <label class="checkbox-row">
+              <input type="checkbox" id="shuffle-questions" />
+              <span data-i18n="shuffle_questions">Barreja l'ordre de les preguntes</span>
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" id="shuffle-answers" />
+              <span data-i18n="shuffle_answers">Barreja l'ordre de les opcions</span>
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" id="enforce-fullscreen" />
+              <span data-i18n="fullscreen">Maximitza la finestra (pantalla completa) durant l'examen</span>
+            </label>
+          </div>
+
+          <div id="config-status" class="note warn hidden"></div>
+
+          <div class="actions">
+            <button id="save-config" type="submit" data-i18n="save_config">Desa la configuració</button>
+          </div>
+
+          <div class="manual-controls">
+            <button id="manual-toggle" type="button" class="manual-toggle state-closed" title="Clica per obrir">
+              <span class="manual-toggle__label" data-i18n="closed">Tancat</span>
+              <small data-i18n="click_to_open">Prem per obrir</small>
+            </button>
+          </div>
+
+          <div id="config-loading" class="note hidden" data-i18n="loading_config">Carregant dades de l'examen...</div>
+
+          <div id="exam-url" class="note hidden">
+            <h3 data-i18n="student_link_title">Enllaç per a l'alumnat</h3>
+            <div class="copy-group">
+              <input type="text" id="exam-link" readonly />
+              <button id="copy-link" type="button" data-i18n="copy">Copia</button>
+            </div>
+            <div id="copy-feedback" class="copy-feedback"></div>
+            <small data-i18n="student_link_hint">Comparteix l'enllaç quan la configuració estigui preparada i l'examen estigui obert.</small>
+          </div>
+
+          <div class="actions" id="config-view-submissions-wrap" style="margin-top:1rem; display:none;">
+            <button id="view-submissions-config" type="button" class="secondary" data-i18n="view_submissions">Veure lliuraments</button>
+          </div>
+
+        </form>
+        </div>
+
+        <div class="tab-content" data-tab="responses">
+        <form id="key-form">
+          <div class="panel-banner" id="responses-exam-banner">
+            <strong>Examen actual:</strong>
+            <span id="responses-exam-name">--</span>
+            <small id="responses-exam-id" style="color:#7a8b97">(--)</small>
+          </div>
+          <h2 data-i18n="answer_key">Clau de respostes</h2>
+          <p data-i18n="answer_key_help">Enganxa la cadena de respostes correctes (sense espais) o les lletres separades per espais.</p>
+          <label for="key-input" data-i18n="key_label">Clau</label>
+          <textarea id="key-input" placeholder="ABCDE..."></textarea>
+          <div id="key-status" class="note warn hidden"></div>
+          <div class="actions">
+            <button id="save-key" type="submit" data-i18n="save_key">Desa la clau</button>
+          </div>
+        </form>
+
+        <div class="summary-card">
+          <h2 data-i18n="grading_title">Criteris de qualificació</h2>
+          <div class="grid-two">
+            <div>
+              <label for="grade-max" data-i18n="grade_max">Qualificar sobre</label>
+              <input type="number" id="grade-max" min="1" step="0.5" placeholder="10" />
+            </div>
+            <div>
+              <label for="pass-threshold" data-i18n="pass_threshold">Aprovat</label>
+              <input type="number" id="pass-threshold" min="0" step="0.5" placeholder="5" />
+            </div>
+          </div>
+          <div id="grading-status" class="note warn hidden" style="margin-top:0.5rem;"></div>
+          <div class="actions">
+            <button id="save-grading" type="button" data-i18n="save_grading">Desa criteris de nota</button>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <h2 data-i18n="penalty_title">Penalització per atzar</h2>
+          <p data-i18n="penalty_help">Si s'habilita, es restarà una fracció per cada resposta incorrecta. Recomanada: <code>1/(m-1)</code>, on <code>m</code> és el nombre d'opcions.</p>
+          <label class="checkbox-row">
+            <input type="checkbox" id="penalize-wrong" />
+            <span data-i18n="penalize_wrong">Penalitza respostes incorrectes</span>
+          </label>
+          <div class="grid-two">
+            <div>
+              <label for="penalty-value" data-i18n="penalty_value">Penalització per incorrecta</label>
+              <input type="number" id="penalty-value" min="0" step="0.01" placeholder="0.33" />
+            </div>
+          </div>
+          <div id="penalty-status" class="note warn hidden" style="margin-top:0.5rem;"></div>
+          <div class="actions">
+            <button id="save-penalty" type="button" data-i18n="save_penalty">Desa penalització</button>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <h2 data-i18n="report_title">Correcció i anàlisi</h2>
+          <p data-i18n="report_help">Després de recollir les respostes, genera la correcció i l'anàlisi.</p>
+          <div class="actions" style="gap:0.5rem; align-items:center;">
+            <button id="run-correction" type="button" data-i18n="run_report">Genera correcció + anàlisi</button>
+          </div>
+          <p data-i18n="report_note">Els resultats es desen a la pestanya «Correcció».</p>
+        </div>
+
+        </div>
+
+        <div class="tab-content" data-tab="admin-settings">
+        <div class="summary-card">
+          <h2 data-i18n="change_code_title">Canviar el codi d'administració</h2>
+          <p data-i18n="change_code_help">Actualitza el codi necessari per accedir al panell. Mantén-lo confidencial.</p>
+          <form id="password-form">
+            <label for="new-admin-pass" data-i18n="new_code">Nou codi</label>
+            <input type="password" id="new-admin-pass" autocomplete="off" required />
+            <label for="confirm-admin-pass" data-i18n="confirm_code">Confirma el nou codi</label>
+            <input type="password" id="confirm-admin-pass" autocomplete="off" required />
+            <div id="password-status" class="note hidden password-status"></div>
+            <div class="actions">
+              <button id="change-password" type="submit" data-i18n="update_code">Actualitza el codi</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="summary-card">
+          <h2 data-i18n="clear_submissions_title">Esborrar enviaments</h2>
+          <p data-i18n="clear_submissions_help">Aquest botó elimina tots els enviaments, correccions i anàlisis desats per l'examen seleccionat. Fes-lo servir quan vulguis reutilitzar l'examen amb un altre grup.</p>
+          <div class="actions">
+            <button id="clear-submissions" type="button" class="danger" data-i18n="clear_submissions_btn">Esborra enviaments i resultats</button>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <h2 data-i18n="reset_all_title">Adminstració de les dades</h2>
+          <p data-i18n="reset_all_help">El botó següent esborra tots els exàmens, claus, lliuraments i notes. Usa'l només si vols començar de zero.</p>
+          <div class="actions">
+            <button id="reset-sheet" type="button" class="danger" data-i18n="reset_all_btn">Esborra tot</button>
+          </div>
+        </div>
+
+        </div>
+      </section>
+    </div>
+
+    <script>
+      // ===== i18n (ca/es) for Admin UI =====
+      const LANG_STORAGE_KEY = 'examApp:lang';
+      const I18N_ADMIN = {
+        ca: {
+          admin_title: "Panell del professorat",
+          admin_login_intro: "Introdueix el codi d'administració per accedir-hi.",
+          admin_code_label: 'Codi',
+          login_btn: 'Entrar',
+          admin_help: "Gestiona els exàmens des d'aquesta pàgina (no comparteixis l'URL amb l'alumnat).",
+          tab_overview: 'Resum',
+          tab_config: 'Configuració',
+          tab_responses: 'Respostes',
+          tab_settings: 'Ajustaments',
+          loading_overview: 'Carregant exàmens i resum... Espera uns segons.',
+          exams_available: 'Exàmens disponibles',
+          create_exam: 'Crea examen nou',
+          exam_summary: "Resum de l'examen",
+          label_identifier: 'Identificador:',
+          label_name: 'Nom:',
+          label_availability: 'Disponibilitat:',
+          label_submissions: 'Enviaments registrats:',
+          label_last: 'Darrer enviament:',
+          view_submissions: 'Veure lliuraments',
+          delete_exam: 'Esborrar aquest examen',
+          submissions: 'Lliuraments',
+          close: 'Tanca',
+          exam_config: "Configuració de l'examen",
+          exam_config_help: "Actualitza els paràmetres i prem «Desa» per desar-los a la fulla.",
+          exam_name: "Nom de l'examen",
+          n_questions: 'Nombre de preguntes',
+          options: 'Opcions disponibles (ex. ABCDE)',
+          start: 'Inici programat',
+          end: 'Fi programada',
+          security: 'Mesures de seguretat',
+          shuffle_questions: "Barreja l'ordre de les preguntes",
+          shuffle_answers: "Barreja l'ordre de les opcions",
+          fullscreen: "Maximitza la finestra (pantalla completa) durant l'examen",
+          save_config: 'Desa la configuració',
+          open: 'Obert',
+          closed: 'Tancat',
+          click_to_open: 'Prem per obrir',
+          click_to_close: 'Prem per tancar',
+          loading_config: "Carregant dades de l'examen...",
+          student_link_title: "Enllaç per a l'alumnat",
+          copy: 'Copia',
+          student_link_hint: "Comparteix l'enllaç quan la configuració estigui preparada i l'examen estigui obert.",
+          answer_key: 'Clau de respostes',
+          answer_key_help: 'Enganxa la cadena de respostes correctes (sense espais) o les lletres separades per espais.',
+          key_label: 'Clau',
+          save_key: 'Desa la clau',
+          grading_title: 'Criteris de qualificació',
+          grade_max: 'Qualificar sobre',
+          pass_threshold: 'Aprovat',
+          save_grading: 'Desa criteris de nota',
+          penalty_title: 'Penalització per atzar',
+          penalty_help: "Si s'habilita, es restarà una fracció per cada resposta incorrecta. Recomanada: 1/(m-1), on m és el nombre d'opcions.",
+          penalize_wrong: 'Penalitza respostes incorrectes',
+          penalty_value: 'Penalització per incorrecta',
+          save_penalty: 'Desa penalització',
+          report_title: 'Correcció i anàlisi',
+          report_help: "Després de recollir les respostes, genera la correcció i l'anàlisi.",
+          run_report: 'Generar informe',
+          report_note: 'Els resultats es desen a la pestanya «Correcció».',
+          change_code_title: "Canviar el codi d'administració",
+          change_code_help: 'Actualitza el codi necessari per accedir al panell. Mantén-lo confidencial.',
+          new_code: 'Nou codi',
+          confirm_code: 'Confirma el nou codi',
+          update_code: 'Actualitza el codi',
+          clear_submissions_title: 'Esborrar enviaments',
+          clear_submissions_help: "Aquest botó elimina tots els enviaments, correccions i anàlisis desats per l'examen seleccionat. Fes-lo servir quan vulguis reutilitzar l'examen amb un altre grup.",
+          clear_submissions_btn: 'Esborra enviaments i resultats',
+          reset_all_title: 'Adminstració de les dades',
+          reset_all_help: "El botó següent esborra tots els exàmens, claus, lliuraments i notes. Usa'l només si vols començar de zero.",
+          reset_all_btn: 'Esborra tot',
+          sub_col_date: 'Data',
+          sub_col_student: 'Codi alumne'
+        },
+        es: {
+          admin_title: 'Panel del profesorado',
+          admin_login_intro: 'Introduce el código de administración para acceder.',
+          admin_code_label: 'Código',
+          login_btn: 'Entrar',
+          admin_help: 'Gestiona los exámenes desde esta página (no compartas la URL con el alumnado).',
+          tab_overview: 'Resumen',
+          tab_config: 'Configuración',
+          tab_responses: 'Respuestas',
+          tab_settings: 'Ajustes',
+          loading_overview: 'Cargando exámenes y resumen... Espera unos segundos.',
+          exams_available: 'Exámenes disponibles',
+          create_exam: 'Crear examen nuevo',
+          exam_summary: 'Resumen del examen',
+          label_identifier: 'Identificador:',
+          label_name: 'Nombre:',
+          label_availability: 'Disponibilidad:',
+          label_submissions: 'Envíos registrados:',
+          label_last: 'Último envío:',
+          view_submissions: 'Ver envíos',
+          delete_exam: 'Borrar este examen',
+          submissions: 'Envíos',
+          close: 'Cerrar',
+          exam_config: 'Configuración del examen',
+          exam_config_help: 'Actualiza los parámetros y pulsa «Guardar» para escribirlos en la hoja.',
+          exam_name: 'Nombre del examen',
+          n_questions: 'Número de preguntas',
+          options: 'Opciones disponibles (ej. ABCDE)',
+          start: 'Inicio programado',
+          end: 'Fin programado',
+          security: 'Medidas de seguridad',
+          shuffle_questions: 'Barajar el orden de las preguntas',
+          shuffle_answers: 'Barajar el orden de las opciones',
+          fullscreen: 'Maximizar la ventana (pantalla completa) durante el examen',
+          save_config: 'Guardar configuración',
+          open: 'Abierto',
+          closed: 'Cerrado',
+          click_to_open: 'Pulsa para abrir',
+          click_to_close: 'Pulsa para cerrar',
+          loading_config: 'Cargando datos del examen...',
+          student_link_title: 'Enlace para el alumnado',
+          copy: 'Copiar',
+          student_link_hint: 'Comparte el enlace cuando la configuración esté lista y el examen abierto.',
+          answer_key: 'Clave de respuestas',
+          answer_key_help: 'Pega la cadena de respuestas correctas (sin espacios) o las letras separadas por espacios.',
+          key_label: 'Clave',
+          save_key: 'Guardar clave',
+          grading_title: 'Criterios de calificación',
+          grade_max: 'Calificar sobre',
+          pass_threshold: 'Aprobado',
+          save_grading: 'Guardar criterios',
+          penalty_title: 'Penalización por azar',
+          penalty_help: 'Si se habilita, se restará una fracción por cada respuesta incorrecta. Recomendada: 1/(m-1), donde m es el número de opciones.',
+          penalize_wrong: 'Penalizar respuestas incorrectas',
+          penalty_value: 'Penalización por incorrecta',
+          save_penalty: 'Guardar penalización',
+          report_title: 'Corrección y análisis',
+          report_help: 'Tras recoger las respuestas, genera la corrección y el análisis.',
+          run_report: 'Generar informe',
+          report_note: 'Los resultados se guardan en la pestaña «Corrección».',
+          change_code_title: 'Cambiar el código de administración',
+          change_code_help: 'Actualiza el código necesario para acceder al panel. Mantenlo confidencial.',
+          new_code: 'Nuevo código',
+          confirm_code: 'Confirma el nuevo código',
+          update_code: 'Actualizar código',
+          clear_submissions_title: 'Borrar envíos',
+          clear_submissions_help: 'Este botón elimina todos los envíos, correcciones y análisis guardados del examen seleccionado. Úsalo cuando quieras reutilizar el examen con otro grupo.',
+          clear_submissions_btn: 'Borrar envíos y resultados',
+          reset_all_title: 'Administración de datos',
+          reset_all_help: 'El siguiente botón borra todos los exámenes, claves, envíos y notas. Úsalo solo si quieres empezar de cero.',
+          reset_all_btn: 'Borrar todo',
+          sub_col_date: 'Fecha',
+          sub_col_student: 'Código alumno'
+        }
+      };
+      function safeStorage() {
+        try { localStorage.setItem('__t','1'); localStorage.removeItem('__t'); return localStorage; } catch (e) {}
+        try { sessionStorage.setItem('__t','1'); sessionStorage.removeItem('__t'); return sessionStorage; } catch (e) {}
+        let mem = {}; return { getItem:k=>mem[k]||null, setItem:(k,v)=>{mem[k]=String(v)}, removeItem:k=>{delete mem[k];} };
+      }
+      function detectLang() {
+        const saved = (safeStorage().getItem(LANG_STORAGE_KEY) || '').toLowerCase();
+        if (saved === 'ca' || saved === 'es') return saved;
+        const nav = (navigator.language || navigator.userLanguage || 'ca').toLowerCase();
+        return nav.startsWith('es') ? 'es' : 'ca';
+      }
+      let currentLang = detectLang();
+      function tAdmin(key) {
+        const table = I18N_ADMIN[currentLang] || I18N_ADMIN.ca;
+        return table[key] || key;
+      }
+      function applyAdminI18n() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n');
+          if (key) el.textContent = tAdmin(key);
+        });
+      }
+
+      let adminCode = '';
+      let selectedExamId = '';
+      let baseUrl = '';
+      let currentManualState = 'auto';
+      let currentIsOpen = false;
+      let currentStartIso = '';
+      let currentEndIso = '';
+      let lastExamId = '';
+      let currentExamName = '';
+      let configDirty = false;
+      let pollInFlight = false;
+      let flashHideTimer = null;
+      // Estat per bloquejar el repintat del botó durant canvis manuals pendents
+      let manualUpdatePending = false;
+      let manualExpectedOpen = null;
+
+      document.addEventListener('DOMContentLoaded', () => {
+        // Inicializa idioma y botones
+        try {
+          const saved = safeStorage().getItem(LANG_STORAGE_KEY) || 'auto';
+          currentLang = (saved === 'ca' || saved === 'es') ? saved : detectLang();
+          const root = document.getElementById('admin-lang-switch');
+          if (root) {
+            const activate = (value) => {
+              root.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === value));
+            };
+            activate((saved === 'ca' || saved === 'es') ? saved : 'auto');
+            root.addEventListener('click', (ev) => {
+              const btn = ev.target.closest('.lang-btn'); if (!btn) return;
+              const v = btn.dataset.lang;
+              try { safeStorage().setItem(LANG_STORAGE_KEY, v); } catch (e) {}
+              currentLang = (v === 'ca' || v === 'es') ? v : detectLang();
+              activate(v);
+              applyAdminI18n();
+              // refresca estat per etiquetes de servidor
+              if (adminCode) loadAdminState(selectedExamId);
+            });
+          }
+        } catch (err) {}
+        applyAdminI18n();
+        document.getElementById('login-form').addEventListener('submit', handleLogin);
+        document.getElementById('config-form').addEventListener('submit', handleConfigSave);
+        document.getElementById('key-form').addEventListener('submit', handleKeySave);
+        document.getElementById('run-correction').addEventListener('click', handleCorrection);
+        document.getElementById('save-grading').addEventListener('click', handleSaveGrading);
+        // Detecta canvis a criteris de nota
+        const gMax = document.getElementById('grade-max');
+        const gPass = document.getElementById('pass-threshold');
+        if (gMax) gMax.addEventListener('input', () => setGradingDirty(true));
+        if (gPass) gPass.addEventListener('input', () => setGradingDirty(true));
+        // Penalització
+        document.getElementById('save-penalty').addEventListener('click', handleSavePenalty);
+        const penChk = document.getElementById('penalize-wrong');
+        const penVal = document.getElementById('penalty-value');
+
+        // Refresc periòdic (2s) per sincronitzar botó i resum encara que s'estigui editant
+        setInterval(() => {
+          if (!adminCode || !selectedExamId) return;
+          if (pollInFlight) return;
+          pollInFlight = true;
+          google.script.run
+            .withSuccessHandler(state => {
+              applyStatusOnly(state);
+              pollInFlight = false;
+            })
+            .withFailureHandler(() => { pollInFlight = false; })
+            .getAdminState(adminCode, selectedExamId, currentLang);
+        }, 2000);
+        if (penChk) penChk.addEventListener('change', () => setPenaltyDirty(true));
+        if (penVal) penVal.addEventListener('input', () => setPenaltyDirty(true));
+        document.getElementById('manual-toggle').addEventListener('click', handleManualToggle);
+        document.getElementById('clear-submissions').addEventListener('click', handleClearSubmissions);
+        document.getElementById('exam-selector').addEventListener('change', event => {
+          selectedExamId = event.target.value || '';
+          showConfigLoading(true);
+          showOverviewLoading(true);
+          if (selectedExamId) {
+            updateExamLink();
+            loadAdminState(selectedExamId);
+          }
+        });
+        document.getElementById('create-exam').addEventListener('click', handleCreateExam);
+        document.getElementById('copy-link').addEventListener('click', copyExamLink);
+        document.getElementById('reset-sheet').addEventListener('click', handleResetSheet);
+        document.getElementById('password-form').addEventListener('submit', handlePasswordChange);
+        document.getElementById('view-submissions').addEventListener('click', () => handleViewSubmissions('view-submissions'));
+        document.getElementById('view-submissions-config').addEventListener('click', () => handleViewSubmissions('view-submissions-config'));
+        document.getElementById('close-submissions').addEventListener('click', () => toggleSubmissionsPanel(false));
+        document.getElementById('overview-clear-exam').addEventListener('click', handleOverviewClearExam);
+        setupTabs();
+
+        // Marca canvis sense desar quan es toquen camps de configuració
+        hookConfigDirtySignals();
+      });
+
+      function handleLogin(event) {
+        event.preventDefault();
+        const codeInput = document.getElementById('admin-code');
+        const code = codeInput.value.trim();
+        if (!code) {
+          showLoginError("Introdueix el codi d'administració.");
+          return;
+        }
+        setButtonBusy('login-btn', true);
+        google.script.run
+          .withSuccessHandler(() => {
+            adminCode = code;
+            document.getElementById('login-card').classList.add('hidden');
+            document.getElementById('admin-panel').classList.remove('hidden');
+            clearLoginError();
+            showFlash('Codi verificat. Configura un examen.', false);
+            showConfigLoading(true);
+            showOverviewLoading(true);
+            loadAdminState('');
+          })
+          .withFailureHandler(err => {
+            showLoginError(extractMessage(err));
+            setButtonBusy('login-btn', false);
+          })
+          .verifyAdminCode(code);
+      }
+
+      
+
+      function handleCreateExam() {
+        if (!adminCode) return;
+        setButtonBusy('create-exam', true);
+        google.script.run
+          .withSuccessHandler(state => {
+            try {
+              showFlash('Examen nou creat. Completa la configuració.', false);
+              applyState(state);
+              // Recarrega amb idioma actual
+              try { if (state && state.selectedExamId) { selectedExamId = state.selectedExamId; } } catch (e) {}
+              loadAdminState(selectedExamId);
+              // neteja i oculta panell de lliuraments per al nou examen
+              toggleSubmissionsPanel(false);
+              const info = document.getElementById('submissions-info');
+              const list = document.getElementById('submissions-list');
+              if (info) { info.textContent=''; info.className='note hidden'; }
+              if (list) { list.innerHTML=''; }
+            } finally {
+              setButtonBusy('create-exam', false);
+            }
+          })
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            setButtonBusy('create-exam', false);
+          })
+          .createExamForAdmin(adminCode);
+      }
+
+      function handleConfigSave(event) {
+        event.preventDefault();
+        if (!adminCode) return;
+        const payload = {
+          examId: selectedExamId,
+          examName: document.getElementById('exam-name').value,
+          nQuestions: document.getElementById('questions-count').value,
+          options: document.getElementById('options').value,
+          startIso: localInputToIso(document.getElementById('start-datetime').value),
+          endIso: localInputToIso(document.getElementById('end-datetime').value),
+          manualState: currentManualState,
+          shuffleQuestions: document.getElementById('shuffle-questions').checked,
+          shuffleAnswers: document.getElementById('shuffle-answers').checked,
+          enforceFullscreen: document.getElementById('enforce-fullscreen').checked
+        };
+        setButtonBusy('save-config', true);
+        google.script.run
+          .withSuccessHandler(state => {
+            try {
+              showFlash('Configuració desada correctament.', false);
+              applyState(state);
+              setConfigDirty(false);
+            } finally {
+              setButtonBusy('save-config', false);
+            }
+          })
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            setButtonBusy('save-config', false);
+          })
+          .saveConfigForAdmin(adminCode, payload);
+      }
+
+      function hookConfigDirtySignals() {
+        const ids = ['exam-name','questions-count','options','start-datetime','end-datetime','shuffle-questions','shuffle-answers','enforce-fullscreen'];
+        ids.forEach(id => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const evt = el.type === 'checkbox' ? 'change' : 'input';
+          el.addEventListener(evt, () => setConfigDirty(true));
+        });
+      }
+
+      function setConfigDirty(isDirty) {
+        configDirty = !!isDirty;
+        const box = document.getElementById('config-status');
+        const saveBtn = document.getElementById('save-config');
+        if (configDirty) {
+          if (box) {
+            box.textContent = 'Hi ha canvis sense desar. Prem «Desa la configuració» per aplicar-los.';
+            box.className = 'note warn';
+            box.classList.remove('hidden');
+          }
+          if (saveBtn) {
+            saveBtn.classList.add('btn-pulse');
+            saveBtn.title = 'Tens canvis sense desar';
+          }
+        } else {
+          if (box) {
+            box.textContent = '';
+            box.className = 'note warn hidden';
+          }
+          if (saveBtn) {
+            saveBtn.classList.remove('btn-pulse');
+            saveBtn.removeAttribute('title');
+          }
+        }
+      }
+
+      function handleKeySave(event) {
+        event.preventDefault();
+        if (!adminCode) return;
+        if (!selectedExamId) {
+          showFlash('Selecciona un examen abans de desar la clau.', true);
+          return;
+        }
+        const keyValue = document.getElementById('key-input').value;
+        setButtonBusy('save-key', true);
+        google.script.run
+          .withSuccessHandler(state => {
+            showFlash('Clau desada correctament.', false);
+            // Recarrega estat perquè vingui localitzat
+            loadAdminState(selectedExamId);
+            setButtonBusy('save-key', false);
+          })
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            setButtonBusy('save-key', false);
+          })
+          .saveAnswerKeyForAdmin(adminCode, selectedExamId, keyValue);
+      }
+
+      function handleCorrection() {
+        if (!adminCode || !selectedExamId) {
+          showFlash('Selecciona un examen abans de generar la correcció i l\'anàlisi.', true);
+          return;
+        }
+        setButtonBusy('run-correction', true);
+        let lang = (safeStorage().getItem(LANG_STORAGE_KEY) || 'auto');
+        if (lang !== 'ca' && lang !== 'es') lang = detectLang();
+        google.script.run
+          .withSuccessHandler(result => {
+            showFlash(result.message, false);
+            if (result.sheetUrl) {
+              window.open(result.sheetUrl, '_blank');
+            }
+            loadAdminState(selectedExamId);
+            setButtonBusy('run-correction', false);
+          })
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            setButtonBusy('run-correction', false);
+          })
+          .runCombinedReportForAdmin(adminCode, selectedExamId, lang);
+      }
+
+      function handleSaveGrading() {
+        if (!adminCode || !selectedExamId) {
+          showFlash('Selecciona un examen abans de desar els criteris.', true);
+          return;
+        }
+        const gradeMax = Number(document.getElementById('grade-max').value || '10');
+        const passThreshold = Number(document.getElementById('pass-threshold').value || '5');
+        setButtonBusy('save-grading', true);
+        google.script.run
+          .withSuccessHandler(state => {
+            showFlash('Criteris de qualificació desats.', false);
+            loadAdminState(selectedExamId);
+            setButtonBusy('save-grading', false);
+            setGradingDirty(false);
+          })
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            setButtonBusy('save-grading', false);
+          })
+          .saveGradingForAdmin(adminCode, selectedExamId, gradeMax, passThreshold);
+      }
+
+      function handleSavePenalty() {
+        if (!adminCode || !selectedExamId) {
+          showFlash('Selecciona un examen abans de desar la penalització.', true);
+          return;
+        }
+        const enabled = document.getElementById('penalize-wrong').checked;
+        const value = Number(document.getElementById('penalty-value').value || '0');
+        setButtonBusy('save-penalty', true);
+        google.script.run
+          .withSuccessHandler(state => {
+            showFlash('Penalització desada.', false);
+            loadAdminState(selectedExamId);
+            setButtonBusy('save-penalty', false);
+            setPenaltyDirty(false);
+          })
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            setButtonBusy('save-penalty', false);
+          })
+          .savePenaltyForAdmin(adminCode, selectedExamId, enabled, value);
+      }
+
+      function setGradingDirty(isDirty) {
+        const box = document.getElementById('grading-status');
+        const btn = document.getElementById('save-grading');
+        if (isDirty) {
+          if (box) {
+            box.textContent = 'Hi ha canvis de qualificació sense desar. Prem «Desa criteris de nota». ';
+            box.className = 'note warn';
+            box.classList.remove('hidden');
+          }
+          if (btn) btn.classList.add('btn-pulse');
+        } else {
+          if (box) {
+            box.textContent = '';
+            box.className = 'note warn hidden';
+          }
+          if (btn) btn.classList.remove('btn-pulse');
+        }
+      }
+
+      function setPenaltyDirty(isDirty) {
+        const box = document.getElementById('penalty-status');
+        const btn = document.getElementById('save-penalty');
+        if (isDirty) {
+          if (box) {
+            box.textContent = 'Hi ha canvis de penalització sense desar. Prem «Desa penalització».';
+            box.className = 'note warn';
+            box.classList.remove('hidden');
+          }
+          if (btn) btn.classList.add('btn-pulse');
+        } else {
+          if (box) {
+            box.textContent = '';
+            box.className = 'note warn hidden';
+          }
+          if (btn) btn.classList.remove('btn-pulse');
+        }
+      }
+
+      function handleManualToggle() {
+        if (!adminCode || !selectedExamId) {
+          showFlash('Selecciona un examen per canviar el mode.', true);
+          return;
+        }
+        const previousState = currentManualState;
+        const nextState = computeDesiredManualState();
+        currentManualState = nextState;
+        renderManualToggle();
+        const buttonId = 'manual-toggle';
+        showFlashSticky('Actualitzant l\'estat de l\'examen...');
+        setManualWorking(true);
+        setButtonBusy(buttonId, true);
+        const expectedOpen = (nextState === 'open');
+        manualUpdatePending = true;
+        manualExpectedOpen = expectedOpen;
+        google.script.run
+          .withSuccessHandler(state => {
+            const messages = {
+              open: 'Examen obert.',
+              closed: 'Examen tancat.',
+              auto: 'Control manual desactivat.'
+            };
+            applyState(state);
+            waitForEffectiveState(expectedOpen, ok => {
+              hideFlash();
+              showFlash(messages[nextState] || 'Mode actualitzat.', !ok && true && false);
+              setButtonBusy(buttonId, false);
+              setManualWorking(false);
+              manualUpdatePending = false;
+              manualExpectedOpen = null;
+              renderManualToggle();
+            });
+          })
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            currentManualState = previousState;
+            renderManualToggle();
+            setButtonBusy(buttonId, false);
+            setManualWorking(false);
+            manualUpdatePending = false;
+            manualExpectedOpen = null;
+          })
+          .setManualStateForAdmin(adminCode, selectedExamId, nextState);
+      }
+
+      function handleClearSubmissions() {
+        if (!adminCode || !selectedExamId) {
+          showFlash('Selecciona un examen abans d\'esborrar els enviaments.', true);
+          return;
+        }
+        if (!confirm('Vols esborrar tots els enviaments, correccions i anàlisis de l\'examen seleccionat?')) {
+          return;
+        }
+        const buttonId = 'clear-submissions';
+        setButtonBusy(buttonId, true);
+        google.script.run
+          .withSuccessHandler(result => {
+            if (result && result.state) {
+              applyState(result.state);
+            }
+            showFlash((result && result.message) || 'Enviaments esborrats.', false);
+            setButtonBusy(buttonId, false);
+            // amaga el panell si estava obert
+            toggleSubmissionsPanel(false);
+          })
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            setButtonBusy(buttonId, false);
+          })
+          .clearExamSubmissionsForAdmin(adminCode, selectedExamId);
+      }
+
+      function handleOverviewClearExam() {
+        if (!adminCode || !selectedExamId) {
+          showFlash('Selecciona un examen abans d\'esborrar-lo.', true);
+          return;
+        }
+        const name = currentExamName || selectedExamId;
+        const ok = confirm(`Vols esborrar totes les dades de l'examen «${name}»?`);
+        if (!ok) return;
+        const btnId = 'overview-clear-exam';
+        setButtonBusy(btnId, true);
+        google.script.run
+          .withSuccessHandler(result => {
+            try {
+              if (result && result.state) applyState(result.state);
+              showFlash((result && result.message) || 'Dades esborrades.', false);
+              toggleSubmissionsPanel(false);
+            } finally {
+              setButtonBusy(btnId, false);
+            }
+          })
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            setButtonBusy(btnId, false);
+          })
+          .deleteExamForAdmin(adminCode, selectedExamId);
+      }
+
+      function handlePasswordChange(event) {
+        event.preventDefault();
+        setPasswordStatus('', false);
+        if (!adminCode) {
+          showFlash('Identifica\'t abans de canviar el codi.', true);
+          return;
+        }
+        const newPass = document.getElementById('new-admin-pass').value.trim();
+        const confirmPass = document.getElementById('confirm-admin-pass').value.trim();
+        if (!newPass || !confirmPass) {
+          setPasswordStatus('Introdueix i confirma el nou codi.', true);
+          return;
+        }
+        if (newPass !== confirmPass) {
+          setPasswordStatus('Els codis no coincideixen.', true);
+          return;
+        }
+        setButtonBusy('change-password', true);
+        google.script.run
+          .withSuccessHandler(result => {
+            showFlash(result.message || 'Codi actualitzat correctament.', false);
+            setPasswordStatus(result.message || 'Codi actualitzat correctament.', false);
+            adminCode = newPass;
+            document.getElementById('new-admin-pass').value = '';
+            document.getElementById('confirm-admin-pass').value = '';
+            setButtonBusy('change-password', false);
+          })
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            setPasswordStatus(extractMessage(err), true);
+            setButtonBusy('change-password', false);
+          })
+          .updateAdminToken(adminCode, newPass);
+      }
+
+      function nextManualState(state) {
+        // Conserva cicle clàssic com a fallback
+        if (state === 'auto') return 'open';
+        if (state === 'open') return 'closed';
+        return 'auto';
+      }
+
+      // Decideix la propera ordre manual segons l'estat efectiu que veu el docent.
+      // - Si ara està obert (per horari o manual), un clic envia 'closed'.
+      // - Si ara està tancat, un clic envia 'open'.
+      // Manté el cicle clàssic si ja hi ha una forçà manual en sentit contrari.
+      function computeDesiredManualState() {
+        const isOpen = !!currentIsOpen;
+        if (isOpen) {
+          // Si ja està forçat a 'open', el següent és tancar.
+          if (currentManualState === 'open') return 'closed';
+          // Si està forçat a 'closed' però es veu obert (cas rar), força 'closed' també.
+          if (currentManualState === 'closed') return 'closed';
+          // Obert per horari (auto) → tancar manualment d'un sol clic
+          return 'closed';
+        } else {
+          if (currentManualState === 'closed') return 'open';
+          if (currentManualState === 'open') return 'open';
+          // Tancat per horari (auto) → obrir manualment d'un sol clic
+          return 'open';
+        }
+      }
+
+      function handleResetSheet() {
+        if (!adminCode) return;
+        setButtonBusy('reset-sheet', true);
+        google.script.run
+          .withSuccessHandler(result => {
+            if (result.reset) {
+              showFlash(result.message || 'Fulla reiniciada.', false);
+              selectedExamId = '';
+              applyState({ exams: [], selectedExamId: '', configError: 'Cap examen disponible.' });
+            }
+            setButtonBusy('reset-sheet', false);
+          })
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            setButtonBusy('reset-sheet', false);
+          })
+          .resetAllDataForAdmin(adminCode);
+      }
+
+      function loadAdminState(targetExamId) {
+        if (!adminCode) return;
+        google.script.run
+          .withSuccessHandler(state => {
+            showConfigLoading(false);
+            showOverviewLoading(false);
+            applyState(state);
+          })
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            showConfigLoading(false);
+            showOverviewLoading(false);
+          })
+          .getAdminState(adminCode, targetExamId || '', currentLang);
+      }
+
+      function applyState(state) {
+        updateExamSelector(state);
+        selectedExamId = state.selectedExamId || '';
+        baseUrl = state.baseUrl || baseUrl;
+        updateExamLink();
+
+        const configStatusBox = document.getElementById('config-status');
+        const keyStatusBox = document.getElementById('key-status');
+        const selectorStatus = document.getElementById('selector-status');
+        const shuffleQuestionsBox = document.getElementById('shuffle-questions');
+        const shuffleAnswersBox = document.getElementById('shuffle-answers');
+        const enforceFullscreenBox = document.getElementById('enforce-fullscreen');
+        const keyInput = document.getElementById('key-input');
+        const examNameInput = document.getElementById('exam-name');
+        const clearButton = document.getElementById('clear-submissions');
+        const passwordForm = document.getElementById('password-form');
+        const summaryId = document.getElementById('summary-id');
+        const summaryName = document.getElementById('summary-name');
+        const summarySubmissions = document.getElementById('summary-submissions');
+        const summaryLast = document.getElementById('summary-last');
+        const gradeMaxInput = document.getElementById('grade-max');
+        const passThresholdInput = document.getElementById('pass-threshold');
+        const penChk = document.getElementById('penalize-wrong');
+        const penVal = document.getElementById('penalty-value');
+        if (shuffleQuestionsBox) {
+          shuffleQuestionsBox.checked = false;
+        }
+        if (shuffleAnswersBox) {
+          shuffleAnswersBox.checked = false;
+        }
+        if (enforceFullscreenBox) {
+          enforceFullscreenBox.checked = true;
+        }
+        if (keyInput) {
+          keyInput.value = '';
+        }
+        if (gradeMaxInput) gradeMaxInput.value = '10';
+        if (passThresholdInput) passThresholdInput.value = '5';
+        if (penChk) penChk.checked = false;
+        if (penVal) penVal.value = '';
+        setGradingDirty(false);
+        if (examNameInput) {
+          examNameInput.value = '';
+        }
+        if (summaryId) {
+          summaryId.textContent = '--';
+        }
+        if (summaryName) {
+          summaryName.textContent = '--';
+        }
+        if (summarySubmissions) {
+          summarySubmissions.textContent = '0';
+        }
+        if (summaryLast) {
+          summaryLast.textContent = '---';
+        }
+        if (clearButton) {
+          clearButton.disabled = true;
+        }
+        if (passwordForm) {
+          passwordForm.reset();
+        }
+        setPasswordStatus('', false);
+
+        if (!selectedExamId) {
+          document.getElementById('config-form').reset();
+          resetStatusBadge();
+          document.getElementById('exam-url').classList.add('hidden');
+          const respName0 = document.getElementById('responses-exam-name');
+          const respId0 = document.getElementById('responses-exam-id');
+          if (respName0) respName0.textContent = '--';
+          if (respId0) respId0.textContent = '(--)';
+          configStatusBox.textContent = state.configError || 'Crea un examen nou per començar.';
+          configStatusBox.className = 'note warn';
+          configStatusBox.classList.remove('hidden');
+          keyStatusBox.classList.add('hidden');
+          selectorStatus.textContent = state.configError || 'Cap examen disponible.';
+          selectorStatus.className = 'note warn';
+          selectorStatus.classList.remove('hidden');
+          currentManualState = 'auto';
+          document.getElementById('manual-toggle').disabled = true;
+          renderManualToggle();
+          if (shuffleQuestionsBox) {
+            shuffleQuestionsBox.checked = false;
+          }
+          if (shuffleAnswersBox) {
+            shuffleAnswersBox.checked = false;
+          }
+          if (keyInput) {
+            keyInput.value = '';
+          }
+          return;
+        }
+
+        selectorStatus.classList.add('hidden');
+        resetStatusBadge();
+
+        if (state.config) {
+          document.getElementById('questions-count').value = state.config.nQuestions;
+          document.getElementById('options').value = state.config.optionsString;
+          document.getElementById('start-datetime').value = isoToLocalInput(state.config.startIso);
+          document.getElementById('end-datetime').value = isoToLocalInput(state.config.endIso);
+          if (summaryId) {
+            summaryId.textContent = state.config.examId;
+          }
+          if (summaryName) {
+            summaryName.textContent = state.config.examName || '--';
+          }
+          currentExamName = state.config.examName || '';
+          // Títol dins de la pestanya Respostes
+          const respName = document.getElementById('responses-exam-name');
+          const respId = document.getElementById('responses-exam-id');
+          if (respName && respId) {
+            respName.textContent = state.config.examName || '(sense nom)';
+            respId.textContent = '(' + (state.config.examId || '--') + ')';
+          }
+          // Sticky header
+          const sticky = document.getElementById('config-sticky');
+          const stickyName = document.getElementById('sticky-exam-name');
+          const stickyId = document.getElementById('sticky-exam-id');
+          if (sticky && stickyName && stickyId) {
+            sticky.classList.remove('hidden');
+            stickyName.textContent = state.config.examName || '(sense nom)';
+            stickyId.textContent = '(' + (state.config.examId || '--') + ')';
+            try { document.title = 'Panell · ' + (state.config.examName || state.config.examId || 'Examen'); } catch (e) {}
+          }
+          currentManualState = state.config.manualState || 'auto';
+          currentStartIso = state.config.startIso || '';
+          currentEndIso = state.config.endIso || '';
+          if (shuffleQuestionsBox) {
+            shuffleQuestionsBox.checked = !!state.config.shuffleQuestions;
+          }
+          if (shuffleAnswersBox) {
+            shuffleAnswersBox.checked = !!state.config.shuffleAnswers;
+          }
+          if (enforceFullscreenBox) {
+            enforceFullscreenBox.checked = !!state.config.enforceFullscreen;
+          }
+          if (examNameInput) {
+            examNameInput.value = state.config.examName || '';
+          }
+          if (gradeMaxInput) gradeMaxInput.value = state.config.gradeMax || 10;
+          if (passThresholdInput) passThresholdInput.value = state.config.passThreshold || 5;
+        if (penChk) penChk.checked = !!state.config.penalizeWrong;
+          if (penVal) penVal.value = state.config.penaltyValue != null ? state.config.penaltyValue : '';
+          // Mostra la penalització recomanada directament al camp si no hi ha cap valor desat
+          {
+            const m = (state.config.optionsString || '').length;
+            const rec = m > 1 ? (1 / (m - 1)) : 0;
+            if (penVal && (penVal.value === '' || penVal.value == null)) {
+              penVal.value = rec.toFixed(2);
+            }
+          }
+          configStatusBox.classList.add('hidden');
+          setConfigDirty(false);
+          setGradingDirty(false);
+          setPenaltyDirty(false);
+        }
+
+        document.getElementById('manual-toggle').disabled = false;
+        currentIsOpen = !!(state.status && state.status.isOpen);
+        if (!manualUpdatePending) {
+          renderManualToggle();
+        }
+
+        if (state.status) {
+          updateStatusBadge(state.status);
+        }
+
+        if (summarySubmissions) {
+          summarySubmissions.textContent = state.submissions.total;
+        }
+        if (summaryLast) {
+          summaryLast.textContent = state.submissions.lastTimestamp || '---';
+        }
+
+        if (clearButton) {
+          clearButton.disabled = false;
+        }
+
+        // habilita/deshabilita botons segons estat i actualitza comptador
+        const viewBtn = document.getElementById('view-submissions');
+        const viewCfgWrap = document.getElementById('config-view-submissions-wrap');
+        const hasSubs = state && state.submissions && Number(state.submissions.total) > 0;
+        if (viewBtn) viewBtn.disabled = !selectedExamId;
+        if (viewCfgWrap) viewCfgWrap.style.display = hasSubs ? 'block' : 'none';
+        updateSubmissionsButtons(Number(state.submissions.total || 0));
+        const ovwDelete = document.getElementById('overview-clear-exam');
+        if (ovwDelete) ovwDelete.disabled = !selectedExamId;
+
+        // Si ha canviat d'examen, tanquem el panell de lliuraments i netegem
+        if (lastExamId !== selectedExamId) {
+          toggleSubmissionsPanel(false);
+          const info = document.getElementById('submissions-info');
+          const list = document.getElementById('submissions-list');
+          if (info) { info.textContent = ''; info.className = 'note hidden'; }
+          if (list) { list.innerHTML = ''; }
+        }
+        lastExamId = selectedExamId;
+
+        if (state.keyPresent) {
+          keyStatusBox.textContent = 'Clau desada.';
+          keyStatusBox.className = 'note ok';
+          if (keyInput) {
+            keyInput.value = state.keyValue || '';
+          }
+        } else {
+          keyStatusBox.textContent = state.keyError || "Encara no s'ha definit la clau.";
+          keyStatusBox.className = 'note warn';
+          if (keyInput) {
+            keyInput.value = '';
+          }
+        }
+        keyStatusBox.classList.remove('hidden');
+
+        const selector = document.getElementById('exam-selector');
+        selector.value = selectedExamId;
+        showConfigLoading(false);
+        showOverviewLoading(false);
+      }
+
+      function resetStatusBadge() {
+        const badge = document.getElementById('summary-status');
+        const detail = document.getElementById('summary-status-text');
+        badge.textContent = '--';
+        badge.classList.remove('open', 'closed', 'pending');
+        detail.textContent = '';
+        detail.classList.add('hidden');
+      }
+
+      function updateStatusBadge(status) {
+        const badge = document.getElementById('summary-status');
+        const detail = document.getElementById('summary-status-text');
+        const label = status && status.label ? status.label : (status.isOpen ? tAdmin('open') : tAdmin('closed'));
+        badge.textContent = label;
+        badge.classList.remove('open', 'closed', 'pending');
+        if (status.isOpen) {
+          badge.classList.add('open');
+        } else if (label.toLowerCase().indexOf('espera') !== -1) {
+          badge.classList.add('pending');
+        } else {
+          badge.classList.add('closed');
+        }
+        if (status.message) {
+          detail.textContent = status.message;
+          detail.classList.remove('hidden');
+        } else {
+          detail.textContent = '';
+          detail.classList.add('hidden');
+        }
+      }
+
+      // Aplica només l'estat viu (resum + botó), sense tocar formularis
+      function applyStatusOnly(state) {
+        if (!state) return;
+        if (state.status) {
+          updateStatusBadge(state.status);
+          currentIsOpen = !!state.status.isOpen;
+          if (!manualUpdatePending) {
+            renderManualToggle();
+          }
+        }
+        // Actualitza visibilitat del botó de la pestanya Config segons hi hagi lliuraments
+        const viewCfgWrap = document.getElementById('config-view-submissions-wrap');
+        if (viewCfgWrap && state.submissions) {
+          const hasSubs = Number(state.submissions.total) > 0;
+          viewCfgWrap.style.display = hasSubs ? 'block' : 'none';
+        }
+        if (state.submissions) {
+          updateSubmissionsButtons(Number(state.submissions.total || 0));
+          const summarySubmissions = document.getElementById('summary-submissions');
+          const summaryLast = document.getElementById('summary-last');
+          if (summarySubmissions) summarySubmissions.textContent = state.submissions.total;
+          if (summaryLast) summaryLast.textContent = state.submissions.lastTimestamp || '---';
+        }
+      }
+
+      function updateSubmissionsButtons(total) {
+        const label = `${tAdmin('view_submissions')} (${Number(total) || 0})`;
+        const b1 = document.getElementById('view-submissions');
+        const b2 = document.getElementById('view-submissions-config');
+        if (b1) b1.textContent = label;
+        if (b2) b2.textContent = label;
+      }
+
+      function renderManualToggle() {
+        const button = document.getElementById('manual-toggle');
+        if (!button) {
+          return;
+        }
+        const isOpen = !!currentIsOpen;
+        const data = isOpen
+          ? { label: tAdmin('open'), helper: tAdmin('click_to_close'), className: 'state-open', title: tAdmin('click_to_close') }
+          : { label: tAdmin('closed'), helper: tAdmin('click_to_open'), className: 'state-closed', title: tAdmin('click_to_open') };
+        button.classList.remove('state-auto', 'state-open', 'state-closed');
+        button.classList.add(data.className);
+        const labelEl = button.querySelector('.manual-toggle__label');
+        const helperEl = button.querySelector('small');
+        if (labelEl) {
+          labelEl.textContent = data.label;
+        }
+        if (helperEl) {
+          helperEl.textContent = data.helper;
+        }
+        button.setAttribute('title', data.title);
+      }
+
+      function updateExamSelector(state) {
+        const selector = document.getElementById('exam-selector');
+        selector.innerHTML = '';
+        if (!state.exams || !state.exams.length) {
+          selector.disabled = true;
+          selector.innerHTML = '<option value="">(sense exàmens)</option>';
+          return;
+        }
+        selector.disabled = false;
+        state.exams.forEach(exam => {
+          const option = document.createElement('option');
+          option.value = exam.examId;
+          option.textContent = exam.label;
+          option.title = exam.examName ? exam.examName + ' (' + exam.examId + ')' : exam.examId;
+          selector.appendChild(option);
+        });
+      }
+
+      function updateExamLink() {
+        const container = document.getElementById('exam-url');
+        const input = document.getElementById('exam-link');
+        if (!selectedExamId) {
+          container.classList.add('hidden');
+          input.value = '';
+          setCopyFeedback('');
+          return;
+        }
+        const url = (baseUrl || window.location.origin + window.location.pathname) + `?exam=${encodeURIComponent(selectedExamId)}`;
+        input.value = url;
+        container.classList.remove('hidden');
+        setCopyFeedback('');
+      }
+
+      function setCopyFeedback(message, isError) {
+        const feedback = document.getElementById('copy-feedback');
+        if (!feedback) {
+          return;
+        }
+        if (!message) {
+          feedback.textContent = '';
+          feedback.classList.remove('visible');
+          feedback.classList.remove('error');
+          return;
+        }
+        feedback.textContent = message;
+        feedback.classList.add('visible');
+        feedback.classList.toggle('error', Boolean(isError));
+      }
+
+      function copyExamLink() {
+        const input = document.getElementById('exam-link');
+        if (!input.value) {
+          setCopyFeedback('No hi ha cap enllaç per copiar.', true);
+          return;
+        }
+        const clipboard = navigator.clipboard;
+        if (clipboard && typeof clipboard.writeText === 'function') {
+          clipboard.writeText(input.value)
+            .then(() => {
+              setCopyFeedback('Enllaç copiat al porta-retalls.', false);
+            })
+            .catch(() => {
+              fallbackCopy();
+            });
+        } else {
+          fallbackCopy();
+        }
+
+        function fallbackCopy() {
+          input.select();
+          input.setSelectionRange(0, input.value.length);
+          let copied = false;
+          try {
+            copied = Boolean(document.execCommand && document.execCommand('copy'));
+          } catch (err) {
+            copied = false;
+          }
+          if (copied) {
+            setCopyFeedback('Enllaç copiat.', false);
+          } else {
+            setCopyFeedback('No s\'ha pogut copiar l\'enllaç. Copia\'l manualment.', true);
+          }
+          input.blur();
+        }
+      }
+
+      function setupTabs() {
+        const tabBar = document.getElementById('admin-tabs');
+        if (!tabBar) {
+          return;
+        }
+        const buttons = Array.from(tabBar.querySelectorAll('.tab-button'));
+        const sections = Array.from(document.querySelectorAll('.tab-content'));
+        buttons.forEach(button => {
+          button.addEventListener('click', () => {
+            const target = button.getAttribute('data-tab');
+            buttons.forEach(item => {
+              item.classList.toggle('active', item === button);
+            });
+            sections.forEach(section => {
+              const matches = section.getAttribute('data-tab') === target;
+              section.classList.toggle('active', matches);
+            });
+          });
+        });
+      }
+
+      function showConfigLoading(isLoading) {
+        const banner = document.getElementById('config-loading');
+        const form = document.getElementById('config-form');
+        if (!banner || !form) {
+          return;
+        }
+        if (isLoading) {
+          banner.classList.remove('hidden');
+        } else {
+          banner.classList.add('hidden');
+        }
+      }
+
+      function showOverviewLoading(isLoading) {
+        const banner = document.getElementById('overview-loading');
+        const selStatus = document.getElementById('selector-status');
+        if (isLoading) {
+          if (banner) banner.classList.remove('hidden');
+          if (selStatus) {
+            selStatus.textContent = 'Carregant exàmens...';
+            selStatus.className = 'note warn';
+            selStatus.classList.remove('hidden');
+          }
+        } else {
+          if (banner) banner.classList.add('hidden');
+          // Ocultem l'avís si hi ha exàmens; en cas contrari, applyState el reactivarà
+          if (selStatus) selStatus.classList.add('hidden');
+        }
+      }
+
+      function setPasswordStatus(message, isError) {
+        const box = document.getElementById('password-status');
+        if (!box) {
+          return;
+        }
+        if (!message) {
+          box.textContent = '';
+          box.className = 'note hidden password-status';
+          return;
+        }
+        box.textContent = message;
+        box.className = 'note ' + (isError ? 'error' : 'ok') + ' password-status';
+        box.classList.remove('hidden');
+      }
+
+      function setButtonBusy(id, isBusy) {
+        const button = document.getElementById(id);
+        if (!button) return;
+        button.disabled = isBusy;
+        try { button.setAttribute('aria-busy', isBusy ? 'true' : 'false'); } catch (e) {}
+        if (isBusy) button.classList.add('btn-pulse'); else button.classList.remove('btn-pulse');
+      }
+
+      function setManualWorking(isWorking) {
+        const button = document.getElementById('manual-toggle');
+        if (!button) return;
+        const labelEl = button.querySelector('.manual-toggle__label');
+        const helperEl = button.querySelector('small');
+        if (isWorking) {
+          if (labelEl) labelEl.textContent = 'Actualitzant...';
+          if (helperEl) helperEl.textContent = 'Espera uns segons';
+        } else {
+          if (!manualUpdatePending) renderManualToggle();
+        }
+      }
+
+      function waitForEffectiveState(expectedOpen, done) {
+        let tries = 0;
+        const maxTries = 50; // ~10s amb 200ms
+        const tick = () => {
+          if (currentIsOpen === expectedOpen) {
+            done(true);
+            return;
+          }
+          if (++tries >= maxTries) {
+            done(false);
+            return;
+          }
+          setTimeout(tick, 200);
+        };
+        tick();
+      }
+
+      function handleViewSubmissions(sourceId) {
+        if (!adminCode || !selectedExamId) {
+          showFlash('Selecciona un examen per veure els lliuraments.', true);
+          return;
+        }
+        const btnId = sourceId || 'view-submissions';
+        setButtonBusy(btnId, true);
+        google.script.run
+          .withSuccessHandler(renderSubmissions)
+          .withFailureHandler(err => {
+            showFlash(extractMessage(err), true);
+            setButtonBusy(btnId, false);
+          })
+          .getSubmissionListForAdmin(adminCode, selectedExamId);
+      }
+
+      function toggleSubmissionsPanel(show) {
+        const panel = document.getElementById('submissions-panel');
+        if (!panel) return;
+        panel.classList.toggle('hidden', !show);
+      }
+
+      function renderSubmissions(data) {
+        setButtonBusy('view-submissions', false);
+        setButtonBusy('view-submissions-config', false);
+        const info = document.getElementById('submissions-info');
+        const list = document.getElementById('submissions-list');
+        if (!list || !info) return;
+        // Assegura que la pestanya Resum està activa perquè el panell es vegi
+        activateTab('overview');
+        const total = (data && typeof data.total === 'number') ? data.total : 0;
+        info.textContent = total ? (total + ' lliurades.') : 'Encara no hi ha lliuraments.';
+        info.className = 'note ' + (total ? 'ok' : 'warn');
+        info.classList.remove('hidden');
+        list.innerHTML = '';
+        // Actualitza resum i botons amb el total immediatament
+        const summarySubmissions = document.getElementById('summary-submissions');
+        if (summarySubmissions) summarySubmissions.textContent = total;
+        updateSubmissionsButtons(total);
+        if (data && Array.isArray(data.items) && data.items.length) {
+          const table = document.createElement('table');
+          table.style.width = '100%';
+          table.style.borderCollapse = 'collapse';
+          const thead = document.createElement('thead');
+          const thr = document.createElement('tr');
+          ;[tAdmin('sub_col_date'), tAdmin('sub_col_student')].forEach(h => {
+            const th = document.createElement('th');
+            th.textContent = h;
+            th.style.textAlign = 'left';
+            th.style.borderBottom = '1px solid #c5ccda';
+            th.style.padding = '4px 6px';
+            thr.appendChild(th);
+          });
+          thead.appendChild(thr);
+          const tbody = document.createElement('tbody');
+          data.items.forEach(it => {
+            const tr = document.createElement('tr');
+            const td1 = document.createElement('td');
+            td1.textContent = it.timestampStr || '';
+            td1.style.padding = '4px 6px';
+            const td2 = document.createElement('td');
+            td2.textContent = it.studentCode || '';
+            td2.style.padding = '4px 6px';
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tbody.appendChild(tr);
+          });
+          table.appendChild(thead);
+          table.appendChild(tbody);
+          list.appendChild(table);
+        }
+        toggleSubmissionsPanel(true);
+      }
+
+      function activateTab(name) {
+        const tabBar = document.getElementById('admin-tabs');
+        if (!tabBar) return;
+        const buttons = Array.from(tabBar.querySelectorAll('.tab-button'));
+        const sections = Array.from(document.querySelectorAll('.tab-content'));
+        buttons.forEach(btn => {
+          const isTarget = btn.getAttribute('data-tab') === name;
+          btn.classList.toggle('active', isTarget);
+        });
+        sections.forEach(sec => {
+          const isTarget = sec.getAttribute('data-tab') === name;
+          sec.classList.toggle('active', isTarget);
+        });
+      }
+
+      function showFlash(message, isError) {
+        const box = document.getElementById('flash');
+        // Cancel·la qualsevol temporitzador anterior per evitar ocultacions inesperades
+        try { if (flashHideTimer) { clearTimeout(flashHideTimer); flashHideTimer = null; } } catch (e) {}
+        box.textContent = message;
+        box.className = 'note' + (isError ? ' error' : ' ok');
+        box.classList.remove('hidden');
+        if (!isError) {
+          flashHideTimer = setTimeout(() => {
+            box.classList.add('hidden');
+            flashHideTimer = null;
+          }, 4000);
+        }
+      }
+      function showFlashSticky(message) {
+        const box = document.getElementById('flash');
+        try { if (flashHideTimer) { clearTimeout(flashHideTimer); flashHideTimer = null; } } catch (e) {}
+        box.textContent = message;
+        box.className = 'note ok';
+        box.classList.remove('hidden');
+      }
+      function hideFlash() {
+        const box = document.getElementById('flash');
+        try { if (flashHideTimer) { clearTimeout(flashHideTimer); flashHideTimer = null; } } catch (e) {}
+        box.classList.add('hidden');
+      }
+
+      function showLoginError(message) {
+        const box = document.getElementById('login-error');
+        box.textContent = message;
+        box.classList.remove('hidden');
+      }
+
+      function clearLoginError() {
+        document.getElementById('login-error').classList.add('hidden');
+      }
+
+      function extractMessage(error) {
+        if (error && error.message) {
+          return error.message;
+        }
+        return 'S\'ha produït un error inesperat.';
+      }
+
+      function isoToLocalInput(iso) {
+        if (!iso) return '';
+        const date = new Date(iso);
+        if (isNaN(date.getTime())) return '';
+        const pad = num => String(num).padStart(2, '0');
+        const year = date.getFullYear();
+        const month = pad(date.getMonth() + 1);
+        const day = pad(date.getDate());
+        const hours = pad(date.getHours());
+        const minutes = pad(date.getMinutes());
+        return year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
+      }
+
+      function localInputToIso(value) {
+        if (!value) return '';
+        const date = new Date(value);
+        if (isNaN(date.getTime())) return '';
+        const offsetMinutes = -date.getTimezoneOffset();
+        const sign = offsetMinutes >= 0 ? '+' : '-';
+        const pad = num => String(Math.trunc(Math.abs(num))).padStart(2, '0');
+        const offsetHours = pad(Math.floor(Math.abs(offsetMinutes) / 60));
+        const offsetMins = pad(Math.abs(offsetMinutes) % 60);
+        return value + ':00' + sign + offsetHours + ':' + offsetMins;
+      }
+    </script>
+  </body>
+</html>
