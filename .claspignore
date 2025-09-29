@@ -1,0 +1,19 @@
+# Ignorar todo por defecto
+**
+
+# Incluir solo archivos relevantes para Apps Script
+!Code.gs
+!Admin.html
+!Index.html
+!appsscript.json
+
+# Siempre ignorar control de versiones y metadatos
+.git/**
+.github/**
+node_modules/**
+dist/**
+build/**
+tmp/**
+*.md
+LICENSE*
+AGENTS.md

@@ -515,6 +515,26 @@
           if (key) el.textContent = tAdmin(key);
         });
       }
+      // ===== Footer i18n (HTML) =====
+      const I18N_FOOTER = {
+        ca: {
+          line1: '<a href="https://bilateria.es" target="_blank" rel="noopener">© Juan José de Haro</a>',
+          line2: 'Llicència del codi: <a href="https://github.com/jjdeharo/examen-digital-gas/blob/main/LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a> · Contingut: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> <img class="cc" alt="CC BY-SA 4.0" src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" />'
+        },
+        es: {
+          line1: '<a href="https://bilateria.es" target="_blank" rel="noopener">© Juan José de Haro</a>',
+          line2: 'Licencia del código: <a href="https://github.com/jjdeharo/examen-digital-gas/blob/main/LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a> · Contenido: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> <img class="cc" alt="CC BY-SA 4.0" src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" />'
+        }
+      };
+      function renderFooter() {
+        try {
+          const f = I18N_FOOTER[currentLang] || I18N_FOOTER.ca;
+          const l1 = document.getElementById('footer-line1');
+          const l2 = document.getElementById('footer-line2');
+          if (l1) l1.innerHTML = f.line1;
+          if (l2) l2.innerHTML = f.line2;
+        } catch (e) {}
+      }
 
       let adminCode = '';
       let selectedExamId = '';
@@ -550,12 +570,14 @@
               currentLang = (v === 'ca' || v === 'es') ? v : detectLang();
               activate(v);
               applyAdminI18n();
+              renderFooter();
               // refresca estat per etiquetes de servidor
               if (adminCode) loadAdminState(selectedExamId);
             });
           }
         } catch (err) {}
         applyAdminI18n();
+        renderFooter();
         document.getElementById('login-form').addEventListener('submit', handleLogin);
         document.getElementById('config-form').addEventListener('submit', handleConfigSave);
         document.getElementById('key-form').addEventListener('submit', handleKeySave);
@@ -1720,12 +1742,8 @@
       }
     </script>
     <footer class="app-footer">
-      <div><a href="https://bilateria.es" target="_blank" rel="noopener">© Juan José de Haro</a></div>
-      <div class="lic-line">
-        Licencia del código: <a href="https://github.com/jjdeharo/examen-digital-gas/blob/main/LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a>
-        · Contenido: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>
-        <img class="cc" alt="CC BY-SA 4.0" src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" />
-      </div>
+      <div id="footer-line1">&nbsp;</div>
+      <div id="footer-line2" class="lic-line">&nbsp;</div>
     </footer>
   </body>
 </html>
