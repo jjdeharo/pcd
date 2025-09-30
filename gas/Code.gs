@@ -362,7 +362,13 @@ function getAdminState(code, requestedExamId, lang) {
     state.keyPresent = true;
     state.keyValue = keyArray.join('');
   } catch (keyErr) {
-    state.keyError = keyErr.message;
+    const defaultKeyMissing = "Encara no s'ha definit la clau per a aquest examen.";
+    const localizedKeyMissing = adminLocale === 'es'
+      ? 'Aún no se ha definido la clave para este examen.'
+      : defaultKeyMissing;
+    state.keyError = (keyErr && keyErr.message === defaultKeyMissing)
+      ? localizedKeyMissing
+      : (keyErr ? keyErr.message : localizedKeyMissing);
     state.keyValue = '';
   }
 
