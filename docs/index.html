@@ -5,28 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Plantilla correctora digital · Instruccions</title>
     <style>
-      body { font-family: Arial, sans-serif; line-height: 1.55; color: #1a2733; background: #f5f8fc; margin: 0; }
+      :root {
+        --bg: #f5f8fc;
+        --text: #1a2733;
+        --muted: #607d8b;
+        --border: #c5ccda;
+        --code-bg: #eef2f7;
+        --link: #376082;
+        --btn-bg: #eceff4;
+        --btn-text: #1a2733;
+        --primary: #1976d2;
+        --primary-text: #ffffff;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f1720;
+          --text: #e6edf3;
+          --muted: #8aa0ae;
+          --border: #334155;
+          --code-bg: #111827;
+          --link: #7db7ff;
+          --btn-bg: #1f2a37;
+          --btn-text: #e6edf3;
+          --primary: #539bf5;
+          --primary-text: #0b1220;
+        }
+      }
+      [data-theme="light"] {
+        --bg: #f5f8fc;
+        --text: #1a2733;
+        --muted: #607d8b;
+        --border: #c5ccda;
+        --code-bg: #eef2f7;
+        --link: #376082;
+        --btn-bg: #eceff4;
+        --btn-text: #1a2733;
+        --primary: #1976d2;
+        --primary-text: #ffffff;
+      }
+      [data-theme="dark"] {
+        --bg: #0f1720;
+        --text: #e6edf3;
+        --muted: #8aa0ae;
+        --border: #334155;
+        --code-bg: #111827;
+        --link: #7db7ff;
+        --btn-bg: #1f2a37;
+        --btn-text: #e6edf3;
+        --primary: #539bf5;
+        --primary-text: #0b1220;
+      }
+      body { font-family: Arial, sans-serif; line-height: 1.55; color: var(--text); background: var(--bg); margin: 0; }
       .wrap { max-width: 880px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
       h1 { margin: 0.2rem 0 0.75rem; font-size: 1.9rem; }
       h2 { margin-top: 1.6rem; font-size: 1.35rem; }
       h3 { margin-top: 1.2rem; font-size: 1.1rem; }
       p, li { font-size: 1rem; }
-      code { background: #eef2f7; padding: 0 0.25rem; border-radius: 4px; }
+      code { background: var(--code-bg); padding: 0 0.25rem; border-radius: 4px; }
       .lang { display: none; }
       .lang.active { display: block; }
-      .switch { display: flex; justify-content: flex-end; gap: 6px; align-items: center; margin-bottom: 1rem; }
-      .btn { background: #eceff4; color: #1a2733; border: 1px solid #c5ccda; padding: 0.3rem 0.7rem; border-radius: 999px; font-size: 0.9rem; cursor: pointer; }
-      .btn.active { background: #1976d2; color: #fff; border-color: #1976d2; }
-      .footer { text-align: center; color: #607d8b; margin-top: 2rem; font-size: 0.95rem; }
-      .footer a { color: #376082; text-decoration: none; }
+      .toolbar { display: flex; gap: 0.75rem; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+      .switch { display: flex; gap: 6px; align-items: center; }
+      .theme { display: flex; gap: 6px; align-items: center; }
+      .btn { background: var(--btn-bg); color: var(--btn-text); border: 1px solid var(--border); padding: 0.3rem 0.7rem; border-radius: 999px; font-size: 0.9rem; cursor: pointer; }
+      .btn.active { background: var(--primary); color: var(--primary-text); border-color: var(--primary); }
+      .footer { text-align: center; color: var(--muted); margin-top: 2rem; font-size: 0.95rem; }
+      .footer a { color: var(--link); text-decoration: none; }
       .footer a:hover { text-decoration: underline; }
     </style>
   </head>
   <body>
     <div class="wrap">
-      <div class="switch" aria-label="Language selector">
-        <button class="btn" data-lang="ca">CA</button>
-        <button class="btn" data-lang="es">ES</button>
+      <div class="toolbar">
+        <div class="switch" aria-label="Language selector">
+          <button class="btn" data-lang="ca">CA</button>
+          <button class="btn" data-lang="es">ES</button>
+        </div>
+        <div class="theme" title="Tema/Theme">
+          <button class="btn theme-btn" data-theme="auto">AUTO</button>
+          <button class="btn theme-btn" data-theme="light">☀️</button>
+          <button class="btn theme-btn" data-theme="dark">🌙</button>
+        </div>
       </div>
 
       <header>
@@ -134,21 +193,41 @@
     </div>
 
     <script>
-      const buttons = document.querySelectorAll('.btn');
+      // ===== Idioma =====
+      const langButtons = document.querySelectorAll('.switch .btn');
       const sections = {
         ca: document.getElementById('lang-ca'),
         es: document.getElementById('lang-es')
       };
       function setLang(lang) {
-        buttons.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+        langButtons.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
         Object.entries(sections).forEach(([k, el]) => el.classList.toggle('active', k === lang));
         document.documentElement.lang = lang;
       }
-      buttons.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+      langButtons.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
       // Auto: según navegador
       const nav = (navigator.language || 'ca').toLowerCase();
       setLang(nav.startsWith('es') ? 'es' : 'ca');
+
+      // ===== Tema (claro/oscuro/auto) =====
+      const THEME_KEY = 'pcd:docs:theme';
+      const themeButtons = document.querySelectorAll('.theme-btn');
+      function applyTheme(mode) {
+        if (mode === 'light' || mode === 'dark') {
+          document.documentElement.setAttribute('data-theme', mode);
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+        }
+        themeButtons.forEach(b => b.classList.toggle('active', b.dataset.theme === mode));
+      }
+      function setTheme(mode) {
+        const m = (mode === 'light' || mode === 'dark') ? mode : 'auto';
+        try { localStorage.setItem(THEME_KEY, m); } catch (e) {}
+        applyTheme(m);
+      }
+      themeButtons.forEach(b => b.addEventListener('click', () => setTheme(b.dataset.theme)));
+      const savedTheme = (function(){ try { return localStorage.getItem(THEME_KEY) || 'auto'; } catch(e) { return 'auto'; } })();
+      applyTheme(savedTheme);
     </script>
   </body>
   </html>
-

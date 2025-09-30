@@ -30,6 +30,7 @@
       .app-footer a { color: #376082; text-decoration: none; }
       .app-footer a:hover { text-decoration: underline; }
       .app-footer .lic-line { margin-top: 0.35rem; }
+      .app-footer .docs-line { margin-top: 0.35rem; }
       .app-footer .app-name { font-weight: 600; }
       .app-footer img.cc { vertical-align: middle; height: 20px; margin-left: 6px; opacity: 0.9; }
     </style>
@@ -90,12 +91,14 @@
         ca: {
           appName: 'Plantilla correctora digital',
           line1: '<a href="https://bilateria.es" target="_blank" rel="noopener">© Juan José de Haro</a>',
-          line2: 'Llicència del codi: <a href="https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a> · Contingut: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> <img class="cc" alt="CC BY-SA 4.0" src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" />'
+          line2: 'Llicència del codi: <a href="https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a> · Contingut: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> <img class="cc" alt="CC BY-SA 4.0" src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" />',
+          docs: '<a href="https://jjdeharo.github.io/pcd/" target="_blank" rel="noopener">Documentació</a>'
         },
         es: {
           appName: 'Plantilla correctora digital',
           line1: '<a href="https://bilateria.es" target="_blank" rel="noopener">© Juan José de Haro</a>',
-          line2: 'Licencia del código: <a href="https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a> · Contenido: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> <img class="cc" alt="CC BY-SA 4.0" src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" />'
+          line2: 'Licencia del código: <a href="https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a> · Contenido: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> <img class="cc" alt="CC BY-SA 4.0" src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" />',
+          docs: '<a href="https://jjdeharo.github.io/pcd/" target="_blank" rel="noopener">Documentación</a>'
         }
       };
       function detectLang() {
@@ -291,9 +294,11 @@
         try {
           const f = I18N_FOOTER[currentLang] || I18N_FOOTER.ca;
           const app = document.getElementById('footer-app');
+          const docs = document.getElementById('footer-docs');
           const l1 = document.getElementById('footer-line1');
           const l2 = document.getElementById('footer-line2');
           if (app) app.textContent = f.appName || 'Plantilla correctora digital';
+          if (docs) docs.innerHTML = f.docs || '';
           if (l1) l1.innerHTML = f.line1;
           if (l2) l2.innerHTML = f.line2;
         } catch (e) {}
@@ -509,6 +514,7 @@
     </script>
     <footer class="app-footer">
       <div id="footer-app" class="app-name">Plantilla correctora digital</div>
+      <div id="footer-docs" class="docs-line">&nbsp;</div>
       <div id="footer-line1">&nbsp;</div>
       <div id="footer-line2" class="lic-line">&nbsp;</div>
     </footer>

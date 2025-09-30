@@ -1,6 +1,6 @@
 # PLACODI: Plantilla correctora digital (Google Sheets + Web)
 
-Documentación (CA/ES) con guía rápida: consulta `docs/index.html`.
+Documentación (CA/ES) con guía rápida: https://jjdeharo.github.io/pcd/
 
 Este proyecto permite pasar exámenes tipo test a tu alumnado desde una página web sencilla y guardar automáticamente las respuestas en tu Hoja de Cálculo de Google. Incluye:
 
