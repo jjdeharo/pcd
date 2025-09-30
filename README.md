@@ -1,4 +1,4 @@
-# PLACODI — Plantilla correctora digital
+# PCD — Plantilla correctora digital
 
 Herramienta para recoger respuestas de exámenes tipo test en la web y corregirlas en una Hoja de Cálculo de Google.
 
