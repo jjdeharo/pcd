@@ -9,6 +9,10 @@ const SHEET_NAMES = {
   SETTINGS: 'Settings'
 };
 
+// Controla si se añade el menú de hoja "Examen" al abrir el documento.
+// Por defecto desactivado para mantener la interfaz limpia.
+const UI_MENU_ENABLED = false;
+
 const SHEET_HEADERS = {
   Config: ['exam_id', 'exam_name', 'n_questions', 'options', 'start_iso', 'end_iso', 'manual_state', 'shuffle_questions', 'shuffle_answers', 'enforce_fullscreen', 'grade_max', 'pass_threshold', 'penalize_wrong', 'penalty_value'],
   Keys: ['exam_id', 'key_json'],
@@ -800,10 +804,11 @@ function sortCurrentCorrectionSheet_(mode) {
 }
 
 function onOpen() {
+  if (!UI_MENU_ENABLED) return;
   SpreadsheetApp.getUi()
     .createMenu('Examen')
     .addItem('Definir la clau', 'uiDefinirClave')
-    .addItem('Generar correcció + anàlisi', 'corregirExamen')
+    .addItem('Generar informe de correcció', 'corregirExamen')
     .addSeparator()
     .addItem('Ordenar correcció per codi', 'sortCurrentCorrectionByStudent')
     .addItem('Ordenar correcció per data', 'sortCurrentCorrectionByDate')

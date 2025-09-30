@@ -6,7 +6,9 @@ Este proyecto permite pasar exámenes tipo test a tu alumnado desde una página 
 
 - Enlace de alumnado para responder (web app).
 - Panel del profesorado para configurar el examen, cargar la clave y corregir.
-- Informes de corrección en la pestaña "Correcció" de la hoja.
+- Informes de corrección en la pestaña "Correcció" de la hoja
+  (esta pestaña no existe en la copia inicial y se crea
+  automáticamente al generar la primera corrección).
 
 **Importante:** esta aplicación está pensada como **plantilla correctora**.  
 El examen se entrega en **papel** al alumnado y en la web únicamente introducen sus respuestas.  
@@ -18,7 +20,8 @@ No necesitas programar. Solo harás una copia de la hoja y publicarás la web de
 
 - Cuenta de Google (acceso a Google Drive y Apps Script).  
 - Una plantilla de Hoja de Cálculo de este proyecto (te la facilitarán o compártela desde el centro).  
-  Las pestañas usadas son: `Config`, `Keys`, `Settings`, `Submissions` y `Correcció`.  
+  Las pestañas iniciales son: `Config`, `Keys`, `Settings` y `Submissions`.  
+  La pestaña `Correcció` se crea automáticamente cuando ejecutas la primera corrección desde el panel.
 
 ## Pasos rápidos
 
@@ -63,7 +66,7 @@ El alumnado solo verá un formulario para introducir sus respuestas.
 4. Corrige y revisa resultados  
    - En el panel, lanza la corrección cuando quieras.  
    - Verás el resumen y el listado de envíos.  
-   - Los resultados detallados se escriben en la pestaña `Correcció` de tu hoja (aciertos, errores, en blanco y nota).
+- Los resultados detallados se escriben en la pestaña `Correcció` de tu hoja (se crea automáticamente la primera vez) con aciertos, errores, en blanco y nota.
 
 ## Para el siguiente examen
 
@@ -75,7 +78,7 @@ El alumnado solo verá un formulario para introducir sus respuestas.
 - `Config`: datos del examen (nombre, número de preguntas, horario, barajado, etc.).  
 - `Keys`: clave oficial de respuestas por examen.  
 - `Submissions`: envíos brutos del alumnado.  
-- `Correcció`: resultados calculados (aciertos/errores/nota).  
+- `Correcció`: resultados calculados (aciertos/errores/nota). Se crea automáticamente al generar la primera corrección.  
 - `Settings`: ajustes internos (incluye el código del profesor).  
 
 ## Pestañas del panel del profesorado
@@ -99,7 +102,7 @@ El panel incluye varias pestañas que organizan todas las funciones disponibles:
 - Clave de corrección: introducir secuencia de letras correctas.  
 - Criterios de calificación: nota máxima y umbral de aprobado.  
 - Penalización por azar: definir fracción a restar por cada incorrecta.  
-- Generar corrección y análisis: crea informe en la pestaña `Correcció`.  
+- Generar corrección y análisis: crea informe en la pestaña `Correcció` (si no existe, la crea).
 
 ### Ajustes
 - Cambiar el código de administración.  
