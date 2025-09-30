@@ -358,6 +358,8 @@
           tab_responses: 'Respostes',
           tab_settings: 'Ajustaments',
           loading_overview: 'Carregant exàmens i resum... Espera uns segons.',
+          loading_exams: 'Carregant exàmens...',
+          no_exams: '(sense exàmens)',
           exams_available: 'Exàmens disponibles',
           create_exam: 'Crea examen nou',
           exam_summary: "Resum de l'examen",
@@ -435,8 +437,10 @@
           grading_saved: 'Criteris de qualificació desats.',
           need_exam_before_penalty: 'Selecciona un examen abans de desar la penalització.',
           penalty_saved: 'Penalització desada.',
+          key_not_set: "Encara no s'ha definit la clau.",
           need_exam_for_manual: 'Selecciona un examen per canviar el mode.',
           updating_state: "Actualitzant l'estat de l'examen...",
+          please_wait: 'Espera uns segons',
           mode_updated: 'Mode actualitzat.',
           need_exam_before_clear: "Selecciona un examen abans d'esborrar els enviaments.",
           submissions_cleared: 'Enviaments esborrats.',
@@ -451,6 +455,9 @@
           generic_error: "S'ha produït un error inesperat.",
           normalize_token: "Regravar codi com a text",
           normalize_token_done: "Codi regravat com a text."
+          ,submissions_none: 'Encara no hi ha lliuraments.'
+          ,submissions_count: '%N% lliuraments.'
+          ,no_name: '(sense nom)'
         },
         es: {
           admin_title: 'Panel del profesorado',
@@ -463,6 +470,8 @@
           tab_responses: 'Respuestas',
           tab_settings: 'Ajustes',
           loading_overview: 'Cargando exámenes y resumen... Espera unos segundos.',
+          loading_exams: 'Cargando exámenes...',
+          no_exams: '(sin exámenes)',
           exams_available: 'Exámenes disponibles',
           create_exam: 'Crear examen nuevo',
           exam_summary: 'Resumen del examen',
@@ -540,8 +549,10 @@
           grading_saved: 'Criterios de calificación guardados.',
           need_exam_before_penalty: 'Selecciona un examen antes de guardar la penalización.',
           penalty_saved: 'Penalización guardada.',
+          key_not_set: 'Aún no se ha definido la clave.',
           need_exam_for_manual: 'Selecciona un examen para cambiar el modo.',
           updating_state: 'Actualizando el estado del examen...',
+          please_wait: 'Espera unos segundos',
           mode_updated: 'Modo actualizado.',
           need_exam_before_clear: 'Selecciona un examen antes de borrar los envíos.',
           submissions_cleared: 'Envíos borrados.',
@@ -556,6 +567,9 @@
           generic_error: 'Se ha producido un error inesperado.',
           normalize_token: 'Regrabar código como texto',
           normalize_token_done: 'Código regrabado como texto.'
+          ,submissions_none: 'Aún no hay envíos.'
+          ,submissions_count: '%N% envíos.'
+          ,no_name: '(sin nombre)'
         }
       };
       function safeStorage() {
@@ -1286,7 +1300,7 @@
           const respName = document.getElementById('responses-exam-name');
           const respId = document.getElementById('responses-exam-id');
           if (respName && respId) {
-            respName.textContent = state.config.examName || '(sense nom)';
+            respName.textContent = state.config.examName || tAdmin('no_name');
             respId.textContent = '(' + (state.config.examId || '--') + ')';
           }
           // Sticky header
@@ -1295,7 +1309,7 @@
           const stickyId = document.getElementById('sticky-exam-id');
           if (sticky && stickyName && stickyId) {
             sticky.classList.remove('hidden');
-            stickyName.textContent = state.config.examName || '(sense nom)';
+            stickyName.textContent = state.config.examName || tAdmin('no_name');
             stickyId.textContent = '(' + (state.config.examId || '--') + ')';
             try { document.title = 'Panell · ' + (state.config.examName || state.config.examId || 'Examen'); } catch (e) {}
           }
@@ -1374,13 +1388,13 @@
         lastExamId = selectedExamId;
 
         if (state.keyPresent) {
-          keyStatusBox.textContent = 'Clau desada.';
+          keyStatusBox.textContent = tAdmin('key_saved');
           keyStatusBox.className = 'note ok';
           if (keyInput) {
             keyInput.value = state.keyValue || '';
           }
         } else {
-          keyStatusBox.textContent = state.keyError || "Encara no s'ha definit la clau.";
+          keyStatusBox.textContent = state.keyError || tAdmin('key_not_set');
           keyStatusBox.className = 'note warn';
           if (keyInput) {
             keyInput.value = '';
@@ -1485,7 +1499,7 @@
         selector.innerHTML = '';
         if (!state.exams || !state.exams.length) {
           selector.disabled = true;
-          selector.innerHTML = '<option value="">(sense exàmens)</option>';
+          selector.innerHTML = '<option value="">' + tAdmin('no_exams') + '</option>';
           return;
         }
         selector.disabled = false;
@@ -1606,7 +1620,7 @@
         if (isLoading) {
           if (banner) banner.classList.remove('hidden');
           if (selStatus) {
-            selStatus.textContent = 'Carregant exàmens...';
+            selStatus.textContent = tAdmin('loading_exams');
             selStatus.className = 'note warn';
             selStatus.classList.remove('hidden');
           }
@@ -1646,8 +1660,8 @@
         const labelEl = button.querySelector('.manual-toggle__label');
         const helperEl = button.querySelector('small');
         if (isWorking) {
-          if (labelEl) labelEl.textContent = 'Actualitzant...';
-          if (helperEl) helperEl.textContent = 'Espera uns segons';
+          if (labelEl) labelEl.textContent = tAdmin('updating_state');
+          if (helperEl) helperEl.textContent = tAdmin('please_wait');
         } else {
           if (!manualUpdatePending) renderManualToggle();
         }
@@ -1672,7 +1686,7 @@
 
       function handleViewSubmissions(sourceId) {
         if (!adminCode || !selectedExamId) {
-          showFlash('Selecciona un examen per veure els lliuraments.', true);
+          showFlash(tAdmin('need_exam_to_view_subs'), true);
           return;
         }
         const btnId = sourceId || 'view-submissions';
@@ -1701,7 +1715,7 @@
         // Assegura que la pestanya Resum està activa perquè el panell es vegi
         activateTab('overview');
         const total = (data && typeof data.total === 'number') ? data.total : 0;
-        info.textContent = total ? (total + ' lliurades.') : 'Encara no hi ha lliuraments.';
+        info.textContent = total ? (tAdmin('submissions_count').replace('%N%', total)) : tAdmin('submissions_none');
         info.className = 'note ' + (total ? 'ok' : 'warn');
         info.classList.remove('hidden');
         list.innerHTML = '';

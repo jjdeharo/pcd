@@ -312,7 +312,7 @@
         const studentField = document.getElementById('student-code');
         const studentCode = studentField.value.trim();
         if (!studentCode) {
-          showMessage('Introdueix el codi de l\'alumne.', true);
+          showMessage(t('student_needed'), true);
           studentField.focus();
           return;
         }
