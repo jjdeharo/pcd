@@ -197,13 +197,28 @@ function doGet(e) {
 
 function getConfig(examId, lang) {
   ensureSheets_();
+  const locale = normalizeLang_(lang);
   if (!examId) {
-    throw new Error("Falta l'identificador de l'examen.");
+    throw new Error(locale === 'es' ? 'Falta el identificador del examen.' : "Falta l'identificador de l'examen.");
   }
+  const notFoundMessage = locale === 'es'
+    ? 'No se ha encontrado ningún examen con este identificador.'
+    : 'No s\'ha trobat cap examen amb aquest identificador.';
   // Aplica transicions programades si escau perquè l'estat sigui immediat
-  let config = getExamConfig_(examId);
-  try { if (applyScheduledTransitionsIfDue_(config, new Date())) { config = getExamConfig_(examId); } } catch (e) {}
-  const status = buildExamStatus_(config, new Date(), normalizeLang_(lang));
+  let config;
+  try {
+    config = getExamConfig_(examId);
+  } catch (err) {
+    throw new Error(notFoundMessage);
+  }
+  try {
+    if (applyScheduledTransitionsIfDue_(config, new Date())) {
+      config = getExamConfig_(examId);
+    }
+  } catch (e) {
+    throw new Error(notFoundMessage);
+  }
+  const status = buildExamStatus_(config, new Date(), locale);
   return {
     examId: config.examId,
     nQuestions: config.nQuestions,
@@ -294,6 +309,7 @@ function getAdminState(code, requestedExamId, lang) {
     selectedExamId = exams[0].examId;
   }
 
+  const adminLocale = normalizeLang_(lang);
   const state = {
     exams: exams.map(item => ({
       examId: item.examId,
@@ -312,7 +328,9 @@ function getAdminState(code, requestedExamId, lang) {
   };
 
   if (!selectedExamId) {
-    state.configError = 'Encara no hi ha cap examen. Crea\'n un de nou.';
+    state.configError = adminLocale === 'es'
+      ? 'Aún no hay ningún examen. Crea uno nuevo.'
+      : 'Encara no hi ha cap examen. Crea\'n un de nou.';
     return state;
   }
 
