@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Plantilla correctora digital · Instruccions</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
       :root {
         --bg: #f5f8fc;
@@ -58,10 +60,10 @@
       body { font-family: Arial, sans-serif; line-height: 1.55; color: var(--text); background: var(--bg); margin: 0; }
       .wrap { max-width: 880px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
       h1 { margin: 0.2rem 0 0.75rem; font-size: 1.9rem; }
-      h2 { margin-top: 1.6rem; font-size: 1.35rem; }
-      h3 { margin-top: 1.2rem; font-size: 1.1rem; }
+      h2 { margin: 0; font-size: 1.5rem; border-bottom: none; padding-bottom: 0; }
+      h3 { margin-top: 1.6rem; font-size: 1.2rem; }
       p, li { font-size: 1rem; }
-      code { background: var(--code-bg); padding: 0 0.25rem; border-radius: 4px; }
+      code { background: var(--code-bg); padding: 0.1rem 0.3rem; border-radius: 4px; font-family: monospace; }
       .lang { display: none; }
       .lang.active { display: block; }
       .toolbar { display: flex; gap: 0.75rem; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
@@ -76,6 +78,62 @@
       .app-footer .docs-line { margin-top: 0.35rem; }
       .app-footer .app-name { font-weight: 600; }
       .app-footer img.cc { vertical-align: middle; height: 20px; margin-left: 6px; opacity: 0.9; }
+      
+      /* Estilos del acordeón */
+      details.accordion {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin-top: 1.5rem;
+        background-color: var(--code-bg);
+        transition: background-color 0.2s ease;
+      }
+      details.accordion[open] {
+        background-color: var(--bg);
+      }
+      details.accordion summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 1rem 1.5rem;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      details.accordion summary::-webkit-details-marker {
+        display: none;
+      }
+      details.accordion summary::after {
+        content: '▼';
+        transform: rotate(-90deg);
+        transition: transform 0.2s ease-in-out;
+        font-size: 1.2rem;
+      }
+      details.accordion[open] summary::after {
+        transform: rotate(0deg);
+      }
+      details.accordion .accordion-content {
+        padding: 0 1.5rem 1.5rem 1.5rem;
+        border-top: 1px solid var(--border);
+        margin-top: 0.5rem;
+        padding-top: 1.5rem;
+      }
+      
+      /* Estilos para el iframe responsivo */
+      .iframe-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        padding-top: 59.27%; /* Relación de aspecto 960/569 */
+        margin: 1.5rem 0;
+      }
+      .iframe-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
     </style>
   </head>
   <body>
@@ -94,101 +152,256 @@
 
       <header>
         <h1>Plantilla correctora digital (Google Sheets + Web)</h1>
-        <p id="repo-link"></p>
       </header>
-
+      
       <section class="lang active" id="lang-ca">
-        <h2>Què és?</h2>
-        <p>Aquesta plantilla et permet recollir respostes d'exàmens tipus test des d'una pàgina web i desar-les automàticament a la teva Fulla de Càlcul de Google.</p>
-        <ul>
-          <li>Enllaç per a l'alumnat (web app).</li>
-          <li>Panell del professorat per configurar, carregar la clau i corregir.</li>
-          <li>Informe de correcció a la pestanya «Correcció».</li>
-        </ul>
-        <p><strong>Important:</strong> aquesta aplicació és una <strong>plantilla correctora</strong>. L'examen es lliura en paper i l'alumnat només introdueix les respostes a la web.</p>
+        <details class="accordion" open>
+            <summary><h2>Què és?</h2></summary>
+            <div class="accordion-content">
+                <p>Aquesta plantilla permet recollir les respostes de <strong>proves de tipus test d'elecció múltiple (amb diverses opcions i una única resposta correcta)</strong> des d'una pàgina web i desar-les automàticament al teu Full de Càlcul de Google.</p>
+                <ul>
+                    <li>Enllaç per a l'alumnat (web app).</li>
+                    <li>Panell del professorat per configurar, carregar la clau i corregir.</li>
+                    <li>Informes detallats amb les notes de l'alumnat i anàlisis estadístiques de les preguntes.</li>
+                </ul>
+                <p><strong>Important:</strong> aquesta aplicació és una <strong>plantilla correctora</strong>. L'examen es lliura en paper i l'alumnat només introdueix les seves respostes a la web.</p>
+            </div>
+        </details>
+        
+        <details class="accordion">
+            <summary><h2>Passos ràpids</h2></summary>
+            <div class="accordion-content">
+                <p>El procés de posada en marxa és senzill i només cal fer-lo una vegada. Consisteix en dues parts: primer, crear una còpia personal del Full de Càlcul que funcionarà com a base de dades de l'aplicació i, segon, publicar l'aplicació web que et permetrà gestionar els exàmens des d'una pàgina còmoda i intuïtiva. No hauràs de manipular el full de càlcul directament; el programa ho farà per tu a través del panell d'administració web.</p>
+                <div class="iframe-container">
+                  <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRRIav1DWcFyrCVMnE5O60_LUgPbxuAopVCw96caWni9VPDEqRhaasc_Nj5GpiBf9BG3nCM8pml37E1/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+                </div>
+                <ol>
+                    <li><strong>Copia el Full de Càlcul base</strong>. Fes clic en aquest <a href="https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy" target="_blank" rel="noopener noreferrer">enllaç</a> per generar la teva pròpia còpia. Aquest full desarà la configuració i les respostes dels alumnes.</li>
+                    <li><strong>Obre l'editor de codi</strong>. Al teu nou full de càlcul, ves al menú Extensions → Apps Script. S'obrirà l'editor que conté el codi de l'aplicació. No cal que modifiquis res.</li>
+                    <li><strong>Publica l'aplicació web</strong>. Aquest pas genera la pàgina que faràs servir per gestionar els exàmens.
+                        <ul>
+                            <li>Dins de l'editor d'Apps Script, prem el botó blau <strong>Implementa</strong> (a dalt a la dreta) i selecciona <strong>Nova implementació</strong>.</li>
+                            <li>A la finestra que apareix, configura el següent:
+                                <ul>
+                                    <li><strong>Selecciona el tipus</strong>: Si no hi posa: <strong>Aplicació web</strong>, fes clic a la icona de la roda dentada (⚙️) i tria <strong>Aplicació web</strong>.</li>
+                                    <li><strong>Descripció</strong>: Deixa-la en blanc o posa un text per identificar l'aplicació, per exemple, "Plantilla correctora".</li>
+                                    <li><strong>Executa com a</strong>: Deixa-ho com està, a <strong>Jo (correu@electronic.com)</strong>.</li>
+                                    <li><strong>Qui té accés</strong>: Selecciona <strong>Qualsevol usuari</strong>. Això permet que els alumnes hi accedeixin sin haver d'iniciar sessió a Google.</li>
+                                </ul>
+                            </li>
+                            <li>Prem <strong>Implementa</strong>. Google et demanarà que <strong>autoritzis els permisos</strong> perquè l'aplicació funcioni. Accepta per continuar.</li>
+                            <li>Al final, apareixerà l'<strong>URL de l'aplicació web</strong>. Copia-la i desa-la, és l'adreça del teu panell de professorat.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Entra</strong> al panell del professorat amb el codi inicial <code>0000</code> i canvia'l a la pestanya <strong>Ajustos</strong>.</li>
+                </ol>
+            </div>
+        </details>
+        
+        <details class="accordion">
+            <summary><h2>Crear i configurar un examen</h2></summary>
+            <div class="accordion-content">
+                <p>Un cop dins del panell d'administració, el procés per crear un examen es fa a través de les diferents pestanyes.</p>
+                <h3>1. Pestanya Resum: crear l'examen</h3>
+                <p>A la primera pestanya, <strong>Resum</strong>, prem el botó <strong>Crea un examen nou</strong>. L'aplicació generarà un identificador únic per a l'examen; a continuació, hauràs d'anar a la pestanya <strong>Configuració</strong> per definir-ne els paràmetres. Si ja tens exàmens creats, pots seleccionar-los des del menú desplegable.</p>
+                <h3>2. Pestanya Configuració: definir els paràmetres</h3>
+                <p>Aquí s'estableixen les característiques principals de la prova:</p>
+                <ul>
+                    <li><strong>Nom de l'examen</strong>: un títol per identificar-lo (ex. "Examen Biologia Tema 5").</li>
+                    <li><strong>Nombre de preguntes</strong>: el total de preguntes que té la prova.</li>
+                    <li><strong>Opcions disponibles</strong>: les lletres de les respostes (ex. ABCD, ABCDE).</li>
+                    <li><strong>Inici i fi programat</strong>: pots definir una data i hora perquè l'examen s'obri i es tanqui automàticament. Si ho deixes en blanc, hauràs d'obrir-lo i tancar-lo manualment. Encara que estableixis una data, sempre pots forçar l'obertura o el tancament des dels controls manuals.</li>
+                    <li><strong>Mesures de seguretat</strong>: pots activar opcions com barrejar preguntes i/o respostes, o forçar la pantalla completa (encara que l'alumne pot sortir d'aquest mode, la finestra es tornarà a maximitzar amb cada clic que faci a la prova).</li>
+                </ul>
+                <p>Quan ho hagis omplert tot, prem <strong>Desa la configuració</strong>. En fer-ho, apareixerà l'<strong>enllaç per a l'alumnat</strong>, que hauràs de compartir amb ells perquè puguin accedir a la prova.</p>
+                <h3>3. Pestanya Respostes: introduir la clau i corregir</h3>
+                <p>Aquesta pestanya té tres apartats. No cal omplir-los abans que els alumnes facin l'examen, pots completar-los just abans de generar l'informe de correcció.</p>
+                <ul>
+                    <li><strong>Clau de respostes</strong>: introdueix la seqüència de respostes correctes (ex. "BCAD...").</li>
+                    <li><strong>Criteris de qualificació</strong>: defineix la nota màxima (ex. 10) i la nota mínima per aprovar (ex. 5).</li>
+                    <li><strong>Penalització per atzar</strong>: si vols que les respostes incorrectes restin, activa la casella i defineix el valor de la penalització. Aquesta mesura busca desincentivar que es respongui a l'atzar. El valor de penalització recomanat, que anul·la el guany esperat per respondre a l'atzar, es calcula amb la fórmula següent, on 'm' és el nombre d'opcions de resposta:
+                        $$ \frac{1}{m-1} $$
+                        Per exemple, en un examen amb 4 opcions de resposta (A, B, C, D), el valor a introduir al camp de penalització seria:
+                        $$ \frac{1}{4-1} = \frac{1}{3} \approx 0,33 $$
+                    </li>
+                </ul>
+                <p>Un cop els alumnes hagin respost, prem el botó <strong>Genera informe de correcció</strong> per obtenir els resultats. Es crearà un nou Full de Càlcul al teu Drive amb l'informe detallat.</p>
+                <h3>4. Pestanya Ajustos: gestió de l'aplicació</h3>
+                <p>Aquesta darrera pestanya conté opcions per administrar l'aplicació i les seves dades. És recomanable fer servir aquestes funcions amb precaució.</p>
+                <ul>
+                    <li><strong>Canvia el codi d'administració</strong>: et permet establir un nou codi d'accés al panell del professorat per mantenir la seguretat.</li>
+                    <li><strong>Esborra lliuraments</strong>: aquesta opció elimina totes les respostes dels alumnes per a l'examen que tinguis seleccionat. És útil si vols reutilitzar la mateixa configuració d'examen amb un grup diferent.</li>
+                    <li><strong>Esborra-ho tot</strong>: aquesta és l'opció més dràstica. Elimina tots els exàmens, configuracions i respostes que hagis creat, tornant el Full de Càlcul al seu estat inicial. Fes-la servir només si vols començar completament de zero.</li>
+                </ul>
+            </div>
+        </details>
 
-        <h2>Requisits</h2>
-        <ul>
-          <li>Compte de Google (Drive i Apps Script).</li>
-          <li>Una còpia de la fulla del projecte amb pestanyes: <code>Config</code>, <code>Keys</code>, <code>Settings</code>, <code>Submissions</code> i <code>Correcció</code>.</li>
-        </ul>
-
-        <h2>Passos ràpids</h2>
-        <ol>
-          <li><strong>Copia</strong> la plantilla de la Fulla de Càlcul.</li>
-          <li><strong>Obre Apps Script</strong> des de Extensions → Apps Script.</li>
-          <li><strong>Publica</strong> la web: Implementar → Nova implementació → Aplicació web; «Qualsevol amb l'enllaç».</li>
-          <li><strong>Entra</strong> al panell del professorat amb el codi inicial <code>0000</code> i canvia'l.</li>
-        </ol>
-
-        <h2>Crear i configurar un examen</h2>
-        <ol>
-          <li>Des del panell, crea o selecciona un examen i defineix nom, preguntes, opcions (ABC/ABCDE), i horari si cal.</li>
-          <li>Carrega la <strong>clau de respostes</strong> (seqüència de lletres).</li>
-          <li>Comparteix l'<strong>enllaç de l'alumnat</strong> (Classroom, Moodle o QR).</li>
-          <li>Executa la <strong>correcció</strong> per obtenir resultats a «Correcció».</li>
-        </ol>
-
-        <h2>Pestanyes del panell</h2>
-        <ul>
-          <li><strong>Resum</strong>: estat de l'examen, enllaços i esborrat.</li>
-          <li><strong>Configuració</strong>: paràmetres i mesures de seguretat.</li>
-          <li><strong>Respostes</strong>: clau, criteris de qualificació i informe.</li>
-          <li><strong>Ajustaments</strong>: codi d'administració i gestió de dades.</li>
-        </ul>
-
-        <h2>Llicències</h2>
-        <ul>
-          <li><strong>Codi</strong>: AGPL v3. Consulta <a href="../LICENSE.txt">LICENSE.txt</a>.</li>
-          <li><strong>Continguts</strong>: CC BY-SA 4.0.</li>
-        </ul>
+        <details class="accordion">
+            <summary><h2>Preguntes i respostes freqüents</h2></summary>
+            <div class="accordion-content">
+                <h3>Puc esborrar un examen concret?</h3>
+                <p>Sí. Per fer-ho, selecciona'l a la pestanya <strong>Resum</strong> i prem el botó <strong>Esborra aquest examen</strong>. Aquesta acció elimina completament totes les seves dades: la configuració, la clau de respostes i tots els lliuraments dels alumnes. Fes-ho servir quan un examen ha finalitzat i ja no el necessites a la llista.</p>
+                <h3>Puc esborrar només les respostes dels alumnes sense esborrar l'examen?</h3>
+                <p>Sí. Ves a la pestanya <strong>Ajustos</strong> i fes servir el botó <strong>Esborra lliuraments</strong>. Aquesta opció només elimina les respostes dels alumnes per a l'examen que tinguis seleccionat. La configuració de l'examen (nom, nombre de preguntes, clau, etc.) es manté intacta, per la qual cosa és l'opció ideal per reutilitzar el mateix examen amb un grup d'alumnes diferent.</p>
+                <h3>Com puc començar de zero i esborrar totes les meves dades?</h3>
+                <p>Si vols restablir l'aplicació completament, pots fer servir el botó <strong>Esborra-ho tot</strong>, que es troba a la pestanya <strong>Ajustos</strong>. Aquesta acció eliminarà <em>tots</em> els exàmens, configuracions i dades d'alumnes que hagis creat, tornant el Full de Càlcul al seu estat original.</p>
+                <h3>Com puc gestionar exàmens de diferents assignatures o cursos de forma totalment separada?</h3>
+                <p>Cada còpia del Full de Càlcul, juntament amb la seva implementació web, funciona com un sistema independent. Si vols tenir els exàmens de diferents matèries (per exemple, Biologia i Matemàtiques) o per a diferents cursos (1r de Batxillerat i 2n de Batxillerat) completament separats, només has de repetir el procés d'instal·lació inicial:</p>
+                <ol>
+                    <li><strong>Fes una nova còpia</strong> del Full de Càlcul base fent servir l'<a href="https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy" target="_blank" rel="noopener noreferrer">enllaç de la plantilla</a>. Posa-li un nom distintiu (ex. "Corrector Biologia").</li>
+                    <li>Obre aquest nou full i ves a <strong>Extensions → Apps Script</strong>.</li>
+                    <li>Torna a seguir els passos per a <strong>Implementa → Nova implementació</strong>.</li>
+                </ol>
+                <p>Això et donarà una <strong>URL de panell de professorat completament nova i diferent</strong> de l'anterior. D'aquesta manera, tindràs un panell per a cada assignatura o curs, cadascun connectat al seu propi Full de Càlcul, mantenint les dades i exàmens totalment aïllats.</p>
+            </div>
+        </details>
+        
+        <details class="accordion">
+            <summary><h2>Dubtes i suggeriments</h2></summary>
+            <div class="accordion-content">
+                <p>Si trobes algun error, tens algun dubte o vols proposar una millora, pots comunicar-ho a la pàgina del projecte. Per fer-ho:</p>
+                <ol>
+                    <li>Ves a <a href="https://github.com/jjdeharo/pcd/issues">https://github.com/jjdeharo/pcd/issues</a>.</li>
+                    <li>Prem el botó verd <strong>New issue</strong>.</li>
+                    <li>Escriu la teva consulta o suggeriment.</li>
+                </ol>
+            </div>
+        </details>
+        
+        <details class="accordion">
+            <summary><h2>Llicències</h2></summary>
+            <div class="accordion-content">
+                <ul>
+                    <li><strong>Codi</strong>: AGPL v3. Consulta <a href="https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt">LICENSE.txt</a>.</li>
+                    <li><strong>Continguts</strong>: CC BY-SA 4.0.</li>
+                </ul>
+            </div>
+        </details>
       </section>
 
       <section class="lang" id="lang-es">
-        <h2>¿Qué es?</h2>
-        <p>Esta plantilla permite recoger respuestas de exámenes tipo test desde una página web y guardarlas automáticamente en tu Hoja de Cálculo de Google.</p>
-        <ul>
-          <li>Enlace para el alumnado (web app).</li>
-          <li>Panel del profesorado para configurar, cargar la clave y corregir.</li>
-          <li>Informe de corrección en la pestaña «Correcció».</li>
-        </ul>
-        <p><strong>Importante:</strong> esta aplicación es una <strong>plantilla correctora</strong>. El examen se entrega en papel y el alumnado solo introduce sus respuestas en la web.</p>
+        <details class="accordion" open>
+            <summary><h2>¿Qué es?</h2></summary>
+            <div class="accordion-content">
+                <p>Esta plantilla permite recoger las respuestas de <strong>exámenes tipo test de elección múltiple (con varias opciones y una única respuesta correcta)</strong> desde una página web y guardarlas automáticamente en tu Hoja de Cálculo de Google.</p>
+                <ul>
+                    <li>Enlace para el alumnado (web app).</li>
+                    <li>Panel del profesorado para configurar, cargar la clave y corregir.</li>
+                    <li>Informes detallados con las notas del alumnado y análisis estadísticos de las preguntas.</li>
+                </ul>
+                <p><strong>Importante:</strong> esta aplicación es una <strong>plantilla correctora</strong>. El examen se entrega en papel y el alumnado solo introduce sus respuestas en la web.</p>
+            </div>
+        </details>
 
-        <h2>Requisitos</h2>
-        <ul>
-          <li>Cuenta de Google (Drive y Apps Script).</li>
-          <li>Una copia de la hoja del proyecto con pestañas: <code>Config</code>, <code>Keys</code>, <code>Settings</code>, <code>Submissions</code> y <code>Correcció</code>.</li>
-        </ul>
+        <details class="accordion">
+            <summary><h2>Pasos rápidos</h2></summary>
+            <div class="accordion-content">
+                <p>El proceso de puesta en marcha es sencillo y solo hay que hacerlo una vez. Consiste en dos partes: primero, crear una copia personal de la Hoja de Cálculo que funcionará como base de datos de la aplicación y, segundo, publicar la aplicación web que te permitirá gestionar los exámenes desde una página cómoda e intuitiva. No tendrás que manipular la hoja de cálculo directamente; el programa lo hará por ti a través del panel de administración web.</p>
+                 <div class="iframe-container">
+                  <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRRIav1DWcFyrCVMnE5O60_LUgPbxuAopVCw96caWni9VPDEqRhaasc_Nj5GpiBf9BG3nCM8pml37E1/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+                </div>
+                <ol>
+                    <li><strong>Copia la Hoja de Cálculo base</strong>. Haz clic en este <a href="https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy" target="_blank" rel="noopener noreferrer">enlace</a> para generar tu propia copia. Esta hoja guardará la configuración y las respuestas de los alumnos.</li>
+                    <li><strong>Abre el editor de código</strong>. En tu nueva hoja de cálculo, ve al menú Extensiones → Apps Script. Se abrirá el editor que contiene el código de la aplicación. No es necesario que modifiques nada.</li>
+                    <li><strong>Publica la aplicación web</strong>. Este paso genera la página que usarás para gestionar los exámenes.
+                        <ul>
+                            <li>Dentro del editor de Apps Script, pulsa el botón azul <strong>Implementar</strong> (arriba a la derecha) y selecciona <strong>Nueva implementación</strong>.</li>
+                            <li>En la ventana que aparece, configura lo siguiente:
+                                <ul>
+                                    <li><strong>Seleccionar tipo</strong>: Si no pone: <strong>Aplicación web</strong>, haz clic en el icono de la rueda dentada (⚙️) y elige <strong>Aplicación web</strong>.</li>
+                                    <li><strong>Descripción</strong>: Déjala en blanco o pon un texto para identificar la aplicación, por ejemplo, "Plantilla correctora".</li>
+                                    <li><strong>Ejecutar como</strong>: Déjalo como está, en <strong>Yo (correo@electronico.com)</strong>.</li>
+                                    <li><strong>Quién tiene acceso</strong>: Selecciona <strong>Cualquier usuario</strong>. Esto permite que los alumnos accedan sin tener que iniciar sesión en Google.</li>
+                                </ul>
+                            </li>
+                            <li>Pulsa <strong>Implementar</strong>. Google te pedirá que <strong>autorices los permisos</strong> para que la aplicación funcione. Acepta para continuar.</li>
+                            <li>Al final, aparecerá la <strong>URL de la aplicación web</strong>. Cópiala y guárdala, es la dirección de tu panel de profesorado.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Entra</strong> al panel del profesorado con el código inicial <code>0000</code> y cámbialo en la pestaña <strong>Ajustes.</strong></li>
+                </ol>
+            </div>
+        </details>
+        
+        <details class="accordion">
+            <summary><h2>Crear y configurar un examen</h2></summary>
+            <div class="accordion-content">
+                <p>Una vez dentro del panel de administración, el proceso para crear un examen se realiza a través de las diferentes pestañas.</p>
+                <h3>1. Pestaña Resumen: crear el examen</h3>
+                <p>En la primera pestaña, <strong>Resumen</strong>, pulsa el botón <strong>Crea examen nuevo</strong>. La aplicación generará un identificador único para el examen; a continuación, deberás ir a la pestaña <strong>Configuración</strong> para definir sus parámetros. Si ya tienes exámenes creados, puedes seleccionarlos desde el menú desplegable.</p>
+                <h3>2. Pestaña Configuración: definir los parámetros</h3>
+                <p>Aquí se establecen las características principales de la prueba:</p>
+                <ul>
+                    <li><strong>Nombre del examen</strong>: un título para identificarlo (ej. "Examen Biología Tema 5").</li>
+                    <li><strong>Número de preguntas</strong>: el total de preguntas que tiene la prueba.</li>
+                    <li><strong>Opciones disponibles</strong>: las letras de las respuestas (ej. ABCD, ABCDE).</li>
+                    <li><strong>Inicio y fin programado</strong>: puedes definir una fecha y hora para que el examen se abra y se cierre automáticamente. Si lo dejas en blanco, tendrás que abrirlo y cerrarlo manualmente. Aunque establezcas una fecha, siempre puedes forzar la apertura o el cierre desde los controles manuales.</li>
+                    <li><strong>Medidas de seguridad</strong>: puedes activar opciones como barajar preguntas y/o respuestas, o forzar la pantalla completa (aunque el alumno puede salir de este modo, la ventana se volverá a maximizar con cada clic que haga en la prueba).</li>
+                </ul>
+                <p>Cuando hayas rellenado todo, pulsa <strong>Guardar la configuración</strong>. Al hacerlo, aparecerá el <strong>enlace para el alumnado</strong>, que deberás compartir con ellos para que puedan acceder a la prueba.</p>
+                <h3>3. Pestaña Respuestas: introducir la clave y corregir</h3>
+                <p>Esta pestaña tiene tres apartados. No es necesario rellenarlos antes de que los alumnos hagan el examen, puedes completarlos justo antes de generar el informe de corrección.</p>
+                <ul>
+                    <li><strong>Clave de respuestas</strong>: introduce la secuencia de respuestas correctas (ej. "BCAD...").</li>
+                    <li><strong>Criterios de calificación</strong>: define la nota máxima (ej. 10) y la nota mínima para aprobar (ej. 5).</li>
+                    <li><strong>Penalización por azar</strong>: si quieres que las respuestas incorrectas resten, activa la casilla y define el valor de la penalización. Esta medida busca desincentivar que se responda al azar. El valor de penalización recomendado, que anula la ganancia esperada por responder al azar, se calcula con la siguiente fórmula, donde 'm' es el número de opciones de respuesta:
+                        $$ \frac{1}{m-1} $$
+                        Por ejemplo, en un examen con 4 opciones de respuesta (A, B, C, D), el valor a introducir en el campo de penalización sería:
+                        $$ \frac{1}{4-1} = \frac{1}{3} \approx 0,33 $$
+                    </li>
+                </ul>
+                <p>Una vez que los alumnos hayan respondido, pulsa el botón <strong>Generar informe de corrección</strong> para obtener los resultados. Se creará una nueva Hoja de Cálculo en tu Drive con el informe detallado.</p>
+                <h3>4. Pestanya Ajustos: gestió de l'aplicació</h3>
+                <p>Esta última pestaña contiene opciones para administrar la aplicación y sus datos. Es recomendable usar estas funciones con precaución.</p>
+                <ul>
+                    <li><strong>Cambiar el código de administración</strong>: te permite establecer un nuevo código de acceso al panel del profesorado para mantener la seguridad.</li>
+                    <li><strong>Borrar envíos</strong>: esta opción elimina todas las respuestas de los alumnos para el examen que tengas seleccionado. Es útil si quieres reutilizar la misma configuración de examen con un grupo diferente.</li>
+                    <li><strong>Borrar todo</strong>: esta es la opción más drástica. Elimina todos los exámenes, configuraciones y respuestas que hayas creado, devolviendo la Hoja de Cálculo a su estado inicial. Úsala solo si quieres empezar completamente de cero.</li>
+                </ul>
+            </div>
+        </details>
 
-        <h2>Pasos rápidos</h2>
-        <ol>
-          <li><strong>Copia</strong> la plantilla de la Hoja de Cálculo.</li>
-          <li><strong>Abre Apps Script</strong> desde Extensiones → Apps Script.</li>
-          <li><strong>Publica</strong> la web: Implementar → Nueva implementación → Aplicación web; «Cualquiera con el enlace».</li>
-          <li><strong>Entra</strong> al panel del profesorado con el código inicial <code>0000</code> y cámbialo.</li>
-        </ol>
-
-        <h2>Crear y configurar un examen</h2>
-        <ol>
-          <li>Desde el panel, crea o selecciona un examen y define nombre, preguntas, opciones (ABC/ABCDE), y horario si procede.</li>
-          <li>Carga la <strong>clave de respuestas</strong> (secuencia de letras).</li>
-          <li>Comparte el <strong>enlace del alumnado</strong> (Classroom, Moodle o QR).</li>
-          <li>Ejecuta la <strong>corrección</strong> para obtener resultados en «Correcció».</li>
-        </ol>
-
-        <h2>Pestañas del panel</h2>
-        <ul>
-          <li><strong>Resumen</strong>: estado del examen, enlaces y borrado.</li>
-          <li><strong>Configuración</strong>: parámetros y medidas de seguridad.</li>
-          <li><strong>Respuestas</strong>: clave, criterios de calificación e informe.</li>
-          <li><strong>Ajustes</strong>: código de administración y gestión de datos.</li>
-        </ul>
-
-        <h2>Licencias</h2>
-        <ul>
-          <li><strong>Código</strong>: AGPL v3. Consulta <a href="../LICENSE.txt">LICENSE.txt</a>.</li>
-          <li><strong>Contenidos</strong>: CC BY-SA 4.0.</li>
-        </ul>
+        <details class="accordion">
+            <summary><h2>Preguntas y respuestas frecuentes</h2></summary>
+            <div class="accordion-content">
+                <h3>¿Puedo borrar un examen concreto?</h3>
+                <p>Sí. Para ello, selecciónalo en la pestaña <strong>Resumen</strong> y pulsa el botón <strong>Borrar este examen</strong>. Esta acción elimina por completo todos sus datos: la configuración, la clave de respuestas y todos los envíos de los alumnos. Úsalo cuando un examen ha finalizado y ya no lo necesitas en la lista.</p>
+                <h3>¿Puedo borrar solo las respuestas de los alumnos sin borrar el examen?</h3>
+                <p>Sí. Ve a la pestaña <strong>Ajustes</strong> y usa el botón <strong>Borrar envíos</strong>. Esta opción solo elimina las respuestas de los alumnos para el examen que tengas seleccionado. La configuración del examen (nombre, número de preguntas, clave, etc.) se mantiene intacta, por lo que es la opción ideal para reutilizar el mismo examen con un grupo de alumnos diferente.</p>
+                <h3>¿Cómo puedo empezar de cero y borrar todos mis datos?</h3>
+                <p>Si quieres restablecer la aplicación por completo, puedes usar el botón <strong>Borrar todo</strong>, que se encuentra en la pestaña <strong>Ajustes</strong>. Esta acción eliminará <em>todos</em> los exámenes, configuraciones y datos de alumnos que hayas creado, devolviendo la Hoja de Cálculo a su estado original.</p>
+                <h3>¿Cómo puedo gestionar exámenes de diferentes asignaturas o cursos de forma totalmente separada?</h3>
+                <p>Cada copia de la Hoja de Cálculo, junto con su implementación web, funciona como un sistema independiente. Si quieres tener los exámenes de diferentes materias (por ejemplo, Biología y Matemáticas) o para distintos cursos (1º de Bachillerato y 2º de Bachillerato) completamente separados, solo tienes que repetir el proceso de instalación inicial:</p>
+                <ol>
+                    <li><strong>Haz una nueva copia</strong> de la Hoja de Cálculo base usando el <a href="https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy" target="_blank" rel="noopener noreferrer">enlace de la plantilla</a>. Dale un nombre distintivo (ej. "Corrector Biología").</li>
+                    <li>Abre esa nueva hoja y ve a <strong>Extensiones → Apps Script</strong>.</li>
+                    <li>Vuelve a seguir los pasos para <strong>Implementar → Nueva implementación</strong>.</li>
+                </ol>
+                <p>Esto te dará una <strong>URL de panel de profesorado completamente nueva y distinta</strong> a la anterior. De esta forma, tendrás un panel para cada asignatura o curso, cada uno conectado a su propia Hoja de Cálculo, manteniendo los datos y exámenes totalmente aislados.</p>
+            </div>
+        </details>
+        
+        <details class="accordion">
+            <summary><h2>Dudas y sugerencias</h2></summary>
+            <div class="accordion-content">
+                <p>Si encuentras algún error, tienes alguna duda o quieres proponer una mejora, puedes comunicarlo en la página del proyecto. Para ello:</p>
+                <ol>
+                    <li>Ve a <a href="https://github.com/jjdeharo/pcd/issues">https://github.com/jjdeharo/pcd/issues</a>.</li>
+                    <li>Pulsa el botón verde <strong>New issue</strong>.</li>
+                    <li>Escribe tu consulta o sugerencia.</li>
+                </ol>
+            </div>
+        </details>
+        
+        <details class="accordion">
+            <summary><h2>Licencias</h2></summary>
+            <div class="accordion-content">
+                <ul>
+                    <li><strong>Código</strong>: AGPL v3. Consulta <a href="https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt">LICENSE.txt</a>.</li>
+                    <li><strong>Contenidos</strong>: CC BY-SA 4.0.</li>
+                </ul>
+            </div>
+        </details>
       </section>
 
       <footer class="app-footer">
@@ -265,4 +478,5 @@
       applyTheme(savedTheme);
     </script>
   </body>
-  </html>
+</html>
+
