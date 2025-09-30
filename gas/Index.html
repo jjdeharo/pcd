@@ -26,13 +26,6 @@
       .lang-switch { display: flex; justify-content: flex-end; gap: 6px; align-items: center; margin: 0.5rem 0 1rem; }
       .lang-btn { background: #eceff4; color: #1a2733; border: 1px solid #c5ccda; padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.85rem; cursor: pointer; }
       .lang-btn.active { background: #1976d2; color: #fff; border-color: #1976d2; }
-      .app-footer { text-align: center; color: #607d8b; font-size: 0.9rem; margin: 2rem 0 1.5rem; }
-      .app-footer a { color: #376082; text-decoration: none; }
-      .app-footer a:hover { text-decoration: underline; }
-      .app-footer .lic-line { margin-top: 0.35rem; }
-      .app-footer .docs-line { margin-top: 0.35rem; }
-      .app-footer .app-name { font-weight: 600; }
-      .app-footer img.cc { vertical-align: middle; height: 20px; margin-left: 6px; opacity: 0.9; }
     </style>
   </head>
   <body>
@@ -87,20 +80,6 @@
           blank: 'En blanco'
         }
       };
-      const I18N_FOOTER = {
-        ca: {
-          appName: 'Plantilla correctora digital',
-          line1: '<a href="https://bilateria.es" target="_blank" rel="noopener">© Juan José de Haro</a>',
-          line2: 'Llicència del codi: <a href="https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a> · Contingut: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> <img class="cc" alt="CC BY-SA 4.0" src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" />',
-          docs: '<a href="https://jjdeharo.github.io/pcd/" target="_blank" rel="noopener">Documentació</a>'
-        },
-        es: {
-          appName: 'Plantilla correctora digital',
-          line1: '<a href="https://bilateria.es" target="_blank" rel="noopener">© Juan José de Haro</a>',
-          line2: 'Licencia del código: <a href="https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a> · Contenido: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> <img class="cc" alt="CC BY-SA 4.0" src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" />',
-          docs: '<a href="https://jjdeharo.github.io/pcd/" target="_blank" rel="noopener">Documentación</a>'
-        }
-      };
       function detectLang() {
         const saved = (safeStorage().getItem(LANG_STORAGE_KEY) || '').toLowerCase();
         if (saved === 'ca' || saved === 'es') return saved;
@@ -126,7 +105,6 @@
         if (examConfig) {
           renderForm(examConfig);
         }
-        renderFooter();
       }
       let examConfig = null;
       let examActive = false;
@@ -141,7 +119,6 @@
         // No avisos de focus ni confirmacions; només pantalla completa si cal
         installFullscreenHandlers();
         applyStaticI18n();
-        renderFooter();
         // Botonera de idioma
         try {
           const root = document.getElementById('student-lang-switch');
@@ -290,20 +267,6 @@
           prepareEnterFullscreen();
         }
       }
-      function renderFooter() {
-        try {
-          const f = I18N_FOOTER[currentLang] || I18N_FOOTER.ca;
-          const app = document.getElementById('footer-app');
-          const docs = document.getElementById('footer-docs');
-          const l1 = document.getElementById('footer-line1');
-          const l2 = document.getElementById('footer-line2');
-          if (app) app.textContent = f.appName || 'Plantilla correctora digital';
-          if (docs) docs.innerHTML = f.docs || '';
-          if (l1) l1.innerHTML = f.line1;
-          if (l2) l2.innerHTML = f.line2;
-        } catch (e) {}
-      }
-
       function handleSubmit(event) {
         event.preventDefault();
         if (!examConfig) return;
@@ -512,11 +475,5 @@
         fsHandlersBound = true;
       }
     </script>
-    <footer class="app-footer">
-      <div id="footer-app" class="app-name">Plantilla correctora digital</div>
-      <div id="footer-docs" class="docs-line">&nbsp;</div>
-      <div id="footer-line1">&nbsp;</div>
-      <div id="footer-line2" class="lic-line">&nbsp;</div>
-    </footer>
   </body>
 </html>

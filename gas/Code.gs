@@ -59,7 +59,7 @@ function normalizeLang_(lang) {
 function i18n_(lang) {
   const L = normalizeLang_(lang);
   const ca = {
-    sheetCreated: "S'ha creat un document nou amb els resultats.",
+    sheetCreated: 'Els resultats apareixeran en un full de càlcul nou.',
     sheetCorrection: 'Correcció',
     sheetAnalysis: 'Anàlisi',
     examPrefix: 'Examen:',
@@ -106,10 +106,14 @@ function i18n_(lang) {
     to: 'al',
     availableFromDate: 'Disponible a partir del',
     availableUntil: 'Disponible fins al',
-    summaryPerQuestion: 'Resum per pregunta'
+    summaryPerQuestion: 'Resum per pregunta',
+    msgCorrectionGenerated: 'Correcció generada per a %EXAM%. Consulta la pestanya «Correcció».',
+    msgCorrectionNone: "No hi ha enviaments per corregir per a %EXAM%.",
+    msgAnalysisGenerated: 'Anàlisi per pregunta generada per a %EXAM%. Consulta la pestanya «Correcció».',
+    msgAnalysisNone: "No hi ha suficients dades per analitzar l'examen %EXAM%."
   };
   const es = {
-    sheetCreated: 'Se ha creado un nuevo documento con los resultados.',
+    sheetCreated: 'Los resultados aparecerán en una hoja de cálculo nueva.',
     sheetCorrection: 'Corrección',
     sheetAnalysis: 'Análisis',
     examPrefix: 'Examen:',
@@ -156,7 +160,11 @@ function i18n_(lang) {
     to: 'al',
     availableFromDate: 'Disponible a partir del',
     availableUntil: 'Disponible hasta el',
-    summaryPerQuestion: 'Resumen por pregunta'
+    summaryPerQuestion: 'Resumen por pregunta',
+    msgCorrectionGenerated: 'Corrección generada para %EXAM%. Consulta la hoja «Corrección».',
+    msgCorrectionNone: 'No hay envíos que corregir para %EXAM%.',
+    msgAnalysisGenerated: 'Análisis por pregunta generado para %EXAM%. Consulta la hoja «Corrección».',
+    msgAnalysisNone: 'No hay datos suficientes para analizar el examen %EXAM%.'
   };
   return L === 'es' ? es : ca;
 }
@@ -176,14 +184,14 @@ function doGet(e) {
     template.view = 'admin';
     return template
       .evaluate()
-      .setTitle("Panell del professorat")
+      .setTitle('Panel del profesorado')
       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
   const template = HtmlService.createTemplateFromFile('Index');
   template.examId = examId;
   return template
     .evaluate()
-    .setTitle("Lliurament d'examen")
+    .setTitle('Entrega del examen')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
@@ -921,10 +929,11 @@ function getAnswerKey_(examId, config) {
 }
 
 
-function corregirExamenCore_(config) {
+function corregirExamenCore_(config, lang) {
   const key = getAnswerKey_(config.examId, config);
   const values = getExamSheetValues_('Submissions', SHEET_HEADERS.Submissions, config.examId);
   const rows = [];
+  const tx = i18n_(lang);
 
   values.forEach(row => {
     if (!sameExamId_(row[1], config.examId)) {
@@ -963,22 +972,23 @@ function corregirExamenCore_(config) {
   if (rows.length) {
     return {
       corrected: rows.length,
-      message: 'Correcció generada per a ' + config.examId + '. Consulta la pestanya "Correcció".',
+      message: tx.msgCorrectionGenerated.replace('%EXAM%', config.examId),
       rows: rows
     };
   }
   return {
     corrected: 0,
-    message: 'No hi ha enviaments per corregir per a ' + config.examId + '.',
+    message: tx.msgCorrectionNone.replace('%EXAM%', config.examId),
     rows: []
   };
 }
 
-function analisiPerPreguntaCore_(config) {
+function analisiPerPreguntaCore_(config, lang) {
   const key = getAnswerKey_(config.examId, config);
   const values = getExamSheetValues_('Submissions', SHEET_HEADERS.Submissions, config.examId);
   const stats = key.map(() => ({ total: 0, correct: 0, incorrect: 0, blank: 0 }));
   let hasData = false;
+  const tx = i18n_(lang);
 
   values.forEach(row => {
     if (!sameExamId_(row[1], config.examId)) {
@@ -1012,13 +1022,13 @@ function analisiPerPreguntaCore_(config) {
   if (hasData) {
     return {
       analyzed: true,
-      message: 'Anàlisi per pregunta generada per a ' + config.examId + '. Consulta la pestanya "Correcció".',
+      message: tx.msgAnalysisGenerated.replace('%EXAM%', config.examId),
       rows: summaryRows
     };
   }
   return {
     analyzed: false,
-    message: 'No hi ha suficients dades per analitzar l\'examen ' + config.examId + '.',
+    message: tx.msgAnalysisNone.replace('%EXAM%', config.examId),
     rows: []
   };
 }
@@ -1213,8 +1223,8 @@ function writeCorrectionReport_(config, correctionRows, summaryRows) {
 }
 
 function generateCorrectionReport_(config, lang) {
-  const correctionResult = corregirExamenCore_(config);
-  const analysisResult = analisiPerPreguntaCore_(config);
+  const correctionResult = corregirExamenCore_(config, lang);
+  const analysisResult = analisiPerPreguntaCore_(config, lang);
   const tz = Session.getScriptTimeZone() || 'Europe/Madrid';
   const examTitle = (config.examName ? config.examName + ' ' : '') + '(' + config.examId + ')';
   const title = examTitle;

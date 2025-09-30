@@ -5,7 +5,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Panell del professorat</title>
+    <title>Panel del profesorado</title>
     <style>
       body { font-family: Arial, sans-serif; background: #eef2f9; margin: 0; }
       .wrap { max-width: 780px; margin: 0 auto; padding: 2rem; }
@@ -99,10 +99,10 @@
         <button type="button" class="lang-btn" data-lang="es">ES</button>
       </div>
       <section id="login-card">
-        <h1 data-i18n="admin_title">Panell del professorat</h1>
-        <p data-i18n="admin_login_intro">Introdueix el codi d'administració per accedir-hi.</p>
+        <h1 data-i18n="admin_title">Panel del profesorado</h1>
+        <p data-i18n="admin_login_intro">Introduce el código de administración para acceder.</p>
         <form id="login-form">
-          <label for="admin-code" data-i18n="admin_code_label">Codi</label>
+          <label for="admin-code" data-i18n="admin_code_label">Código</label>
           <input type="password" id="admin-code" autocomplete="off" required />
           <div class="centered-actions">
             <button id="login-btn" type="submit" data-i18n="login_btn">Entrar</button>
@@ -112,50 +112,50 @@
       </section>
 
       <section id="admin-panel" class="hidden">
-        <h1 data-i18n="admin_title">Panell del professorat</h1>
-        <p data-i18n="admin_help">Gestiona els exàmens des d'aquesta pàgina (no comparteixis l'URL amb l'alumnat).</p>
+        <h1 data-i18n="admin_title">Panel del profesorado</h1>
+        <p data-i18n="admin_help">Gestiona los exámenes desde esta página (no compartas la URL con el alumnado).</p>
         <div id="flash" class="note hidden"></div>
 
         <nav class="tab-bar" id="admin-tabs">
-          <button type="button" class="tab-button active" data-tab="overview" data-i18n="tab_overview">Resum</button>
-          <button type="button" class="tab-button" data-tab="config" data-i18n="tab_config">Configuració</button>
-          <button type="button" class="tab-button" data-tab="responses" data-i18n="tab_responses">Respostes</button>
-          <button type="button" class="tab-button" data-tab="admin-settings" data-i18n="tab_settings">Ajustaments</button>
+          <button type="button" class="tab-button active" data-tab="overview" data-i18n="tab_overview">Resumen</button>
+          <button type="button" class="tab-button" data-tab="config" data-i18n="tab_config">Configuración</button>
+          <button type="button" class="tab-button" data-tab="responses" data-i18n="tab_responses">Respuestas</button>
+          <button type="button" class="tab-button" data-tab="admin-settings" data-i18n="tab_settings">Ajustes</button>
         </nav>
 
         <div class="tab-content active" data-tab="overview">
         <!-- Banner de carga global eliminado para evitar duplicidad con el aviso amarillo -->
         <div class="summary-card" id="exam-selector-card">
-          <h2 data-i18n="exams_available">Exàmens disponibles</h2>
+          <h2 data-i18n="exams_available">Exámenes disponibles</h2>
           <div class="flex-row">
             <select id="exam-selector"></select>
-            <button id="create-exam" type="button" data-i18n="create_exam">Crea examen nou</button>
+            <button id="create-exam" type="button" data-i18n="create_exam">Crear examen nuevo</button>
           </div>
           <div id="selector-status" class="note warn hidden"></div>
         </div>
 
         <div class="summary-card" id="exam-summary-card">
-          <h2 data-i18n="exam_summary">Resum de l'examen</h2>
+          <h2 data-i18n="exam_summary">Resumen del examen</h2>
           <p><strong data-i18n="label_identifier">Identificador:</strong> <span id="summary-id">--</span></p>
-          <p><strong data-i18n="label_name">Nom:</strong> <span id="summary-name">--</span></p>
-          <p><strong data-i18n="label_availability">Disponibilitat:</strong> <span id="summary-status" class="badge">--</span></p>
+          <p><strong data-i18n="label_name">Nombre:</strong> <span id="summary-name">--</span></p>
+          <p><strong data-i18n="label_availability">Disponibilidad:</strong> <span id="summary-status" class="badge">--</span></p>
           <p id="summary-status-text" class="status-detail hidden"></p>
-          <p><strong data-i18n="label_submissions">Enviaments registrats:</strong> <span id="summary-submissions">0</span></p>
-          <p><strong data-i18n="label_last">Darrer enviament:</strong> <span id="summary-last">---</span></p>
+          <p><strong data-i18n="label_submissions">Envíos registrados:</strong> <span id="summary-submissions">0</span></p>
+          <p><strong data-i18n="label_last">Último envío:</strong> <span id="summary-last">---</span></p>
           <div class="actions">
-            <button id="view-submissions" type="button" class="secondary" data-i18n="view_submissions">Veure lliuraments</button>
+            <button id="view-submissions" type="button" class="secondary" data-i18n="view_submissions">Ver envíos</button>
           </div>
           <div class="actions" style="justify-content:flex-end; margin-top:0.5rem;">
-            <button id="overview-clear-exam" type="button" class="danger" data-i18n="delete_exam">Esborrar aquest examen</button>
+            <button id="overview-clear-exam" type="button" class="danger" data-i18n="delete_exam">Borrar este examen</button>
           </div>
         </div>
 
         <div class="summary-card hidden" id="submissions-panel">
-          <h2 data-i18n="submissions">Lliuraments</h2>
+          <h2 data-i18n="submissions">Envíos</h2>
           <div id="submissions-info" class="note hidden"></div>
           <div id="submissions-list" style="max-height: 280px; overflow: auto; border: 1px solid #c5ccda; border-radius: 6px; padding: 0.5rem;"></div>
           <div class="actions" style="justify-content:flex-end">
-            <button id="close-submissions" type="button" data-i18n="close">Tanca</button>
+            <button id="close-submissions" type="button" data-i18n="close">Cerrar</button>
           </div>
         </div>
 
@@ -168,74 +168,74 @@
             <span id="sticky-exam-name">--</span>
             <small id="sticky-exam-id" style="color:#455a64">(--)</small>
           </div>
-          <h2 data-i18n="exam_config">Configuració de l'examen</h2>
-          <p data-i18n="exam_config_help">Actualitza els paràmetres i prem «Desa» per desar-los a la fulla.</p>
+          <h2 data-i18n="exam_config">Configuración del examen</h2>
+          <p data-i18n="exam_config_help">Actualiza los parámetros y pulsa «Guardar» para escribirlos en la hoja.</p>
 
-          <label for="exam-name" data-i18n="exam_name">Nom de l'examen</label>
-          <input type="text" id="exam-name" placeholder="Examen de mostra" autocomplete="off" required />
+          <label for="exam-name" data-i18n="exam_name">Nombre del examen</label>
+          <input type="text" id="exam-name" placeholder="Examen de muestra" autocomplete="off" required />
 
           <div class="grid-two">
             <div>
-              <label for="questions-count" data-i18n="n_questions">Nombre de preguntes</label>
+              <label for="questions-count" data-i18n="n_questions">Número de preguntas</label>
               <input type="number" id="questions-count" min="1" required />
             </div>
             <div>
-              <label for="options" data-i18n="options">Opcions disponibles (ex. ABCDE)</label>
+              <label for="options" data-i18n="options">Opciones disponibles (ej. ABCDE)</label>
               <input type="text" id="options" autocomplete="off" placeholder="ABCDE" required />
             </div>
             <div>
-              <label for="start-datetime" data-i18n="start">Inici programat</label>
+              <label for="start-datetime" data-i18n="start">Inicio programado</label>
               <input type="datetime-local" id="start-datetime" />
             </div>
             <div>
-              <label for="end-datetime" data-i18n="end">Fi programada</label>
+              <label for="end-datetime" data-i18n="end">Fin programado</label>
               <input type="datetime-local" id="end-datetime" />
             </div>
           </div>
 
           <div class="security-frame">
-            <div class="security-title"><span class="lock">🔒</span> <span data-i18n="security">Mesures de seguretat</span></div>
+            <div class="security-title"><span class="lock">🔒</span> <span data-i18n="security">Medidas de seguridad</span></div>
             <label class="checkbox-row">
               <input type="checkbox" id="shuffle-questions" />
-              <span data-i18n="shuffle_questions">Barreja l'ordre de les preguntes</span>
+              <span data-i18n="shuffle_questions">Barajar el orden de las preguntas</span>
             </label>
             <label class="checkbox-row">
               <input type="checkbox" id="shuffle-answers" />
-              <span data-i18n="shuffle_answers">Barreja l'ordre de les opcions</span>
+              <span data-i18n="shuffle_answers">Barajar el orden de las opciones</span>
             </label>
             <label class="checkbox-row">
               <input type="checkbox" id="enforce-fullscreen" />
-              <span data-i18n="fullscreen">Maximitza la finestra (pantalla completa) durant l'examen</span>
+              <span data-i18n="fullscreen">Maximizar la ventana (pantalla completa) durante el examen</span>
             </label>
           </div>
 
           <div id="config-status" class="note warn hidden"></div>
 
           <div class="actions">
-            <button id="save-config" type="submit" data-i18n="save_config">Desa la configuració</button>
+            <button id="save-config" type="submit" data-i18n="save_config">Guardar configuración</button>
           </div>
 
           <div class="manual-controls">
-            <button id="manual-toggle" type="button" class="manual-toggle state-closed" title="Clica per obrir">
-              <span class="manual-toggle__label" data-i18n="closed">Tancat</span>
-              <small data-i18n="click_to_open">Prem per obrir</small>
+            <button id="manual-toggle" type="button" class="manual-toggle state-closed" title="Pulsa para abrir">
+              <span class="manual-toggle__label" data-i18n="closed">Cerrado</span>
+              <small data-i18n="click_to_open">Pulsa para abrir</small>
             </button>
           </div>
 
-          <div id="config-loading" class="note hidden" data-i18n="loading_config">Carregant dades de l'examen...</div>
+          <div id="config-loading" class="note hidden" data-i18n="loading_config">Cargando los datos del examen...</div>
 
           <div id="exam-url" class="note hidden">
-            <h3 data-i18n="student_link_title">Enllaç per a l'alumnat</h3>
+            <h3 data-i18n="student_link_title">Enlace para el alumnado</h3>
             <div class="copy-group">
               <input type="text" id="exam-link" readonly />
-              <button id="copy-link" type="button" data-i18n="copy">Copia</button>
+              <button id="copy-link" type="button" data-i18n="copy">Copiar</button>
             </div>
             <div id="copy-feedback" class="copy-feedback"></div>
-            <small data-i18n="student_link_hint">Comparteix l'enllaç quan la configuració estigui preparada i l'examen estigui obert.</small>
+            <small data-i18n="student_link_hint">Comparte el enlace cuando la configuración esté lista y el examen esté abierto.</small>
           </div>
 
           <div class="actions" id="config-view-submissions-wrap" style="margin-top:1rem; display:none;">
-            <button id="view-submissions-config" type="button" class="secondary" data-i18n="view_submissions">Veure lliuraments</button>
+            <button id="view-submissions-config" type="button" class="secondary" data-i18n="view_submissions">Ver envíos</button>
           </div>
 
         </form>
@@ -248,94 +248,94 @@
             <span id="responses-exam-name">--</span>
             <small id="responses-exam-id" style="color:#7a8b97">(--)</small>
           </div>
-          <h2 data-i18n="answer_key">Clau de respostes</h2>
-          <p data-i18n="answer_key_help">Enganxa la cadena de respostes correctes (sense espais) o les lletres separades per espais.</p>
-          <label for="key-input" data-i18n="key_label">Clau</label>
+          <h2 data-i18n="answer_key">Clave de respuestas</h2>
+          <p data-i18n="answer_key_help">Pega la cadena de respuestas correctas (sin espacios) o las letras separadas por espacios.</p>
+          <label for="key-input" data-i18n="key_label">Clave</label>
           <textarea id="key-input" placeholder="ABCDE..."></textarea>
           <div id="key-status" class="note warn hidden"></div>
           <div class="actions">
-            <button id="save-key" type="submit" data-i18n="save_key">Desa la clau</button>
+            <button id="save-key" type="submit" data-i18n="save_key">Guardar clave</button>
           </div>
         </form>
 
         <div class="summary-card">
-          <h2 data-i18n="grading_title">Criteris de qualificació</h2>
+          <h2 data-i18n="grading_title">Criterios de calificación</h2>
           <div class="grid-two">
             <div>
-              <label for="grade-max" data-i18n="grade_max">Qualificar sobre</label>
+              <label for="grade-max" data-i18n="grade_max">Calificar sobre</label>
               <input type="number" id="grade-max" min="1" step="0.5" placeholder="10" />
             </div>
             <div>
-              <label for="pass-threshold" data-i18n="pass_threshold">Aprovat</label>
+              <label for="pass-threshold" data-i18n="pass_threshold">Aprobado</label>
               <input type="number" id="pass-threshold" min="0" step="0.5" placeholder="5" />
             </div>
           </div>
           <div id="grading-status" class="note warn hidden" style="margin-top:0.5rem;"></div>
           <div class="actions">
-            <button id="save-grading" type="button" data-i18n="save_grading">Desa criteris de nota</button>
+            <button id="save-grading" type="button" data-i18n="save_grading">Guardar criterios</button>
           </div>
         </div>
 
         <div class="summary-card">
-          <h2 data-i18n="penalty_title">Penalització per atzar</h2>
-          <p data-i18n="penalty_help">Si s'habilita, es restarà una fracció per cada resposta incorrecta. Recomanada: <code>1/(m-1)</code>, on <code>m</code> és el nombre d'opcions.</p>
+          <h2 data-i18n="penalty_title">Penalización por azar</h2>
+          <p data-i18n="penalty_help">Si se habilita, se restará una fracción por cada respuesta incorrecta. Recomendada: <code>1/(m-1)</code>, donde <code>m</code> es el número de opciones.</p>
           <label class="checkbox-row">
             <input type="checkbox" id="penalize-wrong" />
-            <span data-i18n="penalize_wrong">Penalitza respostes incorrectes</span>
+            <span data-i18n="penalize_wrong">Penalizar respuestas incorrectas</span>
           </label>
           <div class="grid-two">
             <div>
-              <label for="penalty-value" data-i18n="penalty_value">Penalització per incorrecta</label>
-              <input type="number" id="penalty-value" min="0" step="0.01" placeholder="0.33" />
+              <label for="penalty-value" data-i18n="penalty_value">Penalización por incorrecta</label>
+              <input type="number" id="penalty-value" min="0" step="any" placeholder="0.333" />
             </div>
           </div>
           <div id="penalty-status" class="note warn hidden" style="margin-top:0.5rem;"></div>
           <div class="actions">
-            <button id="save-penalty" type="button" data-i18n="save_penalty">Desa penalització</button>
+            <button id="save-penalty" type="button" data-i18n="save_penalty">Guardar penalización</button>
           </div>
         </div>
 
         <div class="summary-card">
-          <h2 data-i18n="report_title">Correcció i anàlisi</h2>
-          <p data-i18n="report_help">Després de recollir les respostes, genera la correcció i l'anàlisi.</p>
+          <h2 data-i18n="report_title">Corrección y análisis</h2>
+          <p data-i18n="report_help">Tras recoger las respuestas, genera la corrección y el análisis.</p>
           <div class="actions" style="gap:0.5rem; align-items:center;">
-            <button id="run-correction" type="button" data-i18n="run_report">Generar informe de correcció</button>
+            <button id="run-correction" type="button" data-i18n="run_report">Generar informe de corrección</button>
           </div>
-          <p data-i18n="report_note">Els resultats es desen a la pestanya «Correcció».</p>
+          <p data-i18n="report_note">Los resultados aparecerán en una hoja de cálculo nueva.</p>
         </div>
 
         </div>
 
         <div class="tab-content" data-tab="admin-settings">
         <div class="summary-card">
-          <h2 data-i18n="change_code_title">Canviar el codi d'administració</h2>
-          <p data-i18n="change_code_help">Actualitza el codi necessari per accedir al panell. Mantén-lo confidencial.</p>
+          <h2 data-i18n="change_code_title">Cambiar el código de administración</h2>
+          <p data-i18n="change_code_help">Actualiza el código necesario para acceder al panel. Mantenlo confidencial.</p>
           <form id="password-form">
-            <label for="new-admin-pass" data-i18n="new_code">Nou codi</label>
+            <label for="new-admin-pass" data-i18n="new_code">Nuevo código</label>
             <input type="password" id="new-admin-pass" autocomplete="off" required />
-            <label for="confirm-admin-pass" data-i18n="confirm_code">Confirma el nou codi</label>
+            <label for="confirm-admin-pass" data-i18n="confirm_code">Confirma el nuevo código</label>
             <input type="password" id="confirm-admin-pass" autocomplete="off" required />
             <div id="password-status" class="note hidden password-status"></div>
             <div class="actions">
-              <button id="change-password" type="submit" data-i18n="update_code">Actualitza el codi</button>
-              <button id="normalize-admin-token" type="button" class="secondary" data-i18n="normalize_token">Regravar codi com a text</button>
+              <button id="change-password" type="submit" data-i18n="update_code">Actualizar código</button>
+              <button id="normalize-admin-token" type="button" class="secondary" data-i18n="normalize_token">Regrabar código como texto</button>
             </div>
           </form>
         </div>
 
         <div class="summary-card">
-          <h2 data-i18n="clear_submissions_title">Esborrar enviaments</h2>
-          <p data-i18n="clear_submissions_help">Aquest botó elimina tots els enviaments, correccions i anàlisis desats per l'examen seleccionat. Fes-lo servir quan vulguis reutilitzar l'examen amb un altre grup.</p>
+          <h2 data-i18n="clear_submissions_title">Borrar envíos</h2>
+          <p data-i18n="clear_submissions_help">Este botón elimina todos los envíos, correcciones y análisis guardados del examen seleccionado. Úsalo cuando quieras reutilizar el examen con otro grupo.</p>
           <div class="actions">
-            <button id="clear-submissions" type="button" class="danger" data-i18n="clear_submissions_btn">Esborra enviaments i resultats</button>
+            <button id="clear-submissions" type="button" class="danger" data-i18n="clear_submissions_btn">Borrar envíos y resultados</button>
           </div>
         </div>
 
         <div class="summary-card">
-          <h2 data-i18n="reset_all_title">Adminstració de les dades</h2>
-          <p data-i18n="reset_all_help">El botó següent esborra tots els exàmens, claus, lliuraments i notes. Usa'l només si vols començar de zero.</p>
+          <h2 data-i18n="reset_all_title">Administración de datos</h2>
+          <p data-i18n="reset_all_help">El siguiente botón borra todos los exámenes, claves, envíos y notas. Úsalo solo si quieres empezar de cero.</p>
           <div class="actions">
-            <button id="reset-sheet" type="button" class="danger" data-i18n="reset_all_btn">Esborra tot</button>
+            <button id="reset-sheet" type="button" class="danger" data-i18n="reset_all_btn">Borrar todo</button>
           </div>
         </div>
 
@@ -360,6 +360,8 @@
           loading_overview: 'Carregant exàmens i resum... Espera uns segons.',
           loading_exams: 'Carregant exàmens...',
           no_exams: '(sense exàmens)',
+          prompt_create_exam: "Encara no hi ha cap examen. Crea'n un de nou.",
+          no_exams_available: 'Cap examen disponible.',
           exams_available: 'Exàmens disponibles',
           create_exam: 'Crea examen nou',
           exam_summary: "Resum de l'examen",
@@ -391,6 +393,10 @@
           loading_config: "Carregant dades de l'examen...",
           student_link_title: "Enllaç per a l'alumnat",
           copy: 'Copia',
+          copy_no_link: 'No hi ha cap enllaç per copiar.',
+          copy_success_clipboard: 'Enllaç copiat al porta-retalls.',
+          copy_success_short: 'Enllaç copiat.',
+          copy_failed: "No s'ha pogut copiar l'enllaç. Copia'l manualment.",
           student_link_hint: "Comparteix l'enllaç quan la configuració estigui preparada i l'examen estigui obert.",
           answer_key: 'Clau de respostes',
           answer_key_help: 'Enganxa la cadena de respostes correctes (sense espais) o les lletres separades per espais.',
@@ -408,7 +414,7 @@
           report_title: 'Correcció i anàlisi',
           report_help: "Després de recollir les respostes, genera la correcció i l'anàlisi.",
           run_report: 'Generar informe de correcció',
-          report_note: 'Els resultats es desen a la pestanya «Correcció».',
+          report_note: 'Els resultats apareixeran en un full de càlcul nou.',
           change_code_title: "Canviar el codi d'administració",
           change_code_help: 'Actualitza el codi necessari per accedir al panell. Mantén-lo confidencial.',
           new_code: 'Nou codi',
@@ -472,6 +478,8 @@
           loading_overview: 'Cargando exámenes y resumen... Espera unos segundos.',
           loading_exams: 'Cargando exámenes...',
           no_exams: '(sin exámenes)',
+          prompt_create_exam: 'Aún no hay ningún examen. Crea uno nuevo.',
+          no_exams_available: 'Ningún examen disponible.',
           exams_available: 'Exámenes disponibles',
           create_exam: 'Crear examen nuevo',
           exam_summary: 'Resumen del examen',
@@ -503,6 +511,10 @@
           loading_config: 'Cargando datos del examen...',
           student_link_title: 'Enlace para el alumnado',
           copy: 'Copiar',
+          copy_no_link: 'No hay ningún enlace para copiar.',
+          copy_success_clipboard: 'Enlace copiado al portapapeles.',
+          copy_success_short: 'Enlace copiado.',
+          copy_failed: 'No se ha podido copiar el enlace. Cópialo manualmente.',
           student_link_hint: 'Comparte el enlace cuando la configuración esté lista y el examen abierto.',
           answer_key: 'Clave de respuestas',
           answer_key_help: 'Pega la cadena de respuestas correctas (sin espacios) o las letras separadas por espacios.',
@@ -520,7 +532,7 @@
           report_title: 'Corrección y análisis',
           report_help: 'Tras recoger las respuestas, genera la corrección y el análisis.',
           run_report: 'Generar informe de corrección',
-          report_note: 'Los resultados se guardan en la pestaña «Corrección».',
+          report_note: 'Los resultados aparecerán en una hoja de cálculo nueva.',
           change_code_title: 'Cambiar el código de administración',
           change_code_help: 'Actualiza el código necesario para acceder al panel. Mantenlo confidencial.',
           new_code: 'Nuevo código',
@@ -1259,11 +1271,11 @@
           const respId0 = document.getElementById('responses-exam-id');
           if (respName0) respName0.textContent = '--';
           if (respId0) respId0.textContent = '(--)';
-          configStatusBox.textContent = state.configError || 'Crea un examen nou per començar.';
+          configStatusBox.textContent = state.configError || tAdmin('prompt_create_exam');
           configStatusBox.className = 'note warn';
           configStatusBox.classList.remove('hidden');
           keyStatusBox.classList.add('hidden');
-          selectorStatus.textContent = state.configError || 'Cap examen disponible.';
+          selectorStatus.textContent = state.configError || tAdmin('no_exams_available');
           selectorStatus.className = 'note warn';
           selectorStatus.classList.remove('hidden');
           currentManualState = 'auto';
@@ -1337,7 +1349,8 @@
             const m = (state.config.optionsString || '').length;
             const rec = m > 1 ? (1 / (m - 1)) : 0;
             if (penVal && (penVal.value === '' || penVal.value == null)) {
-              penVal.value = rec.toFixed(2);
+              const formatted = Number(rec.toFixed(3));
+              penVal.value = Number.isNaN(formatted) ? '' : String(formatted);
             }
           }
           configStatusBox.classList.add('hidden');
@@ -1546,14 +1559,14 @@
       function copyExamLink() {
         const input = document.getElementById('exam-link');
         if (!input.value) {
-          setCopyFeedback('No hi ha cap enllaç per copiar.', true);
+          setCopyFeedback(tAdmin('copy_no_link'), true);
           return;
         }
         const clipboard = navigator.clipboard;
         if (clipboard && typeof clipboard.writeText === 'function') {
           clipboard.writeText(input.value)
             .then(() => {
-              setCopyFeedback('Enllaç copiat al porta-retalls.', false);
+              setCopyFeedback(tAdmin('copy_success_clipboard'), false);
             })
             .catch(() => {
               fallbackCopy();
@@ -1572,9 +1585,9 @@
             copied = false;
           }
           if (copied) {
-            setCopyFeedback('Enllaç copiat.', false);
+            setCopyFeedback(tAdmin('copy_success_short'), false);
           } else {
-            setCopyFeedback('No s\'ha pogut copiar l\'enllaç. Copia\'l manualment.', true);
+            setCopyFeedback(tAdmin('copy_failed'), true);
           }
           input.blur();
         }
