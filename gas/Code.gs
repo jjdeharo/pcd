@@ -107,6 +107,20 @@ function i18n_(lang) {
     availableFromDate: 'Disponible a partir del',
     availableUntil: 'Disponible fins al',
     summaryPerQuestion: 'Resum per pregunta',
+    statsTitle: 'Estadístiques',
+    statsValue: 'Valor',
+    statsTotal: 'Total enviaments',
+    statsAverage: 'Mitjana (0-%MAX%)',
+    statsMax: 'Nota màxima',
+    statsMin: 'Nota mínima',
+    statsPassPercent: 'Aprovats (%)',
+    intervalHeader: 'Interval',
+    frequencyHeader: 'Freqüència',
+    legendBelow: 'Freq. < aprovat',
+    legendThreshold: 'Llindar',
+    legendAbove: 'Freq. ≥ aprovat',
+    chartTitleDistribution: 'Distribució de puntuacions',
+    passNote: "Llindar d'aprovat ≈ %VALUE%",
     msgCorrectionGenerated: 'Correcció generada per a %EXAM%. Consulta la pestanya «Correcció».',
     msgCorrectionNone: "No hi ha enviaments per corregir per a %EXAM%.",
     msgAnalysisGenerated: 'Anàlisi per pregunta generada per a %EXAM%. Consulta la pestanya «Correcció».',
@@ -161,6 +175,20 @@ function i18n_(lang) {
     availableFromDate: 'Disponible a partir del',
     availableUntil: 'Disponible hasta el',
     summaryPerQuestion: 'Resumen por pregunta',
+    statsTitle: 'Estadísticas',
+    statsValue: 'Valor',
+    statsTotal: 'Total envíos',
+    statsAverage: 'Media (0-%MAX%)',
+    statsMax: 'Nota máxima',
+    statsMin: 'Nota mínima',
+    statsPassPercent: 'Aprobados (%)',
+    intervalHeader: 'Intervalo',
+    frequencyHeader: 'Frecuencia',
+    legendBelow: 'Freq. < aprobado',
+    legendThreshold: 'Umbral',
+    legendAbove: 'Freq. ≥ aprobado',
+    chartTitleDistribution: 'Distribución de puntuaciones',
+    passNote: 'Umbral de aprobado ≈ %VALUE%',
     msgCorrectionGenerated: 'Corrección generada para %EXAM%. Consulta la hoja «Corrección».',
     msgCorrectionNone: 'No hay envíos que corregir para %EXAM%.',
     msgAnalysisGenerated: 'Análisis por pregunta generado para %EXAM%. Consulta la hoja «Corrección».',
@@ -1431,7 +1459,7 @@ function writeCorrectionTable_(sheet, rows, gradeMax, passThreshold, config, lan
 
   // Estadístiques a la dreta
   const startCol = totalColumns + 2; // una columna en blanc de separació
-  const statsHeader = [['Estadístiques', 'Valor']];
+  const statsHeader = [[tx.statsTitle, tx.statsValue]];
   sheet.getRange(1, startCol, 1, 2).setValues(statsHeader)
     .setFontWeight('bold')
     .setBackground('#f1f8e9');
@@ -1447,11 +1475,11 @@ function writeCorrectionTable_(sheet, rows, gradeMax, passThreshold, config, lan
     pass = scores.filter(s => s >= (Number.isFinite(threshold) ? threshold : 5)).length / total;
   }
   const statsRows = [
-    ['Total enviaments', total],
-    ['Mitjana (0-' + (Number(gradeMax) || 10) + ')', avg],
-    ['Nota màxima', max],
-    ['Nota mínima', min],
-    ['Aprovats (%)', pass]
+    [tx.statsTotal, total],
+    [tx.statsAverage.replace('%MAX%', String(Number(gradeMax) || 10)), avg],
+    [tx.statsMax, max],
+    [tx.statsMin, min],
+    [tx.statsPassPercent, pass]
   ];
   sheet.getRange(2, startCol, statsRows.length, 2).setValues(statsRows);
   // Formats sobre la columna de valors (startCol + 1)
@@ -1471,8 +1499,8 @@ function writeCorrectionTable_(sheet, rows, gradeMax, passThreshold, config, lan
       const below = Array(bins).fill(0);
       const passOnly = Array(bins).fill(0);
       const above = Array(bins).fill(0);
-      const pass = Number(passThreshold);
-      const passBin = Math.min(bins - 1, Math.max(0, Math.floor(pass / step)));
+      const passValue = Number.isFinite(Number(passThreshold)) ? Number(passThreshold) : 5;
+      const passBin = Math.min(bins - 1, Math.max(0, Math.floor(passValue / step)));
       for (let i = 0; i < bins; i++) {
         const a = Math.round((i * step) * 100) / 100;
         const b = Math.round(((i + 1) * step) * 100) / 100;
@@ -1487,7 +1515,7 @@ function writeCorrectionTable_(sheet, rows, gradeMax, passThreshold, config, lan
         else above[idx]++;
       });
       // Taula visible simplificada: una sola columna de freqüència, amb colors per categoria
-      const simpleHeader = [['Interval', 'Freqüència']];
+      const simpleHeader = [[tx.intervalHeader, tx.frequencyHeader]];
       const totals = labels.map((_, i) => below[i] + passOnly[i] + above[i]);
       const simpleTable = labels.map((lab, i) => [lab, totals[i]]);
       const tableCol = startCol + 3;
@@ -1510,7 +1538,7 @@ function writeCorrectionTable_(sheet, rows, gradeMax, passThreshold, config, lan
 
       // Dades ocultes per al gràfic, amb 3 sèries apilades
       const hiddenCol = tableCol + 4;
-      const chartHeader = [['Interval', 'Freq. < aprovat', 'Llindar', 'Freq. ≥ aprovat']];
+      const chartHeader = [[tx.intervalHeader, tx.legendBelow, tx.legendThreshold, tx.legendAbove]];
       const chartTable = labels.map((lab, i) => [lab, below[i], passOnly[i], above[i]]);
       sheet.getRange(1, hiddenCol, 1, chartHeader[0].length).setValues(chartHeader);
       sheet.getRange(2, hiddenCol, chartTable.length, chartHeader[0].length).setValues(chartTable);
@@ -1520,13 +1548,13 @@ function writeCorrectionTable_(sheet, rows, gradeMax, passThreshold, config, lan
       const chart = sheet.newChart()
         .setChartType(Charts.ChartType.STEPPED_AREA)
         .addRange(chartRange)
-        .setOption('title', 'Distribució de puntuacions')
+        .setOption('title', tx.chartTitleDistribution)
         .setOption('legend', { position: 'top' })
         .setOption('isStacked', true)
         .setOption('series', {
-          0: { color: '#d32f2f', labelInLegend: 'Freq. < aprovat' },
-          1: { color: '#f9a825', labelInLegend: 'Llindar' },
-          2: { color: '#2e7d32', labelInLegend: 'Freq. ≥ aprovat' }
+          0: { color: '#d32f2f', labelInLegend: tx.legendBelow },
+          1: { color: '#f9a825', labelInLegend: tx.legendThreshold },
+          2: { color: '#2e7d32', labelInLegend: tx.legendAbove }
         })
         // Situa el gràfic sota Estadístiques i Intervals
         .setPosition(2 + simpleTable.length + 4, startCol, 0, 0)
@@ -1535,7 +1563,7 @@ function writeCorrectionTable_(sheet, rows, gradeMax, passThreshold, config, lan
 
       // Anotació del llindar d'aprovat
       try {
-        sheet.getRange(2, tableCol + 1, 1, 1).setNote('Llindar d\'aprovat ≈ ' + pass.toFixed(2));
+        sheet.getRange(2, tableCol + 1, 1, 1).setNote(tx.passNote.replace('%VALUE%', passValue.toFixed(2)));
       } catch (e) {}
     } catch (err) {}
   }
