@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Plantilla correctora digital · Instruccions</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="[https://polyfill.io/v3/polyfill.min.js?features=es6](https://polyfill.io/v3/polyfill.min.js?features=es6)"></script>
+    <script id="MathJax-script" async src="[https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js](https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js)"></script>
     <style>
       :root {
         --bg: #f5f8fc;
@@ -56,6 +56,9 @@
         --btn-text: #e6edf3;
         --primary: #539bf5;
         --primary-text: #0b1220;
+      }
+      html {
+        scroll-behavior: smooth;
       }
       body { font-family: Arial, sans-serif; line-height: 1.55; color: var(--text); background: var(--bg); margin: 0; }
       .wrap { max-width: 880px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
@@ -118,6 +121,22 @@
         padding-top: 1.5rem;
       }
       
+      /* Animación para el acordeón */
+      details.accordion[open] > .accordion-content {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-1rem);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
       /* Estilos para el iframe responsivo */
       .iframe-container {
         position: relative;
@@ -176,7 +195,7 @@
                   <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRRIav1DWcFyrCVMnE5O60_LUgPbxuAopVCw96caWni9VPDEqRhaasc_Nj5GpiBf9BG3nCM8pml37E1/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
                 </div>
                 <ol>
-                    <li><strong>Copia el Full de Càlcul base</strong>. Fes clic en aquest <a href="https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy" target="_blank" rel="noopener noreferrer">enllaç</a> per generar la teva pròpia còpia. Aquest full desarà la configuració i les respostes dels alumnes.</li>
+                    <li><strong>Copia el Full de Càlcul base</strong>. Fes clic en aquest <a href="[https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy](https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy)" target="_blank" rel="noopener noreferrer">enllaç</a> per generar la teva pròpia còpia. Aquest full desarà la configuració i les respostes dels alumnes.</li>
                     <li><strong>Obre l'editor de codi</strong>. Al teu nou full de càlcul, ves al menú Extensions → Apps Script. S'obrirà l'editor que conté el codi de l'aplicació. No cal que modifiquis res.</li>
                     <li><strong>Publica l'aplicació web</strong>. Aquest pas genera la pàgina que faràs servir per gestionar els exàmens.
                         <ul>
@@ -241,14 +260,14 @@
             <div class="accordion-content">
                 <h3>Puc esborrar un examen concret?</h3>
                 <p>Sí. Per fer-ho, selecciona'l a la pestanya <strong>Resum</strong> i prem el botó <strong>Esborra aquest examen</strong>. Aquesta acció elimina completament totes les seves dades: la configuració, la clau de respostes i tots els lliuraments dels alumnes. Fes-ho servir quan un examen ha finalitzat i ja no el necessites a la llista.</p>
-                <h3>Puc esborrar només les respostes dels alumnes sense esborrar l'examen?</h3>
-                <p>Sí. Ves a la pestanya <strong>Ajustos</strong> i fes servir el botó <strong>Esborra lliuraments</strong>. Aquesta opció només elimina les respostes dels alumnes per a l'examen que tinguis seleccionat. La configuració de l'examen (nom, nombre de preguntes, clau, etc.) es manté intacta, per la qual cosa és l'opció ideal per reutilitzar el mateix examen amb un grup d'alumnes diferent.</p>
+                <h3>Puc esborrar només les respostes dels alumnes sin esborrar l'examen?</h3>
+                <p>Sí. Ves a la pestanya <strong>Ajustos</strong> i fes servir el botó <strong>Esborra lliuraments</strong>. Aquesta opció només elimina les respostes dels alumnes per a l'examen que tinguis seleccionat. La configuració de l'examen (nom, nombre de preguntes, clau, etc.) se manté intacta, per la qual cosa és l'opció ideal per reutilitzar el mateix examen amb un grup d'alumnes diferent.</p>
                 <h3>Com puc començar de zero i esborrar totes les meves dades?</h3>
                 <p>Si vols restablir l'aplicació completament, pots fer servir el botó <strong>Esborra-ho tot</strong>, que es troba a la pestanya <strong>Ajustos</strong>. Aquesta acció eliminarà <em>tots</em> els exàmens, configuracions i dades d'alumnes que hagis creat, tornant el Full de Càlcul al seu estat original.</p>
                 <h3>Com puc gestionar exàmens de diferents assignatures o cursos de forma totalment separada?</h3>
                 <p>Cada còpia del Full de Càlcul, juntament amb la seva implementació web, funciona com un sistema independent. Si vols tenir els exàmens de diferents matèries (per exemple, Biologia i Matemàtiques) o per a diferents cursos (1r de Batxillerat i 2n de Batxillerat) completament separats, només has de repetir el procés d'instal·lació inicial:</p>
                 <ol>
-                    <li><strong>Fes una nova còpia</strong> del Full de Càlcul base fent servir l'<a href="https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy" target="_blank" rel="noopener noreferrer">enllaç de la plantilla</a>. Posa-li un nom distintiu (ex. "Corrector Biologia").</li>
+                    <li><strong>Fes una nova còpia</strong> del Full de Càlcul base fent servir l'<a href="[https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy](https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy)" target="_blank" rel="noopener noreferrer">enllaç de la plantilla</a>. Posa-li un nom distintiu (ex. "Corrector Biologia").</li>
                     <li>Obre aquest nou full i ves a <strong>Extensions → Apps Script</strong>.</li>
                     <li>Torna a seguir els passos per a <strong>Implementa → Nova implementació</strong>.</li>
                 </ol>
@@ -261,7 +280,7 @@
             <div class="accordion-content">
                 <p>Si trobes algun error, tens algun dubte o vols proposar una millora, pots comunicar-ho a la pàgina del projecte. Per fer-ho:</p>
                 <ol>
-                    <li>Ves a <a href="https://github.com/jjdeharo/pcd/issues">https://github.com/jjdeharo/pcd/issues</a>.</li>
+                    <li>Ves a <a href="[https://github.com/jjdeharo/pcd/issues](https://github.com/jjdeharo/pcd/issues)">[https://github.com/jjdeharo/pcd/issues](https://github.com/jjdeharo/pcd/issues)</a>.</li>
                     <li>Prem el botó verd <strong>New issue</strong>.</li>
                     <li>Escriu la teva consulta o suggeriment.</li>
                 </ol>
@@ -272,7 +291,7 @@
             <summary><h2>Llicències</h2></summary>
             <div class="accordion-content">
                 <ul>
-                    <li><strong>Codi</strong>: AGPL v3. Consulta <a href="https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt">LICENSE.txt</a>.</li>
+                    <li><strong>Codi</strong>: AGPL v3. Consulta <a href="[https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt](https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt)">LICENSE.txt</a>.</li>
                     <li><strong>Continguts</strong>: CC BY-SA 4.0.</li>
                 </ul>
             </div>
@@ -298,10 +317,10 @@
             <div class="accordion-content">
                 <p>El proceso de puesta en marcha es sencillo y solo hay que hacerlo una vez. Consiste en dos partes: primero, crear una copia personal de la Hoja de Cálculo que funcionará como base de datos de la aplicación y, segundo, publicar la aplicación web que te permitirá gestionar los exámenes desde una página cómoda e intuitiva. No tendrás que manipular la hoja de cálculo directamente; el programa lo hará por ti a través del panel de administración web.</p>
                  <div class="iframe-container">
-                  <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRRIav1DWcFyrCVMnE5O60_LUgPbxuAopVCw96caWni9VPDEqRhaasc_Nj5GpiBf9BG3nCM8pml37E1/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+                  <iframe src="[https://docs.google.com/presentation/d/e/2PACX-1vRRIav1DWcFyrCVMnE5O60_LUgPbxuAopVCw96caWni9VPDEqRhaasc_Nj5GpiBf9BG3nCM8pml37E1/pubembed?start=false&loop=false&delayms=3000](https://docs.google.com/presentation/d/e/2PACX-1vRRIav1DWcFyrCVMnE5O60_LUgPbxuAopVCw96caWni9VPDEqRhaasc_Nj5GpiBf9BG3nCM8pml37E1/pubembed?start=false&loop=false&delayms=3000)" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
                 </div>
                 <ol>
-                    <li><strong>Copia la Hoja de Cálculo base</strong>. Haz clic en este <a href="https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy" target="_blank" rel="noopener noreferrer">enlace</a> para generar tu propia copia. Esta hoja guardará la configuración y las respuestas de los alumnos.</li>
+                    <li><strong>Copia la Hoja de Cálculo base</strong>. Haz clic en este <a href="[https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy](https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy)" target="_blank" rel="noopener noreferrer">enlace</a> para generar tu propia copia. Esta hoja guardará la configuración y las respuestas de los alumnos.</li>
                     <li><strong>Abre el editor de código</strong>. En tu nueva hoja de cálculo, ve al menú Extensiones → Apps Script. Se abrirá el editor que contiene el código de la aplicación. No es necesario que modifiques nada.</li>
                     <li><strong>Publica la aplicación web</strong>. Este paso genera la página que usarás para gestionar los exámenes.
                         <ul>
@@ -351,7 +370,7 @@
                     </li>
                 </ul>
                 <p>Una vez que los alumnos hayan respondido, pulsa el botón <strong>Generar informe de corrección</strong> para obtener los resultados. Se creará una nueva Hoja de Cálculo en tu Drive con el informe detallado.</p>
-                <h3>4. Pestanya Ajustos: gestió de l'aplicació</h3>
+                <h3>4. Pestaña Ajustes: gestión de la aplicación</h3>
                 <p>Esta última pestaña contiene opciones para administrar la aplicación y sus datos. Es recomendable usar estas funciones con precaución.</p>
                 <ul>
                     <li><strong>Cambiar el código de administración</strong>: te permite establecer un nuevo código de acceso al panel del profesorado para mantener la seguridad.</li>
@@ -373,7 +392,7 @@
                 <h3>¿Cómo puedo gestionar exámenes de diferentes asignaturas o cursos de forma totalmente separada?</h3>
                 <p>Cada copia de la Hoja de Cálculo, junto con su implementación web, funciona como un sistema independiente. Si quieres tener los exámenes de diferentes materias (por ejemplo, Biología y Matemáticas) o para distintos cursos (1º de Bachillerato y 2º de Bachillerato) completamente separados, solo tienes que repetir el proceso de instalación inicial:</p>
                 <ol>
-                    <li><strong>Haz una nueva copia</strong> de la Hoja de Cálculo base usando el <a href="https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy" target="_blank" rel="noopener noreferrer">enlace de la plantilla</a>. Dale un nombre distintivo (ej. "Corrector Biología").</li>
+                    <li><strong>Haz una nueva copia</strong> de la Hoja de Cálculo base usando el <a href="[https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy](https://docs.google.com/spreadsheets/d/129xDHV5AcSL8GMu2kmGS2f4Gvs6m0BHn1tkQT-JNfEA/copy)" target="_blank" rel="noopener noreferrer">enlace de la plantilla</a>. Dale un nombre distintivo (ej. "Corrector Biología").</li>
                     <li>Abre esa nueva hoja y ve a <strong>Extensiones → Apps Script</strong>.</li>
                     <li>Vuelve a seguir los pasos para <strong>Implementar → Nueva implementación</strong>.</li>
                 </ol>
@@ -386,7 +405,7 @@
             <div class="accordion-content">
                 <p>Si encuentras algún error, tienes alguna duda o quieres proponer una mejora, puedes comunicarlo en la página del proyecto. Para ello:</p>
                 <ol>
-                    <li>Ve a <a href="https://github.com/jjdeharo/pcd/issues">https://github.com/jjdeharo/pcd/issues</a>.</li>
+                    <li>Ve a <a href="[https://github.com/jjdeharo/pcd/issues](https://github.com/jjdeharo/pcd/issues)">[https://github.com/jjdeharo/pcd/issues](https://github.com/jjdeharo/pcd/issues)</a>.</li>
                     <li>Pulsa el botón verde <strong>New issue</strong>.</li>
                     <li>Escribe tu consulta o sugerencia.</li>
                 </ol>
@@ -397,7 +416,7 @@
             <summary><h2>Licencias</h2></summary>
             <div class="accordion-content">
                 <ul>
-                    <li><strong>Código</strong>: AGPL v3. Consulta <a href="https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt">LICENSE.txt</a>.</li>
+                    <li><strong>Código</strong>: AGPL v3. Consulta <a href="[https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt](https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt)">LICENSE.txt</a>.</li>
                     <li><strong>Contenidos</strong>: CC BY-SA 4.0.</li>
                 </ul>
             </div>
@@ -422,15 +441,15 @@
       const I18N_FOOTER = {
         ca: {
           appName: 'Plantilla correctora digital',
-          docs: '<a href="https://jjdeharo.github.io/pcd/" target="_blank" rel="noopener">Documentació</a>',
-          line1: '<a href="https://bilateria.es" target="_blank" rel="noopener">© Juan José de Haro</a>',
-          line2: 'Llicència del codi: <a href="https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a> · Contingut: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> <img class="cc" alt="CC BY-SA 4.0" src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" />'
+          docs: '<a href="[https://jjdeharo.github.io/pcd/](https://jjdeharo.github.io/pcd/)" target="_blank" rel="noopener">Documentació</a>',
+          line1: '<a href="[https://bilateria.es](https://bilateria.es)" target="_blank" rel="noopener">© Juan José de Haro</a>',
+          line2: 'Llicència del codi: <a href="[https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt](https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt)" target="_blank" rel="noopener">AGPL v3</a> · Contingut: <a href="[https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0/)" target="_blank" rel="noopener">CC BY-SA 4.0</a> <img class="cc" alt="CC BY-SA 4.0" src="[https://licensebuttons.net/l/by-sa/4.0/88x31.png](https://licensebuttons.net/l/by-sa/4.0/88x31.png)" />'
         },
         es: {
           appName: 'Plantilla correctora digital',
-          docs: '<a href="https://jjdeharo.github.io/pcd/" target="_blank" rel="noopener">Documentación</a>',
-          line1: '<a href="https://bilateria.es" target="_blank" rel="noopener">© Juan José de Haro</a>',
-          line2: 'Licencia del código: <a href="https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a> · Contenido: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> <img class="cc" alt="CC BY-SA 4.0" src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" />'
+          docs: '<a href="[https://jjdeharo.github.io/pcd/](https://jjdeharo.github.io/pcd/)" target="_blank" rel="noopener">Documentación</a>',
+          line1: '<a href="[https://bilateria.es](https://bilateria.es)" target="_blank" rel="noopener">© Juan José de Haro</a>',
+          line2: 'Licencia del código: <a href="[https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt](https://github.com/jjdeharo/pcd/blob/main/LICENSE.txt)" target="_blank" rel="noopener">AGPL v3</a> · Contenido: <a href="[https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0/)" target="_blank" rel="noopener">CC BY-SA 4.0</a> <img class="cc" alt="CC BY-SA 4.0" src="[https://licensebuttons.net/l/by-sa/4.0/88x31.png](https://licensebuttons.net/l/by-sa/4.0/88x31.png)" />'
         }
       };
       function renderFooterDocs(currentLang) {
@@ -476,6 +495,33 @@
       themeButtons.forEach(b => b.addEventListener('click', () => setTheme(b.dataset.theme)));
       const savedTheme = (function(){ try { return localStorage.getItem(THEME_KEY) || 'auto'; } catch(e) { return 'auto'; } })();
       applyTheme(savedTheme);
+
+      // ===== Accordion functionality =====
+      const accordions = document.querySelectorAll('details.accordion');
+      accordions.forEach(currentAccordion => {
+        currentAccordion.addEventListener('toggle', (event) => {
+          if (currentAccordion.open) {
+            
+            accordions.forEach(otherAccordion => {
+              if (otherAccordion !== currentAccordion) {
+                otherAccordion.open = false;
+              }
+            });
+
+            setTimeout(() => {
+              // Only scroll into view if the opened accordion is NOT the first one in its section.
+              // This prevents the page from jumping on load.
+              const isFirstInSection = currentAccordion.parentElement.querySelector('details.accordion') === currentAccordion;
+              if (!isFirstInSection) {
+                currentAccordion.querySelector('summary').scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start'
+                });
+              }
+            }, 100); // A small delay to ensure other accordions have closed and layout is stable.
+          }
+        });
+      });
     </script>
   </body>
 </html>
