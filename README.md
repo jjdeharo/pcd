@@ -1,5 +1,7 @@
 # PLACODI: Plantilla correctora digital (Google Sheets + Web)
 
+Documentación (CA/ES) con guía rápida: consulta `docs/index.html`.
+
 Este proyecto permite pasar exámenes tipo test a tu alumnado desde una página web sencilla y guardar automáticamente las respuestas en tu Hoja de Cálculo de Google. Incluye:
 
 - Enlace de alumnado para responder (web app).
@@ -115,7 +117,7 @@ Entra en la pestaña **Ajustes** del panel del profesorado y usa la opción corr
 ## Licencias
 
 - Código: AGPL v3. Consulta el texto completo en `LICENSE.txt`.
-  - Atribución recomendada: «Plantilla correctora digital», Juan José de Haro, 2025, https://github.com/jjdeharo/examen-digital-gas
+  - Atribución recomendada: «Plantilla correctora digital», Juan José de Haro, 2025, https://github.com/jjdeharo/pcd
 - Contenidos educativos (textos, ejercicios, vídeos, imágenes): CC BY-SA 4.0.
   - Más información: https://creativecommons.org/licenses/by-sa/4.0/
 

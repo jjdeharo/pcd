@@ -1,6 +1,6 @@
 // Plantilla correctora digital — © 2025 Juan José de Haro
 // Código con licencia AGPL v3: ver LICENSE.txt
-// Repositorio: https://github.com/jjdeharo/examen-digital-gas
+// Repositorio: https://github.com/jjdeharo/pcd
 const DEFAULT_ADMIN_TOKEN = 'CANVIA_AIXO';
 
 const SHEET_NAMES = {

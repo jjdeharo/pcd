@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ca">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plantilla correctora digital · Instruccions</title>
+    <style>
+      body { font-family: Arial, sans-serif; line-height: 1.55; color: #1a2733; background: #f5f8fc; margin: 0; }
+      .wrap { max-width: 880px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+      h1 { margin: 0.2rem 0 0.75rem; font-size: 1.9rem; }
+      h2 { margin-top: 1.6rem; font-size: 1.35rem; }
+      h3 { margin-top: 1.2rem; font-size: 1.1rem; }
+      p, li { font-size: 1rem; }
+      code { background: #eef2f7; padding: 0 0.25rem; border-radius: 4px; }
+      .lang { display: none; }
+      .lang.active { display: block; }
+      .switch { display: flex; justify-content: flex-end; gap: 6px; align-items: center; margin-bottom: 1rem; }
+      .btn { background: #eceff4; color: #1a2733; border: 1px solid #c5ccda; padding: 0.3rem 0.7rem; border-radius: 999px; font-size: 0.9rem; cursor: pointer; }
+      .btn.active { background: #1976d2; color: #fff; border-color: #1976d2; }
+      .footer { text-align: center; color: #607d8b; margin-top: 2rem; font-size: 0.95rem; }
+      .footer a { color: #376082; text-decoration: none; }
+      .footer a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="switch" aria-label="Language selector">
+        <button class="btn" data-lang="ca">CA</button>
+        <button class="btn" data-lang="es">ES</button>
+      </div>
+
+      <header>
+        <h1>Plantilla correctora digital (Google Sheets + Web)</h1>
+        <p id="repo-link"></p>
+      </header>
+
+      <section class="lang active" id="lang-ca">
+        <h2>Què és?</h2>
+        <p>Aquesta plantilla et permet recollir respostes d'exàmens tipus test des d'una pàgina web i desar-les automàticament a la teva Fulla de Càlcul de Google.</p>
+        <ul>
+          <li>Enllaç per a l'alumnat (web app).</li>
+          <li>Panell del professorat per configurar, carregar la clau i corregir.</li>
+          <li>Informe de correcció a la pestanya «Correcció».</li>
+        </ul>
+        <p><strong>Important:</strong> aquesta aplicació és una <strong>plantilla correctora</strong>. L'examen es lliura en paper i l'alumnat només introdueix les respostes a la web.</p>
+
+        <h2>Requisits</h2>
+        <ul>
+          <li>Compte de Google (Drive i Apps Script).</li>
+          <li>Una còpia de la fulla del projecte amb pestanyes: <code>Config</code>, <code>Keys</code>, <code>Settings</code>, <code>Submissions</code> i <code>Correcció</code>.</li>
+        </ul>
+
+        <h2>Passos ràpids</h2>
+        <ol>
+          <li><strong>Copia</strong> la plantilla de la Fulla de Càlcul.</li>
+          <li><strong>Obre Apps Script</strong> des de Extensions → Apps Script.</li>
+          <li><strong>Publica</strong> la web: Implementar → Nova implementació → Aplicació web; «Qualsevol amb l'enllaç».</li>
+          <li><strong>Entra</strong> al panell del professorat amb el codi inicial <code>0000</code> i canvia'l.</li>
+        </ol>
+
+        <h2>Crear i configurar un examen</h2>
+        <ol>
+          <li>Des del panell, crea o selecciona un examen i defineix nom, preguntes, opcions (ABC/ABCDE), i horari si cal.</li>
+          <li>Carrega la <strong>clau de respostes</strong> (seqüència de lletres).</li>
+          <li>Comparteix l'<strong>enllaç de l'alumnat</strong> (Classroom, Moodle o QR).</li>
+          <li>Executa la <strong>correcció</strong> per obtenir resultats a «Correcció».</li>
+        </ol>
+
+        <h2>Pestanyes del panell</h2>
+        <ul>
+          <li><strong>Resum</strong>: estat de l'examen, enllaços i esborrat.</li>
+          <li><strong>Configuració</strong>: paràmetres i mesures de seguretat.</li>
+          <li><strong>Respostes</strong>: clau, criteris de qualificació i informe.</li>
+          <li><strong>Ajustaments</strong>: codi d'administració i gestió de dades.</li>
+        </ul>
+
+        <h2>Llicències</h2>
+        <ul>
+          <li><strong>Codi</strong>: AGPL v3. Consulta <a href="../LICENSE.txt">LICENSE.txt</a>.</li>
+          <li><strong>Continguts</strong>: CC BY-SA 4.0.</li>
+        </ul>
+      </section>
+
+      <section class="lang" id="lang-es">
+        <h2>¿Qué es?</h2>
+        <p>Esta plantilla permite recoger respuestas de exámenes tipo test desde una página web y guardarlas automáticamente en tu Hoja de Cálculo de Google.</p>
+        <ul>
+          <li>Enlace para el alumnado (web app).</li>
+          <li>Panel del profesorado para configurar, cargar la clave y corregir.</li>
+          <li>Informe de corrección en la pestaña «Correcció».</li>
+        </ul>
+        <p><strong>Importante:</strong> esta aplicación es una <strong>plantilla correctora</strong>. El examen se entrega en papel y el alumnado solo introduce sus respuestas en la web.</p>
+
+        <h2>Requisitos</h2>
+        <ul>
+          <li>Cuenta de Google (Drive y Apps Script).</li>
+          <li>Una copia de la hoja del proyecto con pestañas: <code>Config</code>, <code>Keys</code>, <code>Settings</code>, <code>Submissions</code> y <code>Correcció</code>.</li>
+        </ul>
+
+        <h2>Pasos rápidos</h2>
+        <ol>
+          <li><strong>Copia</strong> la plantilla de la Hoja de Cálculo.</li>
+          <li><strong>Abre Apps Script</strong> desde Extensiones → Apps Script.</li>
+          <li><strong>Publica</strong> la web: Implementar → Nueva implementación → Aplicación web; «Cualquiera con el enlace».</li>
+          <li><strong>Entra</strong> al panel del profesorado con el código inicial <code>0000</code> y cámbialo.</li>
+        </ol>
+
+        <h2>Crear y configurar un examen</h2>
+        <ol>
+          <li>Desde el panel, crea o selecciona un examen y define nombre, preguntas, opciones (ABC/ABCDE), y horario si procede.</li>
+          <li>Carga la <strong>clave de respuestas</strong> (secuencia de letras).</li>
+          <li>Comparte el <strong>enlace del alumnado</strong> (Classroom, Moodle o QR).</li>
+          <li>Ejecuta la <strong>corrección</strong> para obtener resultados en «Correcció».</li>
+        </ol>
+
+        <h2>Pestañas del panel</h2>
+        <ul>
+          <li><strong>Resumen</strong>: estado del examen, enlaces y borrado.</li>
+          <li><strong>Configuración</strong>: parámetros y medidas de seguridad.</li>
+          <li><strong>Respuestas</strong>: clave, criterios de calificación e informe.</li>
+          <li><strong>Ajustes</strong>: código de administración y gestión de datos.</li>
+        </ul>
+
+        <h2>Licencias</h2>
+        <ul>
+          <li><strong>Código</strong>: AGPL v3. Consulta <a href="../LICENSE.txt">LICENSE.txt</a>.</li>
+          <li><strong>Contenidos</strong>: CC BY-SA 4.0.</li>
+        </ul>
+      </section>
+
+      <div class="footer">
+        <div>© Juan José de Haro · <a href="https://github.com/jjdeharo/pcd" target="_blank" rel="noopener">Repositorio</a></div>
+      </div>
+    </div>
+
+    <script>
+      const buttons = document.querySelectorAll('.btn');
+      const sections = {
+        ca: document.getElementById('lang-ca'),
+        es: document.getElementById('lang-es')
+      };
+      function setLang(lang) {
+        buttons.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+        Object.entries(sections).forEach(([k, el]) => el.classList.toggle('active', k === lang));
+        document.documentElement.lang = lang;
+      }
+      buttons.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+      // Auto: según navegador
+      const nav = (navigator.language || 'ca').toLowerCase();
+      setLang(nav.startsWith('es') ? 'es' : 'ca');
+    </script>
+  </body>
+  </html>
+
