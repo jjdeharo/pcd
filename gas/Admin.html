@@ -5,12 +5,13 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Panel del profesorado</title>
     <style>
-      body { font-family: Arial, sans-serif; background: #eef2f9; margin: 0; }
-      .wrap { max-width: 780px; margin: 0 auto; padding: 2rem; }
+      body { font-family: Arial, sans-serif; background: #eef2f9; color: #1a2733; margin: 0; padding: 0; min-height: 100vh; }
+      .wrap { width: min(100%, 820px); margin: 0 auto; padding: clamp(1.25rem, 4vw, 2.5rem) clamp(1rem, 4vw, 2.5rem); box-sizing: border-box; }
       h1 { margin: 0 0 1rem; font-size: 1.8rem; }
-      form { background: #fff; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+      form { background: #fff; padding: clamp(1.1rem, 4vw, 1.75rem); border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
       label { display: block; font-weight: bold; margin-top: 1rem; }
       input[type="text"],
       input[type="number"],
@@ -40,9 +41,9 @@
       .note.error { background: #fdecea; color: #b71c1c; }
       .note.ok { background: #e8f5e9; color: #2e7d32; }
       .actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
-      .summary-card { background: #fff; padding: 1.2rem 1.5rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+      .summary-card { background: #fff; padding: clamp(1.1rem, 3.5vw, 1.75rem) clamp(1.15rem, 4vw, 1.85rem); border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
       .summary-card p { margin: 0.4rem 0; font-size: 1rem; }
-      #login-card { max-width: 440px; margin: 4rem auto; text-align: center; background: #fff; padding: 2.5rem; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+      #login-card { width: min(100%, 440px); margin: 3rem auto; text-align: center; background: #fff; padding: clamp(1.75rem, 6vw, 2.5rem); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
       #login-card p { margin: 0.5rem 0 1.2rem; color: #546e7a; }
       .flex-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
       .flex-row > * { flex: 1 1 220px; }
@@ -51,6 +52,27 @@
       .grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; align-items: flex-start; }
       @media (max-width: 560px) {
         .grid-two { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 720px) {
+        h1 { font-size: 1.6rem; }
+        .wrap { padding: clamp(1.1rem, 4.5vw, 2rem); }
+        .tab-bar { justify-content: center; }
+      }
+      @media (max-width: 600px) {
+        .lang-switch { justify-content: center; }
+        .tab-bar { flex-direction: column; align-items: stretch; }
+        .tab-button { width: 100%; text-align: center; }
+        #login-card { margin: 2.5rem auto; }
+      }
+      @media (max-width: 480px) {
+        body { font-size: 0.95rem; }
+        form,
+        .summary-card { padding: 1.05rem; }
+        .actions { gap: 0.5rem; }
+        .manual-controls { flex-direction: column; }
+        .manual-controls button { width: 100%; }
+        .copy-group { flex-direction: column; align-items: stretch; }
+        .copy-group button { width: 100%; }
       }
       #exam-selector-card select { min-width: 0; width: auto; flex: 1 1 auto; }
       #exam-selector-card option { white-space: nowrap; }

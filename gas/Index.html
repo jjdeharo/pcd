@@ -5,49 +5,70 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lliurament d'examen</title>
     <style>
-      body { font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 2rem; background: #f5f8fc; }
+      body { font-family: Arial, sans-serif; background: #f5f8fc; color: #1a2733; margin: 0; min-height: 100vh; }
+      .page { width: min(100%, 900px); margin: 0 auto; padding: clamp(0.75rem, 4.5vw, 2rem); box-sizing: border-box; }
       h1 { font-size: 1.6rem; margin-bottom: 0.5rem; }
-      form { background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+      form { background: #fff; padding: clamp(1.1rem, 4vw, 1.75rem); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
       .question-block { margin: 1rem 0; }
       .question-title { display: block; margin-bottom: 0.35rem; font-weight: bold; }
-      .options-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-      .options-row label { display: flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.6rem; border: 1px solid #ccd3de; border-radius: 20px; cursor: pointer; background: #f4f6fb; transition: background 0.2s ease, border-color 0.2s ease; }
+      .options-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.6rem; }
+      .options-row label { display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.45rem 0.7rem; border: 1px solid #ccd3de; border-radius: 20px; cursor: pointer; background: #f4f6fb; transition: background 0.2s ease, border-color 0.2s ease; text-align: center; width: 100%; box-sizing: border-box; }
       .options-row input[type="radio"] { margin: 0; }
       .options-row label.selected { border-color: #1976d2; background: #e3f2fd; font-weight: 600; }
       input[type="text"] { width: 100%; padding: 0.6rem; border: 1px solid #ccd3de; border-radius: 4px; font-size: 1rem; }
-      button { margin-top: 1.5rem; padding: 0.8rem 1.2rem; font-size: 1rem; border: none; border-radius: 4px; color: #fff; background: #1976d2; cursor: pointer; }
-      button[disabled] { background: #9fbad7; cursor: not-allowed; }
+      form button { margin-top: 1.5rem; padding: 0.8rem 1.2rem; font-size: 1rem; border: none; border-radius: 4px; color: #fff; background: #1976d2; cursor: pointer; width: auto; min-width: 160px; display: inline-flex; justify-content: center; align-items: center; }
+      form button[disabled] { background: #9fbad7; cursor: not-allowed; }
       .notice { margin: 1rem 0; padding: 0.75rem 1rem; border-radius: 6px; background: #e3f2fd; color: #0d47a1; }
       .notice.error { background: #fdecea; color: #b71c1c; }
       .notice.success { background: #e8f5e9; color: #2e7d32; }
       .hidden { display: none; }
       .lang-switch { display: flex; justify-content: flex-end; gap: 6px; align-items: center; margin: 0.5rem 0 1rem; }
-      .lang-btn { background: #eceff4; color: #1a2733; border: 1px solid #c5ccda; padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.85rem; cursor: pointer; }
+      .lang-btn { background: #eceff4; color: #1a2733; border: 1px solid #c5ccda; padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.85rem; cursor: pointer; width: auto; }
       .lang-btn.active { background: #1976d2; color: #fff; border-color: #1976d2; }
+      @media (max-width: 640px) {
+        form button { width: 100%; }
+      }
+      @media (max-width: 540px) {
+        h1 { font-size: 1.45rem; }
+        .lang-switch { justify-content: center; }
+        .page { padding: clamp(0.7rem, 5vw, 1.6rem); }
+      }
+      @media (max-width: 480px) {
+        .page { padding: clamp(0.7rem, 6vw, 1.25rem); }
+        form { padding: 1.05rem; }
+        .options-row { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.5rem; }
+        .options-row label { padding: 0.45rem 0.6rem; }
+      }
+      @media (max-width: 360px) {
+        .options-row { grid-template-columns: 1fr; }
+      }
     </style>
   </head>
   <body>
-    <h1 data-i18n="title">Lliurament d'examen</h1>
-    <div class="lang-switch" id="student-lang-switch" title="Idioma/Language">
-      <button type="button" class="lang-btn" data-lang="auto">AUTO</button>
-      <button type="button" class="lang-btn" data-lang="ca">CA</button>
-      <button type="button" class="lang-btn" data-lang="es">ES</button>
-    </div>
-    <div id="status-box" class="notice hidden"></div>
-    <form id="exam-form" class="hidden">
-      <label for="student-code" data-i18n="student_label">Nom/codi de l'alumne</label>
-      <input type="text" id="student-code" name="studentCode" autocomplete="off" required />
-      <div id="questions-container"></div>
-      <button id="submit-btn" type="submit" data-i18n="submit">Envia les respostes</button>
-    </form>
-    <div id="message" class="notice hidden"></div>
-    
-    <section id="thanks-screen" class="hidden">
-      <h2 data-i18n="thanks_title">Moltes gràcies!</h2>
-      <p data-i18n="thanks_desc">Hem rebut les teves respostes. Pots tancar aquesta finestra.</p>
-    </section>
+    <main class="page">
+      <h1 data-i18n="title">Lliurament d'examen</h1>
+      <div class="lang-switch" id="student-lang-switch" title="Idioma/Language">
+        <button type="button" class="lang-btn" data-lang="auto">AUTO</button>
+        <button type="button" class="lang-btn" data-lang="ca">CA</button>
+        <button type="button" class="lang-btn" data-lang="es">ES</button>
+      </div>
+      <div id="status-box" class="notice hidden"></div>
+      <form id="exam-form" class="hidden">
+        <label for="student-code" data-i18n="student_label">Nom/codi de l'alumne</label>
+        <input type="text" id="student-code" name="studentCode" autocomplete="off" required />
+        <div id="questions-container"></div>
+        <button id="submit-btn" type="submit" data-i18n="submit">Envia les respostes</button>
+      </form>
+      <div id="message" class="notice hidden"></div>
+
+      <section id="thanks-screen" class="hidden">
+        <h2 data-i18n="thanks_title">Moltes gràcies!</h2>
+        <p data-i18n="thanks_desc">Hem rebut les teves respostes. Pots tancar aquesta finestra.</p>
+      </section>
+    </main>
 
     <script>
       const EXAM_ID = <?!= JSON.stringify(examId) ?>;
