@@ -294,7 +294,7 @@
         </details>
 
         <details class="accordion">
-            <summary><h2>Puesta en marcha de la aplicación web</h2></summary>
+            <summary><h2>⭐ Puesta en marcha de la aplicación web</h2></summary>
             <div class="accordion-content">
                 <p>El proceso de puesta en marcha consta de dos pasos: <strong>crear tu copia</strong> de la hoja de cálculo y <strong>publicar</strong> la aplicación web para gestionar los exámenes. No tendrás que tocar la hoja: el sistema lo hará por ti.</p>
                 <ol>
@@ -416,6 +416,7 @@
         ca: document.getElementById('lang-ca'),
         es: document.getElementById('lang-es')
       };
+      const LANG_KEY = 'pcd:docs:lang';
       const I18N_FOOTER = {
         ca: {
           appName: 'Plantilla correctora digital',
@@ -443,16 +444,29 @@
           if (l2) l2.innerHTML = f.line2;
         } catch (e) {}
       }
-      function setLang(lang) {
+      function setLang(lang, persist = false) {
         langButtons.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
         Object.entries(sections).forEach(([k, el]) => el.classList.toggle('active', k === lang));
         document.documentElement.lang = lang;
         renderFooterDocs(lang);
+        if (persist) {
+          try {
+            localStorage.setItem(LANG_KEY, lang);
+          } catch (e) {}
+        }
       }
-      langButtons.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-      // Auto: según navegador
+      langButtons.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang, true)));
+      // Auto: según almacenamiento o navegador
+      let storedLang;
+      try {
+        storedLang = localStorage.getItem(LANG_KEY);
+      } catch (e) {
+        storedLang = null;
+      }
+      if (storedLang) storedLang = storedLang.toLowerCase();
       const nav = (navigator.language || 'ca').toLowerCase();
-      setLang(nav.startsWith('es') ? 'es' : 'ca');
+      const initialLang = sections[storedLang] ? storedLang : (nav.startsWith('es') ? 'es' : 'ca');
+      setLang(initialLang);
 
       // ===== Tema (claro/oscuro/auto) =====
       const THEME_KEY = 'pcd:docs:theme';
