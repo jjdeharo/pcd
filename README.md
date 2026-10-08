@@ -45,7 +45,7 @@ Guías ilustradas y pasos detallados en la documentación: https://jjdeharo.gith
 - Mantén estable la URL del Web App actualizando el despliegue existente:  
   - Lista despliegues: `clasp deployments`  
   - Redeploy sobre el actual: `clasp deploy --deploymentId <id> --description "<nota>"`
-- Contexto actual: `deploymentId` activo `AKfycbwF_uXf1Md8xM79hHIBJtcg2RbPO6nOYyf8RcDzUlDfT-DxZK4z2y6j3M7ji60B5cvsZg`.
+- `.clasp.json` apunta al proyecto del autor: en una copia propia, sustituye `scriptId` por el de tu proyecto de Apps Script.
 
 ## Contribuir
 

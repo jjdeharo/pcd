@@ -19,13 +19,10 @@ With no existing Git history, adopt short imperative messages that scope the cha
 Replace `DEFAULT_ADMIN_TOKEN` before the first push and mirror that value in the `Settings` sheet. Ensure spreadsheet tabs match the names in `SHEET_NAMES`; rename or archive unused tabs outside the active spreadsheet. When cloning the project for another class, duplicate the spreadsheet, clear the `Settings` rows, and redeploy so the new instance starts with fresh exam identifiers.
 
 ### Deployment Notes (keep URL stable)
+- `.clasp.json` in this repository points to the maintainer's Apps Script project. When working on your own copy of the spreadsheet, replace `scriptId` with the one of your copy (Extensions → Apps Script → Project settings) before running `clasp push`, or the push will fail for lack of permissions.
 - Always push locally first: `clasp push`.
 - Update the existing deployment instead of creating a new one so the Web App URL does not change: `clasp deployments` to list, then `clasp deploy --deploymentId <current_id> --description "<note>"`.
 - If `clasp` is not on PATH, use the full path (e.g., `~/.npm-global/bin/clasp`).
 
-Latest deployment context
-- Current active deploymentId: `AKfycbwF_uXf1Md8xM79hHIBJtcg2RbPO6nOYyf8RcDzUlDfT-DxZK4z2y6j3M7ji60B5cvsZg`
-- Use: `~/.npm-global/bin/clasp deploy --deploymentId AKfycbwF_uXf1Md8xM79hHIBJtcg2RbPO6nOYyf8RcDzUlDfT-DxZK4z2y6j3M7ji60B5cvsZg --description "<note>"`
-
-Policy
-- Juanjo prefiere que, tras cambios, se haga `clasp push` y redeploy sobre el `deploymentId` anterior sin pedir confirmación adicional, para mantener la URL estable.
+### Local instructions
+- If `AGENTS.local.md` exists (it is git-ignored), read it: it holds the maintainer's deployment IDs and preferences, which only apply to the maintainer's own instance.
